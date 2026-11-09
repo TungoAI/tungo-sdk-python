@@ -2,21 +2,42 @@
 from __future__ import annotations
 
 import base64
+import email.utils
 import hashlib
 import hmac
 import json
 import os
+import random
+import socket
+import sys
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 import uuid
-from dataclasses import dataclass
-from typing import Any, Callable, Iterator
+from dataclasses import dataclass, field
+from typing import Any, Callable, Iterable, Iterator
 
 SDK_VERSION = "0.1.0"
 CONTRACT_HASH = "f2ee354886229ce85b3d5f493ead4849ce2f0128e823c5fe90f57d359e45edc0"
 DEFAULT_BASE_URL = "https://api.tungo.kz"
+
+SENSITIVE_HEADERS = frozenset({
+    "authorization",
+    "x-api-key",
+    "x-signature",
+    "webhook-signature",
+    "svix-signature",
+    "cookie",
+    "set-cookie",
+})
+
+
+def redact_headers(headers: dict[str, str]) -> dict[str, str]:
+    out: dict[str, str] = {}
+    for k, v in headers.items():
+        out[k] = "[REDACTED]" if k.lower() in SENSITIVE_HEADERS else v
+    return out
 
 
 @dataclass(frozen=True)
@@ -27,6 +48,16 @@ class RateLimitInfo:
 
 
 @dataclass(frozen=True)
+class RawResponse:
+    status: int
+    headers: dict[str, str]
+    data: Any
+    request_id: str | None = None
+    rate_limit: RateLimitInfo | None = None
+    elapsed_ms: float = 0.0
+
+
+@dataclass(frozen=True)
 class SSEEvent:
     event: str
     data: Any
@@ -34,12 +65,95 @@ class SSEEvent:
     id: str | None = None
 
 
+@dataclass
+class ChatStreamAccumulated:
+    text: str = ""
+    reasoning: str = ""
+    dialog_id: str | None = None
+    turn_no: int | None = None
+    stop_reason: str | None = None
+    cost_tiyn: int | None = None
+    tool_calls: list[Any] = field(default_factory=list)
+    tool_results: list[Any] = field(default_factory=list)
+    done_event: dict[str, Any] | None = None
+    events: list[SSEEvent] = field(default_factory=list)
+
+
+def accumulate_chat_stream(
+    events: Iterable[SSEEvent],
+    *,
+    on_text_delta: Callable[[str], None] | None = None,
+    on_reasoning_delta: Callable[[str], None] | None = None,
+    on_tool_call: Callable[[Any], None] | None = None,
+    on_tool_result: Callable[[Any], None] | None = None,
+    on_event: Callable[[SSEEvent], None] | None = None,
+) -> ChatStreamAccumulated:
+    acc = ChatStreamAccumulated()
+    for ev in events:
+        acc.events.append(ev)
+        if on_event is not None:
+            on_event(ev)
+        data = ev.data if isinstance(ev.data, dict) else {}
+        if ev.event == "meta":
+            if isinstance(data.get("dialog_id"), str):
+                acc.dialog_id = data["dialog_id"]
+            if isinstance(data.get("turn_no"), int):
+                acc.turn_no = data["turn_no"]
+        elif ev.event in ("text", "delta", "message"):
+            delta = data.get("delta") if isinstance(data.get("delta"), str) else (
+                data.get("text") if isinstance(data.get("text"), str) else (ev.data if isinstance(ev.data, str) else "")
+            )
+            if delta:
+                acc.text += delta
+                if on_text_delta is not None:
+                    on_text_delta(delta)
+        elif ev.event in ("reasoning", "thinking"):
+            r_delta = data.get("delta") if isinstance(data.get("delta"), str) else (
+                data.get("text") if isinstance(data.get("text"), str) else ""
+            )
+            if r_delta:
+                acc.reasoning += r_delta
+                if on_reasoning_delta is not None:
+                    on_reasoning_delta(r_delta)
+        elif ev.event == "tool_call":
+            acc.tool_calls.append(ev.data)
+            if on_tool_call is not None:
+                on_tool_call(ev.data)
+        elif ev.event == "tool_result":
+            acc.tool_results.append(ev.data)
+            if on_tool_result is not None:
+                on_tool_result(ev.data)
+        elif ev.event == "done":
+            acc.done_event = data
+            if isinstance(data.get("dialog_id"), str):
+                acc.dialog_id = data["dialog_id"]
+            if isinstance(data.get("turn_no"), int):
+                acc.turn_no = data["turn_no"]
+            if isinstance(data.get("stop_reason"), str):
+                acc.stop_reason = data["stop_reason"]
+            if isinstance(data.get("cost_tiyn"), int):
+                acc.cost_tiyn = data["cost_tiyn"]
+            elif isinstance(data.get("usage"), dict) and isinstance(data["usage"].get("cost_tiyn"), int):
+                acc.cost_tiyn = data["usage"]["cost_tiyn"]
+            if not acc.text and isinstance(data.get("answer"), str):
+                acc.text = data["answer"]
+    return acc
+
+
 class TungoError(Exception):
     """Базовое исключение Tungo SDK."""
 
 
+class TungoConnectionError(TungoError):
+    """Ошибка соединения с сервером Tungo API (DNS, TLS, сброс соединения)."""
+
+
+class TungoTimeoutError(TungoConnectionError):
+    """Превышено время ожидания ответа от Tungo API."""
+
+
 class TungoApiError(TungoError):
-    """Ошибка API Tungo со структурированным типом, кодом и request_id."""
+    """Ошибка API Tungo со структурированным типом, кодом, подсказкой (hint) и request_id."""
 
     def __init__(
         self,
@@ -48,6 +162,7 @@ class TungoApiError(TungoError):
         status: int,
         error_type: str = "api_error",
         error_code: str | None = None,
+        hint: str | None = None,
         request_id: str | None = None,
         retry_after_sec: int | None = None,
         rate_limit: RateLimitInfo | None = None,
@@ -58,6 +173,7 @@ class TungoApiError(TungoError):
         self.status = status
         self.error_type = error_type
         self.error_code = error_code
+        self.hint = hint
         self.request_id = request_id
         self.retry_after_sec = retry_after_sec
         self.rate_limit = rate_limit
@@ -92,6 +208,20 @@ class TungoRateLimitError(TungoApiError):
     pass
 
 
+def parse_retry_after_sec(raw: str | None) -> int | None:
+    if not raw:
+        return None
+    s = raw.strip()
+    if s.isdigit():
+        return int(s)
+    try:
+        dt = email.utils.parsedate_to_datetime(s)
+        diff = int(dt.timestamp() - time.time())
+        return max(0, diff)
+    except Exception:
+        return None
+
+
 def create_api_error(
     status: int,
     body: Any,
@@ -99,16 +229,18 @@ def create_api_error(
     rate_limit: RateLimitInfo | None = None,
 ) -> TungoApiError:
     low_headers = {k.lower(): v for k, v in headers.items()}
-    retry_raw = low_headers.get("retry-after")
-    retry_after = int(retry_raw) if retry_raw and retry_raw.isdigit() else None
+    retry_after = parse_retry_after_sec(low_headers.get("retry-after"))
     error_type = "api_error"
     error_code: str | None = None
+    hint: str | None = None
     message = f"HTTP {status}"
     request_id = low_headers.get("x-request-id")
 
     if isinstance(body, dict):
         if isinstance(body.get("request_id"), str):
             request_id = body["request_id"]
+        if isinstance(body.get("hint"), str):
+            hint = body["hint"]
         err_obj = body.get("error")
         if isinstance(err_obj, dict):
             if isinstance(err_obj.get("type"), str):
@@ -117,6 +249,8 @@ def create_api_error(
                 error_code = err_obj["code"]
             if isinstance(err_obj.get("message"), str):
                 message = err_obj["message"]
+            if isinstance(err_obj.get("hint"), str):
+                hint = err_obj["hint"]
         elif isinstance(body.get("message"), str):
             message = body["message"]
 
@@ -137,6 +271,7 @@ def create_api_error(
         status=status,
         error_type=error_type,
         error_code=error_code,
+        hint=hint,
         request_id=request_id,
         retry_after_sec=retry_after,
         rate_limit=rate_limit,
@@ -189,19 +324,43 @@ class HttpTransport:
         self,
         *,
         api_key: str | None = None,
+        company_id: str | None = None,
+        workspace_id: str | None = None,
+        webhook_secret: str | None = None,
         base_url: str | None = None,
         timeout_sec: float = 30.0,
         max_retries: int = 3,
         use_bearer_auth: bool = False,
+        debug: bool = False,
+        on_request: Callable[[dict[str, Any]], None] | None = None,
+        on_response: Callable[[dict[str, Any]], None] | None = None,
         sender: Callable[[str, str, dict[str, str], bytes | None], tuple[int, dict[str, str], bytes]] | None = None,
     ) -> None:
         self.api_key = api_key if api_key is not None else os.environ.get("TUNGO_API_KEY")
+        self.company_id = company_id if company_id is not None else os.environ.get("TUNGO_COMPANY_ID")
+        self.workspace_id = workspace_id if workspace_id is not None else os.environ.get("TUNGO_WORKSPACE_ID")
+        self.webhook_secret = webhook_secret if webhook_secret is not None else os.environ.get("TUNGO_WEBHOOK_SECRET")
         self.base_url = (base_url or os.environ.get("TUNGO_BASE_URL") or DEFAULT_BASE_URL).rstrip("/")
         self.timeout_sec = timeout_sec
         self.max_retries = max_retries
         self.use_bearer_auth = use_bearer_auth
+        self.debug = debug or os.environ.get("TUNGO_DEBUG") in ("1", "true")
+        self.on_request = on_request
+        self.on_response = on_response
         self.sender = sender
         self.last_rate_limit: RateLimitInfo | None = None
+
+    def resolve_company_id(self, explicit: str | None = None) -> str:
+        cid = explicit or self.company_id
+        if not cid:
+            raise TungoError("Не указан ID компании (передайте company_id или задайте TUNGO_COMPANY_ID)")
+        return cid
+
+    def resolve_workspace_id(self, explicit: str | None = None) -> str:
+        wid = explicit or self.workspace_id
+        if not wid:
+            raise TungoError("Не указан ID воркспейса (передайте workspace_id или задайте TUNGO_WORKSPACE_ID)")
+        return wid
 
     @staticmethod
     def quote(val: str) -> str:
@@ -239,7 +398,7 @@ class HttpTransport:
         }
         if extra:
             hdrs.update(extra)
-        if auth == "key":
+        if auth in ("key", "bearer"):
             if not self.api_key:
                 raise TungoAuthError(
                     "Не задан ключ API (передайте api_key в TungoClient или задайте TUNGO_API_KEY)",
@@ -271,6 +430,13 @@ class HttpTransport:
                 return None
         return None
 
+    @staticmethod
+    def _compute_backoff(attempt: int, retry_after_sec: int | None) -> float:
+        if retry_after_sec is not None and retry_after_sec >= 0:
+            return min(float(retry_after_sec), 60.0)
+        cap = min(0.25 * (2 ** max(0, attempt - 1)), 8.0)
+        return cap * (0.5 + 0.5 * random.random())
+
     def _send_raw(self, method: str, url: str, headers: dict[str, str], payload: bytes | None) -> tuple[int, dict[str, str], bytes]:
         if self.sender is not None:
             return self.sender(method, url, headers, payload)
@@ -280,6 +446,106 @@ class HttpTransport:
                 return resp.status, dict(resp.headers.items()), resp.read()
         except urllib.error.HTTPError as e:
             return e.code, dict(e.headers.items()), e.read()
+        except TimeoutError as e:
+            raise TungoTimeoutError(f"Превышено время ожидания ответа ({self.timeout_sec}s): {e}") from e
+        except socket.timeout as e:
+            raise TungoTimeoutError(f"Превышено время ожидания ответа ({self.timeout_sec}s): {e}") from e
+        except urllib.error.URLError as e:
+            if isinstance(getattr(e, "reason", None), (TimeoutError, socket.timeout)):
+                raise TungoTimeoutError(f"Превышено время ожидания ответа ({self.timeout_sec}s): {e}") from e
+            raise TungoConnectionError(f"Ошибка соединения с Tungo API: {e}") from e
+
+    def request_raw(
+        self,
+        method: str,
+        path: str,
+        *,
+        query: dict[str, Any] | None = None,
+        body: Any = None,
+        raw_body: str | None = None,
+        auth: str = "key",
+        idempotent: bool = False,
+        retry_safe: bool = False,
+        idempotency_key: str | None = None,
+        headers: dict[str, str] | None = None,
+        max_retries: int | None = None,
+    ) -> RawResponse:
+        url = self._build_url(path, query)
+        idem = idempotency_key or (str(uuid.uuid4()) if idempotent else None)
+        can_retry = bool(retry_safe or method in ("GET", "HEAD") or idem)
+        effective_retries = self.max_retries if max_retries is None else max_retries
+        payload: bytes | None = None
+        if raw_body is not None:
+            payload = raw_body.encode("utf-8")
+        elif body is not None:
+            payload = json.dumps(body, ensure_ascii=False).encode("utf-8")
+
+        attempt = 0
+        while True:
+            hdrs = self._build_headers(auth, idem, headers, payload is not None, "application/json")
+            start = time.monotonic()
+            if self.debug:
+                print(f"[tungo-sdk] -> {method} {url} (attempt {attempt + 1})", redact_headers(hdrs), file=sys.stderr)
+            if self.on_request is not None:
+                self.on_request({"method": method, "url": url, "headers": redact_headers(hdrs), "attempt": attempt})
+
+            try:
+                status, resp_headers, resp_bytes = self._send_raw(method, url, hdrs, payload)
+            except Exception as exc:
+                if isinstance(exc, TungoApiError):
+                    raise
+                if can_retry and attempt < effective_retries:
+                    attempt += 1
+                    time.sleep(self._compute_backoff(attempt, None))
+                    continue
+                if isinstance(exc, TungoError):
+                    raise
+                raise TungoConnectionError(f"Ошибка сети при вызове Tungo API: {exc}") from exc
+
+            elapsed_ms = (time.monotonic() - start) * 1000.0
+            rl = self._extract_rate_limit(resp_headers)
+            low_resp = {k.lower(): v for k, v in resp_headers.items()}
+            req_id = low_resp.get("x-request-id")
+
+            if self.debug:
+                print(f"[tungo-sdk] <- {status} {method} {url} ({elapsed_ms:.1f}ms, req_id={req_id})", file=sys.stderr)
+            if self.on_response is not None:
+                self.on_response(
+                    {
+                        "method": method,
+                        "url": url,
+                        "status": status,
+                        "headers": resp_headers,
+                        "request_id": req_id,
+                        "elapsed_ms": elapsed_ms,
+                        "attempt": attempt,
+                    }
+                )
+
+            if 200 <= status < 300:
+                data = None if (status == 204 or not resp_bytes) else json.loads(resp_bytes.decode("utf-8"))
+                return RawResponse(
+                    status=status,
+                    headers=resp_headers,
+                    data=data,
+                    request_id=req_id,
+                    rate_limit=rl,
+                    elapsed_ms=elapsed_ms,
+                )
+
+            parsed_err: Any = None
+            if resp_bytes:
+                try:
+                    parsed_err = json.loads(resp_bytes.decode("utf-8"))
+                except Exception:
+                    parsed_err = resp_bytes.decode("utf-8", errors="replace")
+
+            api_err = create_api_error(status, parsed_err, resp_headers, rl)
+            if can_retry and attempt < effective_retries and status in (429, 502, 503, 504):
+                attempt += 1
+                time.sleep(self._compute_backoff(attempt, api_err.retry_after_sec))
+                continue
+            raise api_err
 
     def request(
         self,
@@ -294,50 +560,21 @@ class HttpTransport:
         retry_safe: bool = False,
         idempotency_key: str | None = None,
         headers: dict[str, str] | None = None,
+        max_retries: int | None = None,
     ) -> Any:
-        url = self._build_url(path, query)
-        idem = idempotency_key or (str(uuid.uuid4()) if idempotent else None)
-        can_retry = bool(retry_safe or method in ("GET", "HEAD") or idem)
-        payload: bytes | None = None
-        if raw_body is not None:
-            payload = raw_body.encode("utf-8")
-        elif body is not None:
-            payload = json.dumps(body, ensure_ascii=False).encode("utf-8")
-
-        attempt = 0
-        while True:
-            hdrs = self._build_headers(auth, idem, headers, payload is not None, "application/json")
-            try:
-                status, resp_headers, resp_bytes = self._send_raw(method, url, hdrs, payload)
-            except Exception as exc:
-                if isinstance(exc, TungoError):
-                    raise
-                if can_retry and attempt < self.max_retries:
-                    attempt += 1
-                    time.sleep(min(0.25 * (2 ** (attempt - 1)), 4.0))
-                    continue
-                raise TungoError(f"Ошибка сети при вызове Tungo API: {exc}") from exc
-
-            rl = self._extract_rate_limit(resp_headers)
-            if 200 <= status < 300:
-                if status == 204 or not resp_bytes:
-                    return None
-                return json.loads(resp_bytes.decode("utf-8"))
-
-            parsed_err: Any = None
-            if resp_bytes:
-                try:
-                    parsed_err = json.loads(resp_bytes.decode("utf-8"))
-                except Exception:
-                    parsed_err = resp_bytes.decode("utf-8", errors="replace")
-
-            api_err = create_api_error(status, parsed_err, resp_headers, rl)
-            if can_retry and attempt < self.max_retries and status in (429, 502, 503, 504):
-                attempt += 1
-                delay = float(api_err.retry_after_sec) if api_err.retry_after_sec is not None else min(0.25 * (2 ** (attempt - 1)), 4.0)
-                time.sleep(delay)
-                continue
-            raise api_err
+        return self.request_raw(
+            method,
+            path,
+            query=query,
+            body=body,
+            raw_body=raw_body,
+            auth=auth,
+            idempotent=idempotent,
+            retry_safe=retry_safe,
+            idempotency_key=idempotency_key,
+            headers=headers,
+            max_retries=max_retries,
+        ).data
 
     def stream(
         self,
@@ -380,9 +617,9 @@ class TungoWebhooks:
         now_sec: int | None = None,
     ) -> bool:
         low = {k.lower(): v for k, v in headers.items()}
-        msg_id = low.get("webhook-id")
-        msg_ts = low.get("webhook-timestamp")
-        msg_sig = low.get("webhook-signature")
+        msg_id = low.get("webhook-id") or low.get("svix-id")
+        msg_ts = low.get("webhook-timestamp") or low.get("svix-timestamp")
+        msg_sig = low.get("webhook-signature") or low.get("svix-signature")
         if not msg_id or not msg_ts or not msg_sig:
             return False
         try:
@@ -426,19 +663,28 @@ class TungoWebhooks:
         now_sec: int | None = None,
     ) -> dict[str, Any]:
         if not TungoWebhooks.verify_signature(raw_body, headers, secret, tolerance_sec=tolerance_sec, now_sec=now_sec):
-            raise TungoError("Подпись вебхука не прошла проверку (webhook-signature)")
+            raise TungoError("Подпись вебхука не прошла проверку (webhook-signature / svix-signature)")
         body_str = raw_body.decode("utf-8") if isinstance(raw_body, bytes) else raw_body
         return json.loads(body_str)
 
 
 class TungoHooks:
-    """Подпись входящих хуков автоматизации (/hooks/{token}, HMAC-SHA256)."""
+    """Подпись и проверка входящих хуков автоматизации (/hooks/{token}, HMAC-SHA256)."""
 
     @staticmethod
     def sign_payload(raw_body: str | bytes, secret: str, *, prefix: bool = True) -> str:
         data = raw_body if isinstance(raw_body, bytes) else raw_body.encode("utf-8")
         digest = hmac.new(secret.encode("utf-8"), data, hashlib.sha256).hexdigest()
         return f"sha256={digest}" if prefix else digest
+
+    @staticmethod
+    def verify_signature(raw_body: str | bytes, signature_header: str, secret: str) -> bool:
+        if not signature_header or not secret:
+            return False
+        trimmed = signature_header.strip()
+        hex_sig = trimmed[len("sha256=") :] if trimmed.startswith("sha256=") else trimmed
+        expected = TungoHooks.sign_payload(raw_body, secret, prefix=False)
+        return hmac.compare_digest(hex_sig.lower(), expected.lower())
 
 
 class TungoMoney:
@@ -460,3 +706,19 @@ class TungoMoney:
         frac = abs_val % 100
         whole_str = f"{whole:,}".replace(",", " ")
         return f"{sign}{whole_str},{frac:02d} ₸"
+
+
+class TungoKazakhstan:
+    """Утилиты для реквизитов Республики Казахстан (БИН / ИИН)."""
+
+    @staticmethod
+    def is_valid_bin_iin(value: str) -> bool:
+        if not isinstance(value, str) or len(value) != 12 or not value.isdigit():
+            return False
+        digits = [int(ch) for ch in value]
+        w1 = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
+        control = sum(digits[i] * w1[i] for i in range(11)) % 11
+        if control == 10:
+            w2 = (3, 4, 5, 6, 7, 8, 9, 10, 11, 1, 2)
+            control = sum(digits[i] * w2[i] for i in range(11)) % 11
+        return control < 10 and control == digits[11]
