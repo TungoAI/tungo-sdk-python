@@ -8,11 +8,35 @@ version = "0.1.0"
 description = "Official Python SDK for Tungo AI Platform API (1C AI Accountant, Automations, Webhooks)"
 readme = "README.md"
 license = { text = "MIT" }
+authors = [
+    { name = "Tungo AI", email = "dev@tungo.kz" }
+]
+keywords = ["tungo", "tungo-ai", "1c", "accounting", "kazakhstan", "sdk", "api"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed"
+]
 requires-python = ">=3.10"
 dependencies = []
 
+[project.urls]
+Homepage = "https://tungo.kz"
+Documentation = "https://api.tungo.kz/docs"
+Repository = "https://github.com/TungoAI/tungo-sdk-python"
+Issues = "https://github.com/TungoAI/tungo-sdk-python/issues"
+
 [tool.setuptools.packages.find]
 include = ["tungo*"]
+
+[tool.setuptools.package-data]
+tungo = ["py.typed"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

@@ -20,7 +20,7 @@ from tungo import (
 )
 
 VECTORS = json.loads(
-    (Path(__file__).resolve().parents[2] / "tungo-sdkgen" / "conformance" / "vectors.json").read_text("utf-8")
+    (Path(__file__).resolve().parents[1] / "conformance" / "vectors.json").read_text("utf-8")
 )
 
 
