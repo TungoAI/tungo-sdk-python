@@ -1,0 +1,4965 @@
+{
+  "answerCompanyChat": {
+    "body": {
+      "answer": "text",
+      "citations": [
+        {
+          "source": "text",
+          "title": "text"
+        }
+      ],
+      "dialog_id": "text",
+      "errors": [
+        {
+          "code": "budget",
+          "message": "text",
+          "type": "text"
+        }
+      ],
+      "pending_question": {
+        "choice_id": "text",
+        "questions": [
+          {
+            "header": "text",
+            "multi_select": true,
+            "options": [
+              {
+                "description": "text",
+                "label": "text"
+              }
+            ],
+            "question": "text"
+          }
+        ]
+      },
+      "proposals": [
+        {
+          "card": {
+            "actions": [
+              {
+                "action": "approve",
+                "body": {
+                  "key": {
+                    "anything": [
+                      1,
+                      "two",
+                      null
+                    ]
+                  }
+                },
+                "effect": "text",
+                "enabled": true,
+                "href": "text",
+                "label": "text",
+                "method": "POST"
+              }
+            ],
+            "approval": {
+              "allowed": true,
+              "blocked_by_blockers": true,
+              "requires_right": "proposals.approve"
+            },
+            "blocker_count": 7,
+            "blockers": [
+              "text"
+            ],
+            "created_at": "2026-01-02T03:04:05Z",
+            "dialog_id": "text",
+            "header": {
+              "accounts": [
+                {
+                  "code": "text",
+                  "field": "text",
+                  "ref": "text",
+                  "title": "text"
+                }
+              ],
+              "date": "text",
+              "document_title": "text",
+              "entity_set": "text",
+              "net": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "total": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "vat": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              }
+            },
+            "history": [
+              {
+                "actor": "text",
+                "at": "2026-01-02T03:04:05Z",
+                "status": "previewed",
+                "status_title": "text"
+              }
+            ],
+            "href": "text",
+            "id": "text",
+            "intent": {
+              "key": {
+                "anything": [
+                  1,
+                  "two",
+                  null
+                ]
+              }
+            },
+            "kind": "sale",
+            "kind_title": "text",
+            "level": "L0",
+            "level_title": "text",
+            "line_count": 7,
+            "lines": [
+              {
+                "accounts": [
+                  {
+                    "code": "text",
+                    "field": "text",
+                    "ref": "text",
+                    "title": "text"
+                  }
+                ],
+                "item": {
+                  "name": "text",
+                  "ref": "text"
+                },
+                "no": 7,
+                "price": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "quantity": 1.5,
+                "section": "goods",
+                "sum": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "total": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "vat": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "vat_rate_title": "text"
+              }
+            ],
+            "postings": [
+              {
+                "amount": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "computed_by_1c": true,
+                "credit": "text",
+                "debit": "text",
+                "label": "text"
+              }
+            ],
+            "source": {
+              "channel": "mcp"
+            },
+            "status": "previewed",
+            "status_title": "text",
+            "summary": "text",
+            "title": "text",
+            "total": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "vat": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "warning_count": 7,
+            "warnings": [
+              "text"
+            ]
+          },
+          "id": "text"
+        }
+      ],
+      "questions": [
+        {
+          "text": "text"
+        }
+      ],
+      "stop_reason": "text",
+      "turn_no": 1.5,
+      "usage": {
+        "cache_read_tokens": 7,
+        "cache_write_tokens": 7,
+        "cost_tiyn": 7,
+        "input_tokens": 7,
+        "output_tokens": 7
+      }
+    },
+    "status": 200
+  },
+  "answerCompanyChat:stream": {
+    "events": [
+      {
+        "data": {
+          "delta": "text",
+          "step": 1.5,
+          "type": "text"
+        },
+        "event": "text"
+      },
+      {
+        "data": {
+          "step": 1.5,
+          "text": "text",
+          "type": "progress"
+        },
+        "event": "progress"
+      },
+      {
+        "data": {
+          "delta": "text",
+          "type": "thinking"
+        },
+        "event": "thinking"
+      },
+      {
+        "data": {
+          "code": "compacting",
+          "text": "text",
+          "type": "status"
+        },
+        "event": "status"
+      },
+      {
+        "data": {
+          "detail": "text",
+          "name": "text",
+          "status": "started",
+          "title": "text",
+          "type": "tool"
+        },
+        "event": "tool"
+      },
+      {
+        "data": {
+          "card": {
+            "actions": [
+              {
+                "action": "approve",
+                "body": {
+                  "key": {
+                    "anything": [
+                      1,
+                      "two",
+                      null
+                    ]
+                  }
+                },
+                "effect": "text",
+                "enabled": true,
+                "href": "text",
+                "label": "text",
+                "method": "POST"
+              }
+            ],
+            "advance_offset": {
+              "amount": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "credit": "text",
+              "debit": "text",
+              "note": "text",
+              "to_pay": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              }
+            },
+            "approval": {
+              "allowed": true,
+              "blocked_by_blockers": true,
+              "requires_right": "proposals.approve"
+            },
+            "blocker_count": 7,
+            "blockers": [
+              "text"
+            ],
+            "counterparty": {
+              "name": "text",
+              "ref": "text"
+            },
+            "created_at": "2026-01-02T03:04:05Z",
+            "dialog_id": "text",
+            "document_number": "text",
+            "header": {
+              "accounts": [
+                {
+                  "code": "text",
+                  "field": "text",
+                  "ref": "text",
+                  "title": "text"
+                }
+              ],
+              "date": "text",
+              "document_title": "text",
+              "entity_set": "text",
+              "net": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "total": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "vat": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              }
+            },
+            "history": [
+              {
+                "actor": "text",
+                "at": "2026-01-02T03:04:05Z",
+                "status": "previewed",
+                "status_title": "text"
+              }
+            ],
+            "href": "text",
+            "id": "text",
+            "intent": {
+              "key": {
+                "anything": [
+                  1,
+                  "two",
+                  null
+                ]
+              }
+            },
+            "kind": "sale",
+            "kind_title": "text",
+            "level": "L0",
+            "level_title": "text",
+            "line_count": 7,
+            "lines": [
+              {
+                "accounts": [
+                  {
+                    "code": "text",
+                    "field": "text",
+                    "ref": "text",
+                    "title": "text"
+                  }
+                ],
+                "item": {
+                  "name": "text",
+                  "ref": "text"
+                },
+                "no": 7,
+                "price": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "quantity": 1.5,
+                "section": "goods",
+                "sum": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "total": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "vat": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "vat_rate_title": "text"
+              }
+            ],
+            "postings": [
+              {
+                "amount": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "computed_by_1c": true,
+                "credit": "text",
+                "debit": "text",
+                "label": "text"
+              }
+            ],
+            "result": {
+              "mismatches": [
+                "text"
+              ],
+              "number": "text",
+              "postings": [
+                {
+                  "amount": {
+                    "amount": 1.5,
+                    "amount_tiyn": 7,
+                    "formatted": "text"
+                  },
+                  "computed_by_1c": true,
+                  "credit": "text",
+                  "debit": "text",
+                  "label": "text"
+                }
+              ],
+              "ref": "text"
+            },
+            "source": {
+              "channel": "mcp"
+            },
+            "status": "previewed",
+            "status_title": "text",
+            "summary": "text",
+            "title": "text",
+            "total": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "vat": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "warning_count": 7,
+            "warnings": [
+              "text"
+            ]
+          },
+          "proposal_id": "text",
+          "type": "proposal"
+        },
+        "event": "proposal"
+      },
+      {
+        "data": {
+          "edition": "text",
+          "source": "text",
+          "title": "text",
+          "type": "citation",
+          "url": "text"
+        },
+        "event": "citation"
+      },
+      {
+        "data": {
+          "proposal_id": "text",
+          "text": "text",
+          "type": "question"
+        },
+        "event": "question"
+      },
+      {
+        "data": {
+          "choice_id": "text",
+          "questions": [
+            {
+              "header": "text",
+              "multi_select": true,
+              "options": [
+                {
+                  "description": "text",
+                  "label": "text"
+                }
+              ],
+              "question": "text"
+            }
+          ],
+          "type": "choice"
+        },
+        "event": "choice"
+      },
+      {
+        "data": {
+          "error": {
+            "can_request_more": true,
+            "code": "budget",
+            "limit_kind": "day",
+            "message": "text",
+            "type": "text"
+          },
+          "request_id": "text",
+          "type": "error"
+        },
+        "event": "error"
+      },
+      {
+        "data": {
+          "completed": 1.5,
+          "note": "text",
+          "outcome": "created",
+          "stage": "resolve",
+          "title": "text",
+          "total": 1.5,
+          "type": "batch"
+        },
+        "event": "batch"
+      },
+      {
+        "data": {
+          "job_id": "text",
+          "report": {
+            "approval": {
+              "approved": 1.5,
+              "counts": {
+                "key": 1.5
+              },
+              "excluded": 1.5,
+              "failed": 1.5,
+              "limit": 1.5,
+              "message": "text",
+              "ok": true,
+              "requested": 1.5,
+              "results": [
+                {
+                  "id": "text",
+                  "message": "text",
+                  "outcome": "approved",
+                  "title": "text"
+                }
+              ]
+            },
+            "created": 7,
+            "duplicates": 7,
+            "failed": 7,
+            "gateway": {
+              "asked": 7,
+              "passed": 7
+            },
+            "manual": 7,
+            "min_concurrency": 7,
+            "pending": 7,
+            "rows": [
+              {
+                "key": "text",
+                "status": "created",
+                "title": "text"
+              }
+            ],
+            "skipped": 7,
+            "stopped": true,
+            "total": 7,
+            "unknown": 7
+          },
+          "type": "batch_report"
+        },
+        "event": "batch_report"
+      },
+      {
+        "data": {
+          "answer": "text",
+          "choice_id": "text",
+          "cost_tiyn": 7,
+          "stop_reason": "text",
+          "type": "done",
+          "usage": {
+            "cache_read_tokens": 7,
+            "cache_write_tokens": 7,
+            "input_tokens": 7,
+            "output_tokens": 7
+          }
+        },
+        "event": "done"
+      }
+    ]
+  },
+  "approveBatchCompanyProposals": {
+    "body": {
+      "approved": 1.5,
+      "batch_id": "text",
+      "counts": {
+        "key": 1.5
+      },
+      "excluded": 1.5,
+      "failed": 1.5,
+      "limit": 1.5,
+      "message": "text",
+      "ok": true,
+      "requested": 1.5,
+      "results": [
+        {
+          "id": "text",
+          "message": "text",
+          "outcome": "approved",
+          "title": "text"
+        }
+      ],
+      "stopped": {
+        "reason": "text",
+        "remaining": 1.5
+      },
+      "unknown_excluded": [
+        "text"
+      ]
+    },
+    "status": 200
+  },
+  "approveCompanyProposal": {
+    "body": {
+      "document": {
+        "number": "text",
+        "posted": true,
+        "ref": "text"
+      },
+      "message": "text",
+      "mismatches": [
+        "text"
+      ],
+      "ok": true,
+      "postings": [
+        {
+          "amount": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "computed_by_1c": true,
+          "credit": "text",
+          "debit": "text",
+          "label": "text"
+        }
+      ],
+      "proposal": {
+        "actions": [
+          {
+            "action": "approve",
+            "body": {
+              "key": {
+                "anything": [
+                  1,
+                  "two",
+                  null
+                ]
+              }
+            },
+            "effect": "text",
+            "enabled": true,
+            "href": "text",
+            "label": "text",
+            "method": "POST"
+          }
+        ],
+        "advance_offset": {
+          "amount": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "credit": "text",
+          "debit": "text",
+          "note": "text",
+          "to_pay": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          }
+        },
+        "approval": {
+          "allowed": true,
+          "blocked_by_blockers": true,
+          "requires_right": "proposals.approve"
+        },
+        "blocker_count": 7,
+        "blockers": [
+          "text"
+        ],
+        "counterparty": {
+          "name": "text",
+          "ref": "text"
+        },
+        "created_at": "2026-01-02T03:04:05Z",
+        "dialog_id": "text",
+        "document_number": "text",
+        "header": {
+          "accounts": [
+            {
+              "code": "text",
+              "field": "text",
+              "ref": "text",
+              "title": "text"
+            }
+          ],
+          "date": "text",
+          "document_title": "text",
+          "entity_set": "text",
+          "net": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "total": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "vat": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          }
+        },
+        "history": [
+          {
+            "actor": "text",
+            "at": "2026-01-02T03:04:05Z",
+            "status": "previewed",
+            "status_title": "text"
+          }
+        ],
+        "href": "text",
+        "id": "text",
+        "intent": {
+          "key": {
+            "anything": [
+              1,
+              "two",
+              null
+            ]
+          }
+        },
+        "kind": "sale",
+        "kind_title": "text",
+        "level": "L0",
+        "level_title": "text",
+        "line_count": 7,
+        "lines": [
+          {
+            "accounts": [
+              {
+                "code": "text",
+                "field": "text",
+                "ref": "text",
+                "title": "text"
+              }
+            ],
+            "item": {
+              "name": "text",
+              "ref": "text"
+            },
+            "no": 7,
+            "price": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "quantity": 1.5,
+            "section": "goods",
+            "sum": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "total": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "vat": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "vat_rate_title": "text"
+          }
+        ],
+        "postings": [
+          {
+            "amount": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "computed_by_1c": true,
+            "credit": "text",
+            "debit": "text",
+            "label": "text"
+          }
+        ],
+        "result": {
+          "mismatches": [
+            "text"
+          ],
+          "number": "text",
+          "postings": [
+            {
+              "amount": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "computed_by_1c": true,
+              "credit": "text",
+              "debit": "text",
+              "label": "text"
+            }
+          ],
+          "ref": "text"
+        },
+        "source": {
+          "channel": "mcp"
+        },
+        "status": "previewed",
+        "status_title": "text",
+        "summary": "text",
+        "title": "text",
+        "total": {
+          "amount": 1.5,
+          "amount_tiyn": 7,
+          "formatted": "text"
+        },
+        "vat": {
+          "amount": 1.5,
+          "amount_tiyn": 7,
+          "formatted": "text"
+        },
+        "warning_count": 7,
+        "warnings": [
+          "text"
+        ]
+      },
+      "repeated": true
+    },
+    "status": 200
+  },
+  "bankStatementCompanyBatch": {
+    "body": {
+      "error": "text",
+      "events": 1.5,
+      "finished_at": "2026-01-02T03:04:05Z",
+      "id": "text",
+      "kind": "bank_statement",
+      "report": {
+        "approval": {
+          "approved": 1.5,
+          "counts": {
+            "key": 1.5
+          },
+          "excluded": 1.5,
+          "failed": 1.5,
+          "limit": 1.5,
+          "message": "text",
+          "ok": true,
+          "requested": 1.5,
+          "results": [
+            {
+              "id": "text",
+              "message": "text",
+              "outcome": "approved",
+              "title": "text"
+            }
+          ]
+        },
+        "created": 7,
+        "duplicates": 7,
+        "failed": 7,
+        "gateway": {
+          "asked": 7,
+          "passed": 7
+        },
+        "manual": 7,
+        "min_concurrency": 7,
+        "pending": 7,
+        "rows": [
+          {
+            "key": "text",
+            "status": "created",
+            "title": "text"
+          }
+        ],
+        "skipped": 7,
+        "stopped": true,
+        "total": 7,
+        "unknown": 7
+      },
+      "running": true,
+      "started_at": "2026-01-02T03:04:05Z",
+      "title": "text"
+    },
+    "status": 202
+  },
+  "cancelCompanyAutomationsRun": {
+    "body": {
+      "answer": "text",
+      "attempt": 7,
+      "auto_retries": 7,
+      "cancel_requested": true,
+      "cost_tiyn": 7,
+      "created_at": "2026-01-02T03:04:05Z",
+      "current_step": 7,
+      "error": "text",
+      "error_code": "text",
+      "event_id": "text",
+      "event_type": "text",
+      "external_id": "text",
+      "finished_at": "2026-01-02T03:04:05Z",
+      "id": "text",
+      "output": {
+        "key": 1.5
+      },
+      "output_error": "not_returned",
+      "output_note": "text",
+      "proposals": [
+        {
+          "attempt": 7,
+          "id": "text"
+        }
+      ],
+      "requested_by": "text",
+      "retry_at": "2026-01-02T03:04:05Z",
+      "retryable": true,
+      "scenario_id": "text",
+      "slot_at": "2026-01-02T03:04:05Z",
+      "started_at": "2026-01-02T03:04:05Z",
+      "state": "queued",
+      "steps": [
+        {
+          "action": "agent",
+          "answer": "text",
+          "error": "text",
+          "error_code": "text",
+          "findings": 7,
+          "output": {
+            "key": 1.5
+          },
+          "output_error": "not_returned",
+          "output_note": "text",
+          "proposals": [
+            "text"
+          ],
+          "skipped_by": "always",
+          "state": "done",
+          "step": 7,
+          "stop_reason": "text"
+        }
+      ],
+      "stop_reason": "text",
+      "tools": [
+        "text"
+      ],
+      "trial": true,
+      "trigger": "hook"
+    },
+    "status": 202
+  },
+  "createCompanyAutomationsHook": {
+    "body": {
+      "created_at": "2026-01-02T03:04:05Z",
+      "enabled": true,
+      "id": "text",
+      "id_path": "text",
+      "name": "text",
+      "scenarios_url": "text",
+      "signature_header": "text",
+      "signed": true,
+      "token": "text",
+      "token_hint": "text",
+      "token_note": "text",
+      "updated_at": "2026-01-02T03:04:05Z",
+      "url": "text"
+    },
+    "status": 201
+  },
+  "createCompanyAutomationsScenario": {
+    "body": {
+      "action": "agent",
+      "auto_approve": {
+        "directbank": true,
+        "kinds": [
+          "sale"
+        ],
+        "max_amount_per_day_tiyn": 7,
+        "max_amount_per_document_tiyn": 7
+      },
+      "created_at": "2026-01-02T03:04:05Z",
+      "enabled": true,
+      "id": "text",
+      "instruction": "text",
+      "name": "text",
+      "next_run_at": "2026-01-02T03:04:05Z",
+      "output": {
+        "key": {
+          "description": "text",
+          "type": "number"
+        }
+      },
+      "run_as": "text",
+      "steps": [
+        {
+          "action": "agent",
+          "instruction": "text",
+          "output": {
+            "key": {
+              "description": "text",
+              "type": "number"
+            }
+          },
+          "when": "always"
+        }
+      ],
+      "trigger": {
+        "filter": {
+          "all": [
+            {
+              "op": "eq",
+              "path": "text"
+            }
+          ]
+        },
+        "hook_id": "text",
+        "kind": "hook"
+      },
+      "updated_at": "2026-01-02T03:04:05Z",
+      "warnings": [
+        "text"
+      ]
+    },
+    "status": 201
+  },
+  "createCompanyBatchEsfPurchase": {
+    "body": {
+      "error": "text",
+      "events": 1.5,
+      "finished_at": "2026-01-02T03:04:05Z",
+      "id": "text",
+      "kind": "bank_statement",
+      "report": {
+        "approval": {
+          "approved": 1.5,
+          "counts": {
+            "key": 1.5
+          },
+          "excluded": 1.5,
+          "failed": 1.5,
+          "limit": 1.5,
+          "message": "text",
+          "ok": true,
+          "requested": 1.5,
+          "results": [
+            {
+              "id": "text",
+              "message": "text",
+              "outcome": "approved",
+              "title": "text"
+            }
+          ]
+        },
+        "created": 7,
+        "duplicates": 7,
+        "failed": 7,
+        "gateway": {
+          "asked": 7,
+          "passed": 7
+        },
+        "manual": 7,
+        "min_concurrency": 7,
+        "pending": 7,
+        "rows": [
+          {
+            "key": "text",
+            "status": "created",
+            "title": "text"
+          }
+        ],
+        "skipped": 7,
+        "stopped": true,
+        "total": 7,
+        "unknown": 7
+      },
+      "running": true,
+      "started_at": "2026-01-02T03:04:05Z",
+      "title": "text"
+    },
+    "status": 202
+  },
+  "createCompanyChat": {
+    "body": {
+      "answer": "text",
+      "citations": [
+        {
+          "source": "text",
+          "title": "text"
+        }
+      ],
+      "dialog_id": "text",
+      "errors": [
+        {
+          "code": "budget",
+          "message": "text",
+          "type": "text"
+        }
+      ],
+      "pending_question": {
+        "choice_id": "text",
+        "questions": [
+          {
+            "header": "text",
+            "multi_select": true,
+            "options": [
+              {
+                "description": "text",
+                "label": "text"
+              }
+            ],
+            "question": "text"
+          }
+        ]
+      },
+      "proposals": [
+        {
+          "card": {
+            "actions": [
+              {
+                "action": "approve",
+                "body": {
+                  "key": {
+                    "anything": [
+                      1,
+                      "two",
+                      null
+                    ]
+                  }
+                },
+                "effect": "text",
+                "enabled": true,
+                "href": "text",
+                "label": "text",
+                "method": "POST"
+              }
+            ],
+            "approval": {
+              "allowed": true,
+              "blocked_by_blockers": true,
+              "requires_right": "proposals.approve"
+            },
+            "blocker_count": 7,
+            "blockers": [
+              "text"
+            ],
+            "created_at": "2026-01-02T03:04:05Z",
+            "dialog_id": "text",
+            "header": {
+              "accounts": [
+                {
+                  "code": "text",
+                  "field": "text",
+                  "ref": "text",
+                  "title": "text"
+                }
+              ],
+              "date": "text",
+              "document_title": "text",
+              "entity_set": "text",
+              "net": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "total": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "vat": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              }
+            },
+            "history": [
+              {
+                "actor": "text",
+                "at": "2026-01-02T03:04:05Z",
+                "status": "previewed",
+                "status_title": "text"
+              }
+            ],
+            "href": "text",
+            "id": "text",
+            "intent": {
+              "key": {
+                "anything": [
+                  1,
+                  "two",
+                  null
+                ]
+              }
+            },
+            "kind": "sale",
+            "kind_title": "text",
+            "level": "L0",
+            "level_title": "text",
+            "line_count": 7,
+            "lines": [
+              {
+                "accounts": [
+                  {
+                    "code": "text",
+                    "field": "text",
+                    "ref": "text",
+                    "title": "text"
+                  }
+                ],
+                "item": {
+                  "name": "text",
+                  "ref": "text"
+                },
+                "no": 7,
+                "price": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "quantity": 1.5,
+                "section": "goods",
+                "sum": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "total": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "vat": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "vat_rate_title": "text"
+              }
+            ],
+            "postings": [
+              {
+                "amount": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "computed_by_1c": true,
+                "credit": "text",
+                "debit": "text",
+                "label": "text"
+              }
+            ],
+            "source": {
+              "channel": "mcp"
+            },
+            "status": "previewed",
+            "status_title": "text",
+            "summary": "text",
+            "title": "text",
+            "total": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "vat": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "warning_count": 7,
+            "warnings": [
+              "text"
+            ]
+          },
+          "id": "text"
+        }
+      ],
+      "questions": [
+        {
+          "text": "text"
+        }
+      ],
+      "stop_reason": "text",
+      "turn_no": 1.5,
+      "usage": {
+        "cache_read_tokens": 7,
+        "cache_write_tokens": 7,
+        "cost_tiyn": 7,
+        "input_tokens": 7,
+        "output_tokens": 7
+      }
+    },
+    "status": 200
+  },
+  "createCompanyChat:stream": {
+    "events": [
+      {
+        "data": {
+          "delta": "text",
+          "step": 1.5,
+          "type": "text"
+        },
+        "event": "text"
+      },
+      {
+        "data": {
+          "step": 1.5,
+          "text": "text",
+          "type": "progress"
+        },
+        "event": "progress"
+      },
+      {
+        "data": {
+          "delta": "text",
+          "type": "thinking"
+        },
+        "event": "thinking"
+      },
+      {
+        "data": {
+          "code": "compacting",
+          "text": "text",
+          "type": "status"
+        },
+        "event": "status"
+      },
+      {
+        "data": {
+          "detail": "text",
+          "name": "text",
+          "status": "started",
+          "title": "text",
+          "type": "tool"
+        },
+        "event": "tool"
+      },
+      {
+        "data": {
+          "card": {
+            "actions": [
+              {
+                "action": "approve",
+                "body": {
+                  "key": {
+                    "anything": [
+                      1,
+                      "two",
+                      null
+                    ]
+                  }
+                },
+                "effect": "text",
+                "enabled": true,
+                "href": "text",
+                "label": "text",
+                "method": "POST"
+              }
+            ],
+            "advance_offset": {
+              "amount": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "credit": "text",
+              "debit": "text",
+              "note": "text",
+              "to_pay": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              }
+            },
+            "approval": {
+              "allowed": true,
+              "blocked_by_blockers": true,
+              "requires_right": "proposals.approve"
+            },
+            "blocker_count": 7,
+            "blockers": [
+              "text"
+            ],
+            "counterparty": {
+              "name": "text",
+              "ref": "text"
+            },
+            "created_at": "2026-01-02T03:04:05Z",
+            "dialog_id": "text",
+            "document_number": "text",
+            "header": {
+              "accounts": [
+                {
+                  "code": "text",
+                  "field": "text",
+                  "ref": "text",
+                  "title": "text"
+                }
+              ],
+              "date": "text",
+              "document_title": "text",
+              "entity_set": "text",
+              "net": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "total": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "vat": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              }
+            },
+            "history": [
+              {
+                "actor": "text",
+                "at": "2026-01-02T03:04:05Z",
+                "status": "previewed",
+                "status_title": "text"
+              }
+            ],
+            "href": "text",
+            "id": "text",
+            "intent": {
+              "key": {
+                "anything": [
+                  1,
+                  "two",
+                  null
+                ]
+              }
+            },
+            "kind": "sale",
+            "kind_title": "text",
+            "level": "L0",
+            "level_title": "text",
+            "line_count": 7,
+            "lines": [
+              {
+                "accounts": [
+                  {
+                    "code": "text",
+                    "field": "text",
+                    "ref": "text",
+                    "title": "text"
+                  }
+                ],
+                "item": {
+                  "name": "text",
+                  "ref": "text"
+                },
+                "no": 7,
+                "price": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "quantity": 1.5,
+                "section": "goods",
+                "sum": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "total": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "vat": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "vat_rate_title": "text"
+              }
+            ],
+            "postings": [
+              {
+                "amount": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "computed_by_1c": true,
+                "credit": "text",
+                "debit": "text",
+                "label": "text"
+              }
+            ],
+            "result": {
+              "mismatches": [
+                "text"
+              ],
+              "number": "text",
+              "postings": [
+                {
+                  "amount": {
+                    "amount": 1.5,
+                    "amount_tiyn": 7,
+                    "formatted": "text"
+                  },
+                  "computed_by_1c": true,
+                  "credit": "text",
+                  "debit": "text",
+                  "label": "text"
+                }
+              ],
+              "ref": "text"
+            },
+            "source": {
+              "channel": "mcp"
+            },
+            "status": "previewed",
+            "status_title": "text",
+            "summary": "text",
+            "title": "text",
+            "total": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "vat": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "warning_count": 7,
+            "warnings": [
+              "text"
+            ]
+          },
+          "proposal_id": "text",
+          "type": "proposal"
+        },
+        "event": "proposal"
+      },
+      {
+        "data": {
+          "edition": "text",
+          "source": "text",
+          "title": "text",
+          "type": "citation",
+          "url": "text"
+        },
+        "event": "citation"
+      },
+      {
+        "data": {
+          "proposal_id": "text",
+          "text": "text",
+          "type": "question"
+        },
+        "event": "question"
+      },
+      {
+        "data": {
+          "choice_id": "text",
+          "questions": [
+            {
+              "header": "text",
+              "multi_select": true,
+              "options": [
+                {
+                  "description": "text",
+                  "label": "text"
+                }
+              ],
+              "question": "text"
+            }
+          ],
+          "type": "choice"
+        },
+        "event": "choice"
+      },
+      {
+        "data": {
+          "error": {
+            "can_request_more": true,
+            "code": "budget",
+            "limit_kind": "day",
+            "message": "text",
+            "type": "text"
+          },
+          "request_id": "text",
+          "type": "error"
+        },
+        "event": "error"
+      },
+      {
+        "data": {
+          "completed": 1.5,
+          "note": "text",
+          "outcome": "created",
+          "stage": "resolve",
+          "title": "text",
+          "total": 1.5,
+          "type": "batch"
+        },
+        "event": "batch"
+      },
+      {
+        "data": {
+          "job_id": "text",
+          "report": {
+            "approval": {
+              "approved": 1.5,
+              "counts": {
+                "key": 1.5
+              },
+              "excluded": 1.5,
+              "failed": 1.5,
+              "limit": 1.5,
+              "message": "text",
+              "ok": true,
+              "requested": 1.5,
+              "results": [
+                {
+                  "id": "text",
+                  "message": "text",
+                  "outcome": "approved",
+                  "title": "text"
+                }
+              ]
+            },
+            "created": 7,
+            "duplicates": 7,
+            "failed": 7,
+            "gateway": {
+              "asked": 7,
+              "passed": 7
+            },
+            "manual": 7,
+            "min_concurrency": 7,
+            "pending": 7,
+            "rows": [
+              {
+                "key": "text",
+                "status": "created",
+                "title": "text"
+              }
+            ],
+            "skipped": 7,
+            "stopped": true,
+            "total": 7,
+            "unknown": 7
+          },
+          "type": "batch_report"
+        },
+        "event": "batch_report"
+      },
+      {
+        "data": {
+          "answer": "text",
+          "choice_id": "text",
+          "cost_tiyn": 7,
+          "stop_reason": "text",
+          "type": "done",
+          "usage": {
+            "cache_read_tokens": 7,
+            "cache_write_tokens": 7,
+            "input_tokens": 7,
+            "output_tokens": 7
+          }
+        },
+        "event": "done"
+      }
+    ]
+  },
+  "createCompanyChatCountToken": {
+    "body": {
+      "input_cost_tiyn": 7,
+      "input_tokens": 7,
+      "max_cost_tiyn": 7,
+      "max_output_tokens": 7,
+      "model": "text"
+    },
+    "status": 200
+  },
+  "createWorkspaceWebhooksEndpoint": {
+    "body": {
+      "channels": [
+        "text"
+      ],
+      "created_at": "2026-01-02T03:04:05Z",
+      "description": "text",
+      "enabled": true,
+      "event_types": [
+        "text"
+      ],
+      "id": "text",
+      "secret": "text",
+      "secret_note": "text",
+      "updated_at": "2026-01-02T03:04:05Z",
+      "url": "text"
+    },
+    "status": 201
+  },
+  "deleteCompanyAutomationsHook": {
+    "body": {
+      "deleted": true,
+      "id": "text"
+    },
+    "status": 200
+  },
+  "deleteCompanyAutomationsScenario": {
+    "body": {
+      "deleted": true,
+      "id": "text"
+    },
+    "status": 200
+  },
+  "deleteCompanyChat": {
+    "body": {
+      "deleted": true,
+      "id": "text"
+    },
+    "status": 200
+  },
+  "deleteWorkspaceWebhooksEndpoint": {
+    "body": null,
+    "status": 204
+  },
+  "directbankCompanyStatements": {
+    "body": {
+      "created": 1.5,
+      "documents": 1.5,
+      "job_id": "text"
+    },
+    "status": 200
+  },
+  "getApiKey": {
+    "body": {
+      "all_companies": true,
+      "allowed_ips": [
+        "text"
+      ],
+      "blocked_reason": "key_revoked",
+      "company_ids": [
+        "text"
+      ],
+      "created_at": "2026-01-02T03:04:05Z",
+      "created_by": "text",
+      "disabled_at": "2026-01-02T03:04:05Z",
+      "expires_at": "2026-01-02T03:04:05Z",
+      "id": "text",
+      "last_used_at": "2026-01-02T03:04:05Z",
+      "last_used_ip": "text",
+      "month": {
+        "cap_tiyn": 7,
+        "month": "text",
+        "spent_tiyn": 7
+      },
+      "monthly_cap_tiyn": 7,
+      "name": "text",
+      "permissions": [
+        "company.read"
+      ],
+      "prefix": "text",
+      "previous_secret_valid_until": "2026-01-02T03:04:05Z",
+      "rate_limit": {
+        "limit_per_minute": 7,
+        "remaining": 7,
+        "reset_in_sec": 7
+      },
+      "revoked_at": "2026-01-02T03:04:05Z",
+      "status": "active",
+      "workspace": {
+        "id": "text",
+        "kind": "personal",
+        "name": "text"
+      },
+      "workspace_id": "text",
+      "write_kinds": [
+        "text"
+      ],
+      "write_max_amount_per_day_tiyn": 7,
+      "write_max_amount_per_document_tiyn": 7
+    },
+    "status": 200
+  },
+  "getApiKeyUsage": {
+    "body": {
+      "by_company": [
+        {
+          "company_id": "text",
+          "cost_tiyn": 7,
+          "requests": 7
+        }
+      ],
+      "by_day": [
+        {
+          "cost_tiyn": 7,
+          "day": "text",
+          "requests": 7
+        }
+      ],
+      "by_model": [
+        {
+          "cost_tiyn": 7,
+          "model": "text",
+          "requests": 7
+        }
+      ],
+      "from": "2026-01-02T03:04:05Z",
+      "key_id": "text",
+      "month": {
+        "cap_tiyn": 7,
+        "month": "text",
+        "spent_tiyn": 7
+      },
+      "to": "2026-01-02T03:04:05Z",
+      "totals": {
+        "cache_read_tokens": 7,
+        "cache_write_tokens": 7,
+        "cost_tiyn": 7,
+        "input_tokens": 7,
+        "output_tokens": 7,
+        "requests": 7
+      }
+    },
+    "status": 200
+  },
+  "getCompany": {
+    "body": {
+      "bin": "text",
+      "created_at": "2026-01-02T03:04:05Z",
+      "id": "text",
+      "legal_form": "ip",
+      "name": "text",
+      "permissions": [
+        "company.read"
+      ],
+      "role": "text",
+      "role_name": "text",
+      "status": "active",
+      "workspace_id": "text"
+    },
+    "status": 200
+  },
+  "getCompanyAutomationsHook": {
+    "body": {
+      "created_at": "2026-01-02T03:04:05Z",
+      "enabled": true,
+      "id": "text",
+      "id_path": "text",
+      "name": "text",
+      "scenarios_url": "text",
+      "signature_header": "text",
+      "signed": true,
+      "token_hint": "text",
+      "updated_at": "2026-01-02T03:04:05Z"
+    },
+    "status": 200
+  },
+  "getCompanyAutomationsRun": {
+    "body": {
+      "answer": "text",
+      "attempt": 7,
+      "auto_retries": 7,
+      "cancel_requested": true,
+      "cost_tiyn": 7,
+      "created_at": "2026-01-02T03:04:05Z",
+      "current_step": 7,
+      "error": "text",
+      "error_code": "text",
+      "event": {
+        "body": "text",
+        "content_type": "text",
+        "encoding": "utf8",
+        "external_id": "text",
+        "hook_id": "text",
+        "id": "text",
+        "received_at": "2026-01-02T03:04:05Z",
+        "size": 7,
+        "source": "hook",
+        "type": "text"
+      },
+      "event_id": "text",
+      "event_type": "text",
+      "external_id": "text",
+      "finished_at": "2026-01-02T03:04:05Z",
+      "id": "text",
+      "output": {
+        "key": 1.5
+      },
+      "output_error": "not_returned",
+      "output_note": "text",
+      "proposals": [
+        {
+          "attempt": 7,
+          "id": "text"
+        }
+      ],
+      "requested_by": "text",
+      "retry_at": "2026-01-02T03:04:05Z",
+      "retryable": true,
+      "scenario_id": "text",
+      "slot_at": "2026-01-02T03:04:05Z",
+      "started_at": "2026-01-02T03:04:05Z",
+      "state": "queued",
+      "steps": [
+        {
+          "action": "agent",
+          "answer": "text",
+          "error": "text",
+          "error_code": "text",
+          "findings": 7,
+          "output": {
+            "key": 1.5
+          },
+          "output_error": "not_returned",
+          "output_note": "text",
+          "proposals": [
+            "text"
+          ],
+          "skipped_by": "always",
+          "state": "done",
+          "step": 7,
+          "stop_reason": "text"
+        }
+      ],
+      "stop_reason": "text",
+      "tools": [
+        "text"
+      ],
+      "trial": true,
+      "trigger": "hook"
+    },
+    "status": 200
+  },
+  "getCompanyAutomationsScenario": {
+    "body": {
+      "action": "agent",
+      "auto_approve": {
+        "directbank": true,
+        "kinds": [
+          "sale"
+        ],
+        "max_amount_per_day_tiyn": 7,
+        "max_amount_per_document_tiyn": 7
+      },
+      "created_at": "2026-01-02T03:04:05Z",
+      "enabled": true,
+      "id": "text",
+      "instruction": "text",
+      "name": "text",
+      "next_run_at": "2026-01-02T03:04:05Z",
+      "output": {
+        "key": {
+          "description": "text",
+          "type": "number"
+        }
+      },
+      "run_as": "text",
+      "steps": [
+        {
+          "action": "agent",
+          "instruction": "text",
+          "output": {
+            "key": {
+              "description": "text",
+              "type": "number"
+            }
+          },
+          "when": "always"
+        }
+      ],
+      "trigger": {
+        "filter": {
+          "all": [
+            {
+              "op": "eq",
+              "path": "text"
+            }
+          ]
+        },
+        "hook_id": "text",
+        "kind": "hook"
+      },
+      "updated_at": "2026-01-02T03:04:05Z"
+    },
+    "status": 200
+  },
+  "getCompanyAutomationsState": {
+    "body": {
+      "paused": true,
+      "paused_at": "2026-01-02T03:04:05Z",
+      "queued": 7,
+      "reason": "text",
+      "running": 7
+    },
+    "status": 200
+  },
+  "getCompanyAutonomy": {
+    "body": {
+      "custom": {
+        "max_amount_per_day_tiyn": true,
+        "max_amount_per_document_tiyn": true
+      },
+      "defaults": {
+        "max_amount_per_day_tiyn": 7,
+        "max_amount_per_document_tiyn": 7
+      },
+      "levels": {
+        "advance_report": "L1",
+        "bank_payment": "L1",
+        "bank_receipt": "L1",
+        "cash_order_in": "L1",
+        "cash_order_out": "L1",
+        "contract": "L1",
+        "counterparty": "L1",
+        "inventory_writeoff": "L1",
+        "purchase": "L1",
+        "sale": "L1"
+      },
+      "max_amount_per_day_tiyn": 7,
+      "max_amount_per_document_tiyn": 7,
+      "updated_at": "2026-01-02T03:04:05Z"
+    },
+    "status": 200
+  },
+  "getCompanyBatch": {
+    "body": {
+      "error": "text",
+      "events": 1.5,
+      "finished_at": "2026-01-02T03:04:05Z",
+      "id": "text",
+      "kind": "bank_statement",
+      "report": {
+        "approval": {
+          "approved": 1.5,
+          "counts": {
+            "key": 1.5
+          },
+          "excluded": 1.5,
+          "failed": 1.5,
+          "limit": 1.5,
+          "message": "text",
+          "ok": true,
+          "requested": 1.5,
+          "results": [
+            {
+              "id": "text",
+              "message": "text",
+              "outcome": "approved",
+              "title": "text"
+            }
+          ]
+        },
+        "created": 7,
+        "duplicates": 7,
+        "failed": 7,
+        "gateway": {
+          "asked": 7,
+          "passed": 7
+        },
+        "manual": 7,
+        "min_concurrency": 7,
+        "pending": 7,
+        "rows": [
+          {
+            "key": "text",
+            "status": "created",
+            "title": "text"
+          }
+        ],
+        "skipped": 7,
+        "stopped": true,
+        "total": 7,
+        "unknown": 7
+      },
+      "running": true,
+      "started_at": "2026-01-02T03:04:05Z",
+      "title": "text"
+    },
+    "status": 200
+  },
+  "getCompanyBatchSummary": {
+    "body": {
+      "approve": {
+        "body": {
+          "batch_id": "text",
+          "post": true
+        },
+        "href": "text",
+        "method": "POST"
+      },
+      "can_approve": true,
+      "finished_at": "2026-01-02T03:04:05Z",
+      "job_id": "text",
+      "kind": "bank_statement",
+      "manual_rows": [
+        {
+          "key": "text",
+          "reason": "text",
+          "title": "text"
+        }
+      ],
+      "proposals": [
+        {
+          "amount": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "blockers": [
+            "text"
+          ],
+          "id": "text",
+          "outcome": "ready",
+          "status": "previewed",
+          "status_title": "text",
+          "summary": "text",
+          "title": "text",
+          "warnings": [
+            "text"
+          ]
+        }
+      ],
+      "reason": "text",
+      "running": true,
+      "title": "text",
+      "totals": {
+        "blocked": 1.5,
+        "failed": 1.5,
+        "manual": 1.5,
+        "proposals": 1.5,
+        "ready": 1.5,
+        "ready_with_warnings": 1.5,
+        "rejected": 1.5,
+        "rows": 1.5,
+        "sum_all": {
+          "amount": 1.5,
+          "amount_tiyn": 7,
+          "formatted": "text"
+        },
+        "sum_ready": {
+          "amount": 1.5,
+          "amount_tiyn": 7,
+          "formatted": "text"
+        },
+        "written": 1.5
+      }
+    },
+    "status": 200
+  },
+  "getCompanyChat": {
+    "body": {
+      "awaiting": {
+        "choice_id": "text",
+        "questions": [
+          {
+            "header": "text",
+            "multi_select": true,
+            "options": [
+              {
+                "description": "text",
+                "label": "text"
+              }
+            ],
+            "question": "text"
+          }
+        ]
+      },
+      "closed": {
+        "message": "text",
+        "reason": "context_overflow"
+      },
+      "created_at": "2026-01-02T03:04:05Z",
+      "id": "text",
+      "masked": 1.5,
+      "message_count": 1.5,
+      "messages": [
+        {
+          "at": "2026-01-02T03:04:05Z",
+          "id": "text",
+          "role": "user",
+          "text": "text"
+        }
+      ],
+      "pd_restored": true,
+      "running": true,
+      "title": "text",
+      "turn": 1.5,
+      "updated_at": "2026-01-02T03:04:05Z"
+    },
+    "status": 200
+  },
+  "getCompanyEsfIncoming": {
+    "body": {
+      "as_of": "2026-01-02",
+      "data": [
+        {
+          "action": "document_found",
+          "action_title": "text",
+          "blockers": [
+            "text"
+          ],
+          "date": "2026-01-02",
+          "esf": "text",
+          "match": {
+            "status": "matched"
+          },
+          "number": "text",
+          "status": "text",
+          "supplier": "text",
+          "supplier_bin": "text",
+          "total": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "turnover_date": "2026-01-02",
+          "vat": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "warnings": [
+            "text"
+          ]
+        }
+      ],
+      "next_cursor": "text",
+      "since": "2026-01-02",
+      "total": 7,
+      "until": "2026-01-02"
+    },
+    "status": 200
+  },
+  "getCompanyEsfOutgoing": {
+    "body": {
+      "as_of": "2026-01-02",
+      "data": [
+        {
+          "blockers": [
+            "text"
+          ],
+          "problem": "text",
+          "sale": {
+            "amount": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "counterparty": "text",
+            "date": "2026-01-02",
+            "kind": "text",
+            "number": "text"
+          },
+          "verdict": "invoice_not_issued",
+          "verdict_title": "text",
+          "warnings": [
+            "text"
+          ]
+        }
+      ],
+      "next_cursor": "text",
+      "note": "text",
+      "total": 7
+    },
+    "status": 200
+  },
+  "getCompanyFeed": {
+    "body": {
+      "counts": {
+        "auto": 1.5,
+        "decision": 1.5,
+        "question": 1.5
+      },
+      "data": [
+        {
+          "actions": [
+            {
+              "action": "open",
+              "enabled": true,
+              "href": "text",
+              "label": "text",
+              "method": "GET"
+            }
+          ],
+          "at": "2026-01-02T03:04:05Z",
+          "cursor": "text",
+          "id": "text",
+          "section": "auto",
+          "section_title": "text",
+          "title": "text"
+        }
+      ],
+      "next_cursor": "text",
+      "sections": {
+        "auto": "text",
+        "decision": "text",
+        "question": "text"
+      }
+    },
+    "status": 200
+  },
+  "getCompanyFormsBuild": {
+    "body": {
+      "cells": [
+        {
+          "causes": [
+            {}
+          ],
+          "cell": "text",
+          "line": "text",
+          "one_c": "text",
+          "one_c_value": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "ours": "text",
+          "ours_value": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "status": "match",
+          "title": "text",
+          "type": "money"
+        }
+      ],
+      "coverage": "full",
+      "form": "text",
+      "isna": true,
+      "missing": [
+        {
+          "what": "text",
+          "why": "text"
+        }
+      ],
+      "next": "text",
+      "not_ready_because": [
+        "text"
+      ],
+      "period": {
+        "code": "text",
+        "from": "2026-01-02",
+        "kind": "month",
+        "title": "text",
+        "to": "2026-01-02"
+      },
+      "ready_to_file": true,
+      "reference": {
+        "date": "text",
+        "edition": "text",
+        "found": true,
+        "note": "text"
+      },
+      "submission": "text",
+      "title": "text",
+      "totals": {
+        "match": 7,
+        "mismatch": 7,
+        "no_reference": 7,
+        "not_computed": 7
+      },
+      "uncovered": {
+        "cells": [
+          {
+            "name": "text",
+            "value": "text"
+          }
+        ],
+        "total": 7
+      },
+      "warnings": [
+        "text"
+      ]
+    },
+    "status": 200
+  },
+  "getCompanyFormsIsna": {
+    "body": {
+      "available": true,
+      "complete": true,
+      "download": {
+        "button": "text",
+        "screen": "text"
+      },
+      "exported": 7,
+      "file_name": "text",
+      "for_human": [
+        "text"
+      ],
+      "form": "text",
+      "format": {
+        "note": "text",
+        "verified": true,
+        "version": "text"
+      },
+      "header_from": {
+        "key": "text"
+      },
+      "incomplete_because": [
+        "text"
+      ],
+      "map_edition": "text",
+      "next": "text",
+      "not_in_calculation": 7,
+      "period": {
+        "code": "text",
+        "from": "2026-01-02",
+        "title": "text",
+        "to": "2026-01-02"
+      },
+      "reconciliation": {
+        "reference": "text",
+        "totals": {
+          "match": 7,
+          "mismatch": 7,
+          "no_reference": 7,
+          "not_computed": 7
+        }
+      },
+      "unmapped": [
+        "text"
+      ],
+      "warnings": [
+        "text"
+      ]
+    },
+    "status": 200
+  },
+  "getCompanyOnecStatus": {
+    "body": {
+      "connected": true,
+      "gateway": "odata",
+      "last_check": {
+        "capabilities": [
+          {
+            "id": "core",
+            "reason": "text",
+            "status": "yes",
+            "title": "text"
+          }
+        ],
+        "checked_at": "2026-01-02T03:04:05Z",
+        "stale": true,
+        "summary": "text",
+        "verdict": "ok"
+      },
+      "updated_at": "2026-01-02T03:04:05Z"
+    },
+    "status": 200
+  },
+  "getCompanyProposal": {
+    "body": {
+      "actions": [
+        {
+          "action": "approve",
+          "body": {
+            "key": {
+              "anything": [
+                1,
+                "two",
+                null
+              ]
+            }
+          },
+          "effect": "text",
+          "enabled": true,
+          "href": "text",
+          "label": "text",
+          "method": "POST"
+        }
+      ],
+      "advance_offset": {
+        "amount": {
+          "amount": 1.5,
+          "amount_tiyn": 7,
+          "formatted": "text"
+        },
+        "credit": "text",
+        "debit": "text",
+        "note": "text",
+        "to_pay": {
+          "amount": 1.5,
+          "amount_tiyn": 7,
+          "formatted": "text"
+        }
+      },
+      "approval": {
+        "allowed": true,
+        "blocked_by_blockers": true,
+        "reason": "text",
+        "requires_right": "proposals.approve"
+      },
+      "blocker_count": 7,
+      "blockers": [
+        "text"
+      ],
+      "counterparty": {
+        "bin": "text",
+        "name": "text",
+        "ref": "text"
+      },
+      "created_at": "2026-01-02T03:04:05Z",
+      "dialog_id": "text",
+      "document_number": "text",
+      "header": {
+        "accounts": [
+          {
+            "code": "text",
+            "field": "text",
+            "ref": "text",
+            "title": "text"
+          }
+        ],
+        "comment": "text",
+        "contract": {
+          "name": "text",
+          "ref": "text"
+        },
+        "counterparty": {
+          "name": "text",
+          "ref": "text"
+        },
+        "date": "text",
+        "document_title": "text",
+        "entity_set": "text",
+        "net": {
+          "amount": 1.5,
+          "amount_tiyn": 7,
+          "formatted": "text"
+        },
+        "organization": {
+          "name": "text",
+          "ref": "text"
+        },
+        "payment_purpose": "text",
+        "prices_include_vat": true,
+        "total": {
+          "amount": 1.5,
+          "amount_tiyn": 7,
+          "formatted": "text"
+        },
+        "vat": {
+          "amount": 1.5,
+          "amount_tiyn": 7,
+          "formatted": "text"
+        }
+      },
+      "history": [
+        {
+          "actor": "text",
+          "at": "2026-01-02T03:04:05Z",
+          "status": "previewed",
+          "status_title": "text"
+        }
+      ],
+      "href": "text",
+      "id": "text",
+      "intent": {
+        "key": {
+          "anything": [
+            1,
+            "two",
+            null
+          ]
+        }
+      },
+      "kind": "sale",
+      "kind_title": "text",
+      "level": "L0",
+      "level_title": "text",
+      "line_count": 7,
+      "lines": [
+        {
+          "accounts": [
+            {
+              "code": "text",
+              "field": "text",
+              "ref": "text",
+              "title": "text"
+            }
+          ],
+          "item": {
+            "name": "text",
+            "ref": "text"
+          },
+          "no": 7,
+          "price": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "quantity": 1.5,
+          "section": "goods",
+          "sum": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "total": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "vat": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "vat_rate_title": "text"
+        }
+      ],
+      "postings": [
+        {
+          "amount": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "computed_by_1c": true,
+          "credit": "text",
+          "debit": "text",
+          "label": "text"
+        }
+      ],
+      "result": {
+        "mismatches": [
+          "text"
+        ],
+        "number": "text",
+        "postings": [
+          {
+            "amount": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "computed_by_1c": true,
+            "credit": "text",
+            "debit": "text",
+            "label": "text"
+          }
+        ],
+        "ref": "text"
+      },
+      "source": {
+        "channel": "mcp",
+        "note": "text"
+      },
+      "status": "previewed",
+      "status_title": "text",
+      "summary": "text",
+      "title": "text",
+      "total": {
+        "amount": 1.5,
+        "amount_tiyn": 7,
+        "formatted": "text"
+      },
+      "vat": {
+        "amount": 1.5,
+        "amount_tiyn": 7,
+        "formatted": "text"
+      },
+      "warning_count": 7,
+      "warnings": [
+        "text"
+      ]
+    },
+    "status": 200
+  },
+  "getWorkspaceApiKeyUsage": {
+    "body": {
+      "by_company": [
+        {
+          "company_id": "text",
+          "cost_tiyn": 7,
+          "requests": 7
+        }
+      ],
+      "by_day": [
+        {
+          "cost_tiyn": 7,
+          "day": "text",
+          "requests": 7
+        }
+      ],
+      "by_model": [
+        {
+          "cost_tiyn": 7,
+          "model": "text",
+          "requests": 7
+        }
+      ],
+      "from": "2026-01-02T03:04:05Z",
+      "key_id": "text",
+      "month": {
+        "cap_tiyn": 7,
+        "month": "text",
+        "spent_tiyn": 7
+      },
+      "to": "2026-01-02T03:04:05Z",
+      "totals": {
+        "cache_read_tokens": 7,
+        "cache_write_tokens": 7,
+        "cost_tiyn": 7,
+        "input_tokens": 7,
+        "output_tokens": 7,
+        "requests": 7
+      }
+    },
+    "status": 200
+  },
+  "getWorkspacePlatformAccount": {
+    "body": {
+      "auto_reload": {
+        "amount_tiyn": 7,
+        "enabled": true,
+        "monthly_limit_tiyn": 7,
+        "threshold_tiyn": 7
+      },
+      "auto_reload_spent_tiyn": 7,
+      "balance_tiyn": 7,
+      "blocked_reason": "disabled",
+      "enabled": true,
+      "month": "text",
+      "monthly_cap_tiyn": 7,
+      "purchase_limits": {
+        "daily_max_tiyn": 7,
+        "max_tiyn": 7,
+        "min_tiyn": 7
+      },
+      "spent_tiyn": 7
+    },
+    "status": 200
+  },
+  "getWorkspacePlatformAudit": {
+    "body": {
+      "data": [
+        {
+          "action": "company.created",
+          "action_title": "text",
+          "actor": {
+            "id": "text",
+            "name": "text",
+            "type": "user"
+          },
+          "at": "2026-01-02T03:04:05Z",
+          "company_id": "text",
+          "id": "text",
+          "ip": "text",
+          "request_id": "text",
+          "target": {
+            "id": "text",
+            "type": "text"
+          }
+        }
+      ],
+      "next_cursor": "text"
+    },
+    "status": 200
+  },
+  "getWorkspacePlatformLedger": {
+    "body": {
+      "data": [
+        {
+          "amount_tiyn": 7,
+          "api_key_id": "text",
+          "at": "2026-01-02T03:04:05Z",
+          "balance_after_tiyn": 7,
+          "id": "text",
+          "kind": "purchase",
+          "model": "text",
+          "note": "text",
+          "payment_id": "text",
+          "request_id": "text"
+        }
+      ],
+      "next_cursor": "text"
+    },
+    "status": 200
+  },
+  "getWorkspacePlatformUsage": {
+    "body": {
+      "by_company": [
+        {
+          "cache_read_tokens": 7,
+          "cache_write_tokens": 7,
+          "company_id": "text",
+          "cost_tiyn": 7,
+          "input_tokens": 7,
+          "output_tokens": 7,
+          "requests": 7
+        }
+      ],
+      "by_day": [
+        {
+          "cache_read_tokens": 7,
+          "cache_write_tokens": 7,
+          "cost_tiyn": 7,
+          "day": "text",
+          "input_tokens": 7,
+          "output_tokens": 7,
+          "requests": 7
+        }
+      ],
+      "by_key": [
+        {
+          "api_key_id": "text",
+          "cache_read_tokens": 7,
+          "cache_write_tokens": 7,
+          "cost_tiyn": 7,
+          "input_tokens": 7,
+          "output_tokens": 7,
+          "requests": 7
+        }
+      ],
+      "by_model": [
+        {
+          "cache_read_tokens": 7,
+          "cache_write_tokens": 7,
+          "cost_tiyn": 7,
+          "input_tokens": 7,
+          "model": "text",
+          "output_tokens": 7,
+          "requests": 7
+        }
+      ],
+      "from": "2026-01-02T03:04:05Z",
+      "to": "2026-01-02T03:04:05Z",
+      "totals": {
+        "cache_read_tokens": 7,
+        "cache_write_tokens": 7,
+        "cost_tiyn": 7,
+        "input_tokens": 7,
+        "output_tokens": 7,
+        "requests": 7
+      }
+    },
+    "status": 200
+  },
+  "getWorkspaceWebhooksEndpoint": {
+    "body": {
+      "channels": [
+        "text"
+      ],
+      "created_at": "2026-01-02T03:04:05Z",
+      "description": "text",
+      "enabled": true,
+      "event_types": [
+        "text"
+      ],
+      "id": "text",
+      "updated_at": "2026-01-02T03:04:05Z",
+      "url": "text"
+    },
+    "status": 200
+  },
+  "getWorkspaceWebhooksUsage": {
+    "body": {
+      "month": "text",
+      "monthly_free_messages": 7,
+      "over_limit": 7,
+      "sent": 7
+    },
+    "status": 200
+  },
+  "listCompanies": {
+    "body": {
+      "data": [
+        {
+          "bin": "text",
+          "counts": {
+            "proposals_blocked": 7,
+            "proposals_to_decide": 7
+          },
+          "created_at": "2026-01-02T03:04:05Z",
+          "id": "text",
+          "legal_form": "ip",
+          "name": "text",
+          "permissions": [
+            "company.read"
+          ],
+          "role": "text",
+          "role_name": "text",
+          "status": "active",
+          "workspace_id": "text"
+        }
+      ]
+    },
+    "status": 200
+  },
+  "listCompanyAutomationsHooks": {
+    "body": {
+      "data": [
+        {
+          "created_at": "2026-01-02T03:04:05Z",
+          "enabled": true,
+          "id": "text",
+          "id_path": "text",
+          "name": "text",
+          "scenarios_url": "text",
+          "signature_header": "text",
+          "signed": true,
+          "token_hint": "text",
+          "updated_at": "2026-01-02T03:04:05Z"
+        }
+      ]
+    },
+    "status": 200
+  },
+  "listCompanyAutomationsRuns": {
+    "body": {
+      "data": [
+        {
+          "answer": "text",
+          "attempt": 7,
+          "auto_retries": 7,
+          "cancel_requested": true,
+          "created_at": "2026-01-02T03:04:05Z",
+          "current_step": 7,
+          "error": "text",
+          "error_code": "text",
+          "event_id": "text",
+          "event_type": "text",
+          "external_id": "text",
+          "finished_at": "2026-01-02T03:04:05Z",
+          "id": "text",
+          "output": {
+            "key": 1.5
+          },
+          "output_error": "not_returned",
+          "output_note": "text",
+          "proposals": [
+            {
+              "attempt": 7,
+              "id": "text"
+            }
+          ],
+          "requested_by": "text",
+          "retry_at": "2026-01-02T03:04:05Z",
+          "retryable": true,
+          "scenario_id": "text",
+          "slot_at": "2026-01-02T03:04:05Z",
+          "started_at": "2026-01-02T03:04:05Z",
+          "state": "queued",
+          "steps": [
+            {
+              "action": "agent",
+              "answer": "text",
+              "error": "text",
+              "error_code": "text",
+              "findings": 7,
+              "output": {
+                "key": 1.5
+              },
+              "output_error": "not_returned",
+              "output_note": "text",
+              "proposals": [
+                "text"
+              ],
+              "skipped_by": "always",
+              "state": "done",
+              "step": 7,
+              "stop_reason": "text"
+            }
+          ],
+          "stop_reason": "text",
+          "tools": [
+            "text"
+          ],
+          "trial": true,
+          "trigger": "hook"
+        }
+      ],
+      "next_cursor": "text"
+    },
+    "status": 200
+  },
+  "listCompanyAutomationsScenarios": {
+    "body": {
+      "data": [
+        {
+          "action": "agent",
+          "auto_approve": {
+            "kinds": [
+              "sale"
+            ],
+            "max_amount_per_day_tiyn": 7,
+            "max_amount_per_document_tiyn": 7
+          },
+          "created_at": "2026-01-02T03:04:05Z",
+          "enabled": true,
+          "id": "text",
+          "instruction": "text",
+          "name": "text",
+          "next_run_at": "2026-01-02T03:04:05Z",
+          "output": {
+            "key": {
+              "description": "text",
+              "type": "number"
+            }
+          },
+          "run_as": "text",
+          "steps": [
+            {
+              "action": "agent",
+              "instruction": "text",
+              "output": {
+                "key": {
+                  "description": "text",
+                  "type": "number"
+                }
+              },
+              "when": "always"
+            }
+          ],
+          "trigger": {
+            "hook_id": "text",
+            "kind": "hook"
+          },
+          "updated_at": "2026-01-02T03:04:05Z"
+        }
+      ]
+    },
+    "status": 200
+  },
+  "listCompanyBatch": {
+    "body": {
+      "data": [
+        {
+          "events": 1.5,
+          "id": "text",
+          "kind": "bank_statement",
+          "running": true,
+          "started_at": "2026-01-02T03:04:05Z",
+          "title": "text"
+        }
+      ],
+      "next_cursor": "text"
+    },
+    "status": 200
+  },
+  "listCompanyBatchEvents": {
+    "events": [
+      {
+        "data": {
+          "delta": "text",
+          "step": 1.5,
+          "type": "text"
+        },
+        "event": "text"
+      },
+      {
+        "data": {
+          "step": 1.5,
+          "text": "text",
+          "type": "progress"
+        },
+        "event": "progress"
+      },
+      {
+        "data": {
+          "delta": "text",
+          "type": "thinking"
+        },
+        "event": "thinking"
+      },
+      {
+        "data": {
+          "code": "compacting",
+          "text": "text",
+          "type": "status"
+        },
+        "event": "status"
+      },
+      {
+        "data": {
+          "detail": "text",
+          "name": "text",
+          "status": "started",
+          "title": "text",
+          "type": "tool"
+        },
+        "event": "tool"
+      },
+      {
+        "data": {
+          "card": {
+            "actions": [
+              {
+                "action": "approve",
+                "body": {
+                  "key": {
+                    "anything": [
+                      1,
+                      "two",
+                      null
+                    ]
+                  }
+                },
+                "effect": "text",
+                "enabled": true,
+                "href": "text",
+                "label": "text",
+                "method": "POST"
+              }
+            ],
+            "advance_offset": {
+              "amount": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "credit": "text",
+              "debit": "text",
+              "note": "text",
+              "to_pay": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              }
+            },
+            "approval": {
+              "allowed": true,
+              "blocked_by_blockers": true,
+              "requires_right": "proposals.approve"
+            },
+            "blocker_count": 7,
+            "blockers": [
+              "text"
+            ],
+            "counterparty": {
+              "name": "text",
+              "ref": "text"
+            },
+            "created_at": "2026-01-02T03:04:05Z",
+            "dialog_id": "text",
+            "document_number": "text",
+            "header": {
+              "accounts": [
+                {
+                  "code": "text",
+                  "field": "text",
+                  "ref": "text",
+                  "title": "text"
+                }
+              ],
+              "date": "text",
+              "document_title": "text",
+              "entity_set": "text",
+              "net": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "total": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "vat": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              }
+            },
+            "history": [
+              {
+                "actor": "text",
+                "at": "2026-01-02T03:04:05Z",
+                "status": "previewed",
+                "status_title": "text"
+              }
+            ],
+            "href": "text",
+            "id": "text",
+            "intent": {
+              "key": {
+                "anything": [
+                  1,
+                  "two",
+                  null
+                ]
+              }
+            },
+            "kind": "sale",
+            "kind_title": "text",
+            "level": "L0",
+            "level_title": "text",
+            "line_count": 7,
+            "lines": [
+              {
+                "accounts": [
+                  {
+                    "code": "text",
+                    "field": "text",
+                    "ref": "text",
+                    "title": "text"
+                  }
+                ],
+                "item": {
+                  "name": "text",
+                  "ref": "text"
+                },
+                "no": 7,
+                "price": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "quantity": 1.5,
+                "section": "goods",
+                "sum": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "total": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "vat": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "vat_rate_title": "text"
+              }
+            ],
+            "postings": [
+              {
+                "amount": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "computed_by_1c": true,
+                "credit": "text",
+                "debit": "text",
+                "label": "text"
+              }
+            ],
+            "result": {
+              "mismatches": [
+                "text"
+              ],
+              "number": "text",
+              "postings": [
+                {
+                  "amount": {
+                    "amount": 1.5,
+                    "amount_tiyn": 7,
+                    "formatted": "text"
+                  },
+                  "computed_by_1c": true,
+                  "credit": "text",
+                  "debit": "text",
+                  "label": "text"
+                }
+              ],
+              "ref": "text"
+            },
+            "source": {
+              "channel": "mcp"
+            },
+            "status": "previewed",
+            "status_title": "text",
+            "summary": "text",
+            "title": "text",
+            "total": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "vat": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "warning_count": 7,
+            "warnings": [
+              "text"
+            ]
+          },
+          "proposal_id": "text",
+          "type": "proposal"
+        },
+        "event": "proposal"
+      },
+      {
+        "data": {
+          "edition": "text",
+          "source": "text",
+          "title": "text",
+          "type": "citation",
+          "url": "text"
+        },
+        "event": "citation"
+      },
+      {
+        "data": {
+          "proposal_id": "text",
+          "text": "text",
+          "type": "question"
+        },
+        "event": "question"
+      },
+      {
+        "data": {
+          "choice_id": "text",
+          "questions": [
+            {
+              "header": "text",
+              "multi_select": true,
+              "options": [
+                {
+                  "description": "text",
+                  "label": "text"
+                }
+              ],
+              "question": "text"
+            }
+          ],
+          "type": "choice"
+        },
+        "event": "choice"
+      },
+      {
+        "data": {
+          "error": {
+            "can_request_more": true,
+            "code": "budget",
+            "limit_kind": "day",
+            "message": "text",
+            "type": "text"
+          },
+          "request_id": "text",
+          "type": "error"
+        },
+        "event": "error"
+      },
+      {
+        "data": {
+          "completed": 1.5,
+          "note": "text",
+          "outcome": "created",
+          "stage": "resolve",
+          "title": "text",
+          "total": 1.5,
+          "type": "batch"
+        },
+        "event": "batch"
+      },
+      {
+        "data": {
+          "job_id": "text",
+          "report": {
+            "approval": {
+              "approved": 1.5,
+              "counts": {
+                "key": 1.5
+              },
+              "excluded": 1.5,
+              "failed": 1.5,
+              "limit": 1.5,
+              "message": "text",
+              "ok": true,
+              "requested": 1.5,
+              "results": [
+                {
+                  "id": "text",
+                  "message": "text",
+                  "outcome": "approved",
+                  "title": "text"
+                }
+              ]
+            },
+            "created": 7,
+            "duplicates": 7,
+            "failed": 7,
+            "gateway": {
+              "asked": 7,
+              "passed": 7
+            },
+            "manual": 7,
+            "min_concurrency": 7,
+            "pending": 7,
+            "rows": [
+              {
+                "key": "text",
+                "status": "created",
+                "title": "text"
+              }
+            ],
+            "skipped": 7,
+            "stopped": true,
+            "total": 7,
+            "unknown": 7
+          },
+          "type": "batch_report"
+        },
+        "event": "batch_report"
+      },
+      {
+        "data": {
+          "answer": "text",
+          "choice_id": "text",
+          "cost_tiyn": 7,
+          "stop_reason": "text",
+          "type": "done",
+          "usage": {
+            "cache_read_tokens": 7,
+            "cache_write_tokens": 7,
+            "input_tokens": 7,
+            "output_tokens": 7
+          }
+        },
+        "event": "done"
+      }
+    ]
+  },
+  "listCompanyChat": {
+    "body": {
+      "data": [
+        {
+          "id": "text",
+          "message_count": 1.5,
+          "running": true,
+          "title": "text",
+          "updated_at": "2026-01-02T03:04:05Z"
+        }
+      ],
+      "next_cursor": "text"
+    },
+    "status": 200
+  },
+  "listCompanyChatEvents": {
+    "events": [
+      {
+        "data": {
+          "delta": "text",
+          "step": 1.5,
+          "type": "text"
+        },
+        "event": "text"
+      },
+      {
+        "data": {
+          "step": 1.5,
+          "text": "text",
+          "type": "progress"
+        },
+        "event": "progress"
+      },
+      {
+        "data": {
+          "delta": "text",
+          "type": "thinking"
+        },
+        "event": "thinking"
+      },
+      {
+        "data": {
+          "code": "compacting",
+          "text": "text",
+          "type": "status"
+        },
+        "event": "status"
+      },
+      {
+        "data": {
+          "detail": "text",
+          "name": "text",
+          "status": "started",
+          "title": "text",
+          "type": "tool"
+        },
+        "event": "tool"
+      },
+      {
+        "data": {
+          "card": {
+            "actions": [
+              {
+                "action": "approve",
+                "body": {
+                  "key": {
+                    "anything": [
+                      1,
+                      "two",
+                      null
+                    ]
+                  }
+                },
+                "effect": "text",
+                "enabled": true,
+                "href": "text",
+                "label": "text",
+                "method": "POST"
+              }
+            ],
+            "advance_offset": {
+              "amount": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "credit": "text",
+              "debit": "text",
+              "note": "text",
+              "to_pay": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              }
+            },
+            "approval": {
+              "allowed": true,
+              "blocked_by_blockers": true,
+              "requires_right": "proposals.approve"
+            },
+            "blocker_count": 7,
+            "blockers": [
+              "text"
+            ],
+            "counterparty": {
+              "name": "text",
+              "ref": "text"
+            },
+            "created_at": "2026-01-02T03:04:05Z",
+            "dialog_id": "text",
+            "document_number": "text",
+            "header": {
+              "accounts": [
+                {
+                  "code": "text",
+                  "field": "text",
+                  "ref": "text",
+                  "title": "text"
+                }
+              ],
+              "date": "text",
+              "document_title": "text",
+              "entity_set": "text",
+              "net": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "total": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "vat": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              }
+            },
+            "history": [
+              {
+                "actor": "text",
+                "at": "2026-01-02T03:04:05Z",
+                "status": "previewed",
+                "status_title": "text"
+              }
+            ],
+            "href": "text",
+            "id": "text",
+            "intent": {
+              "key": {
+                "anything": [
+                  1,
+                  "two",
+                  null
+                ]
+              }
+            },
+            "kind": "sale",
+            "kind_title": "text",
+            "level": "L0",
+            "level_title": "text",
+            "line_count": 7,
+            "lines": [
+              {
+                "accounts": [
+                  {
+                    "code": "text",
+                    "field": "text",
+                    "ref": "text",
+                    "title": "text"
+                  }
+                ],
+                "item": {
+                  "name": "text",
+                  "ref": "text"
+                },
+                "no": 7,
+                "price": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "quantity": 1.5,
+                "section": "goods",
+                "sum": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "total": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "vat": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "vat_rate_title": "text"
+              }
+            ],
+            "postings": [
+              {
+                "amount": {
+                  "amount": 1.5,
+                  "amount_tiyn": 7,
+                  "formatted": "text"
+                },
+                "computed_by_1c": true,
+                "credit": "text",
+                "debit": "text",
+                "label": "text"
+              }
+            ],
+            "result": {
+              "mismatches": [
+                "text"
+              ],
+              "number": "text",
+              "postings": [
+                {
+                  "amount": {
+                    "amount": 1.5,
+                    "amount_tiyn": 7,
+                    "formatted": "text"
+                  },
+                  "computed_by_1c": true,
+                  "credit": "text",
+                  "debit": "text",
+                  "label": "text"
+                }
+              ],
+              "ref": "text"
+            },
+            "source": {
+              "channel": "mcp"
+            },
+            "status": "previewed",
+            "status_title": "text",
+            "summary": "text",
+            "title": "text",
+            "total": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "vat": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "warning_count": 7,
+            "warnings": [
+              "text"
+            ]
+          },
+          "proposal_id": "text",
+          "type": "proposal"
+        },
+        "event": "proposal"
+      },
+      {
+        "data": {
+          "edition": "text",
+          "source": "text",
+          "title": "text",
+          "type": "citation",
+          "url": "text"
+        },
+        "event": "citation"
+      },
+      {
+        "data": {
+          "proposal_id": "text",
+          "text": "text",
+          "type": "question"
+        },
+        "event": "question"
+      },
+      {
+        "data": {
+          "choice_id": "text",
+          "questions": [
+            {
+              "header": "text",
+              "multi_select": true,
+              "options": [
+                {
+                  "description": "text",
+                  "label": "text"
+                }
+              ],
+              "question": "text"
+            }
+          ],
+          "type": "choice"
+        },
+        "event": "choice"
+      },
+      {
+        "data": {
+          "error": {
+            "can_request_more": true,
+            "code": "budget",
+            "limit_kind": "day",
+            "message": "text",
+            "type": "text"
+          },
+          "request_id": "text",
+          "type": "error"
+        },
+        "event": "error"
+      },
+      {
+        "data": {
+          "completed": 1.5,
+          "note": "text",
+          "outcome": "created",
+          "stage": "resolve",
+          "title": "text",
+          "total": 1.5,
+          "type": "batch"
+        },
+        "event": "batch"
+      },
+      {
+        "data": {
+          "job_id": "text",
+          "report": {
+            "approval": {
+              "approved": 1.5,
+              "counts": {
+                "key": 1.5
+              },
+              "excluded": 1.5,
+              "failed": 1.5,
+              "limit": 1.5,
+              "message": "text",
+              "ok": true,
+              "requested": 1.5,
+              "results": [
+                {
+                  "id": "text",
+                  "message": "text",
+                  "outcome": "approved",
+                  "title": "text"
+                }
+              ]
+            },
+            "created": 7,
+            "duplicates": 7,
+            "failed": 7,
+            "gateway": {
+              "asked": 7,
+              "passed": 7
+            },
+            "manual": 7,
+            "min_concurrency": 7,
+            "pending": 7,
+            "rows": [
+              {
+                "key": "text",
+                "status": "created",
+                "title": "text"
+              }
+            ],
+            "skipped": 7,
+            "stopped": true,
+            "total": 7,
+            "unknown": 7
+          },
+          "type": "batch_report"
+        },
+        "event": "batch_report"
+      },
+      {
+        "data": {
+          "answer": "text",
+          "choice_id": "text",
+          "cost_tiyn": 7,
+          "stop_reason": "text",
+          "type": "done",
+          "usage": {
+            "cache_read_tokens": 7,
+            "cache_write_tokens": 7,
+            "input_tokens": 7,
+            "output_tokens": 7
+          }
+        },
+        "event": "done"
+      }
+    ]
+  },
+  "listCompanyFeedEvents": {
+    "events": [
+      {
+        "data": {
+          "actions": [
+            {
+              "action": "open",
+              "enabled": true,
+              "href": "text",
+              "label": "text",
+              "method": "GET"
+            }
+          ],
+          "actor": "text",
+          "actor_name": "text",
+          "amount": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "at": "2026-01-02T03:04:05Z",
+          "batch_id": "text",
+          "cursor": "text",
+          "detail": "text",
+          "dialog_id": "text",
+          "id": "text",
+          "proposal_id": "text",
+          "section": "auto",
+          "section_title": "text",
+          "status": "previewed",
+          "status_title": "text",
+          "title": "text"
+        },
+        "event": "message"
+      },
+      {
+        "data": {
+          "actions": [
+            {
+              "action": "open",
+              "enabled": true,
+              "href": "text",
+              "label": "text",
+              "method": "GET"
+            }
+          ],
+          "actor": "text",
+          "actor_name": "text",
+          "amount": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "at": "2026-01-02T03:04:05Z",
+          "batch_id": "text",
+          "cursor": "text",
+          "detail": "text",
+          "dialog_id": "text",
+          "id": "text",
+          "proposal_id": "text",
+          "section": "auto",
+          "section_title": "text",
+          "status": "previewed",
+          "status_title": "text",
+          "title": "text"
+        },
+        "event": "message"
+      }
+    ]
+  },
+  "listCompanyForms": {
+    "body": {
+      "forms": [
+        {
+          "annual": true,
+          "coverage": "full",
+          "form": "text",
+          "group": "tax",
+          "isna": true,
+          "kind": "month",
+          "period_kind": "text",
+          "periods": [
+            {
+              "from": "2026-01-02",
+              "in_one_c": "text",
+              "period": "text",
+              "period_title": "text",
+              "started": true,
+              "to": "2026-01-02"
+            }
+          ],
+          "required": true,
+          "title": "text",
+          "why": "text"
+        }
+      ],
+      "in_one_c_without_calculation": [
+        {
+          "form": "text",
+          "periods": [
+            "text"
+          ]
+        }
+      ],
+      "regime": "text",
+      "year": 7
+    },
+    "status": 200
+  },
+  "listCompanyFormsDataGaps": {
+    "body": {
+      "forms": [
+        {
+          "form": "text",
+          "from": "2026-01-02",
+          "group": "text",
+          "missing": 7,
+          "not_computed": 7,
+          "period": "text",
+          "period_title": "text",
+          "title": "text",
+          "to": "2026-01-02",
+          "uncovered": 7
+        }
+      ],
+      "gaps": [
+        {
+          "action": "fill_in_1c",
+          "action_title": "text",
+          "forms": [
+            {
+              "cells": 7,
+              "form": "text",
+              "periods": [
+                {
+                  "code": "text",
+                  "title": "text"
+                }
+              ],
+              "title": "text"
+            }
+          ],
+          "id": "text",
+          "objects": [
+            {
+              "name": "text"
+            }
+          ],
+          "what": "text",
+          "why": "text"
+        }
+      ],
+      "next": "text",
+      "objects": [
+        {
+          "gap_ids": [
+            "text"
+          ],
+          "name": "text"
+        }
+      ],
+      "summary": {
+        "answer": 7,
+        "close_month": 7,
+        "fill_in_1c": 7,
+        "norm": 7,
+        "other_source": 7,
+        "wait": 7
+      },
+      "year": 7
+    },
+    "status": 200
+  },
+  "listCompanyFormsNotes": {
+    "body": {
+      "form": "text",
+      "next": "text",
+      "organization": {
+        "bin": "text",
+        "name": "text"
+      },
+      "period": {
+        "code": "text",
+        "from": "2026-01-02",
+        "kind": "month",
+        "title": "text",
+        "to": "2026-01-02"
+      },
+      "sections": [
+        {
+          "basis": "text",
+          "id": "text",
+          "number": 7,
+          "paragraphs": [
+            "text"
+          ],
+          "sources": [
+            "text"
+          ],
+          "tables": [
+            {
+              "columns": [
+                "text"
+              ],
+              "rows": [
+                [
+                  "text"
+                ]
+              ]
+            }
+          ],
+          "title": "text",
+          "to_fill": [
+            {
+              "action": "fill_in_1c",
+              "what": "text"
+            }
+          ]
+        }
+      ],
+      "title": "text",
+      "to_fill_total": 7,
+      "warnings": [
+        "text"
+      ]
+    },
+    "status": 200
+  },
+  "listCompanyProposals": {
+    "body": {
+      "counts": {
+        "key": 1.5
+      },
+      "data": [
+        {
+          "approval": {
+            "allowed": true,
+            "blocked_by_blockers": true,
+            "requires_right": "proposals.approve"
+          },
+          "blocker_count": 7,
+          "created_at": "2026-01-02T03:04:05Z",
+          "dialog_id": "text",
+          "href": "text",
+          "id": "text",
+          "kind": "sale",
+          "kind_title": "text",
+          "level": "L0",
+          "level_title": "text",
+          "line_count": 7,
+          "status": "previewed",
+          "status_title": "text",
+          "title": "text",
+          "total": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "vat": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "warning_count": 7
+        }
+      ],
+      "next_cursor": "text",
+      "total": 1.5
+    },
+    "status": 200
+  },
+  "listCompanyStatements": {
+    "body": {
+      "data": [
+        {
+          "events": 1.5,
+          "id": "text",
+          "kind": "bank_statement",
+          "running": true,
+          "started_at": "2026-01-02T03:04:05Z",
+          "summary": "text",
+          "title": "text"
+        }
+      ],
+      "next_cursor": "text"
+    },
+    "status": 200
+  },
+  "listUsageRates": {
+    "body": {
+      "data": [
+        {
+          "cache_read_per_mtok_tiyn": 7,
+          "cache_write_per_mtok_tiyn": 7,
+          "effective_from": "2026-01-02T03:04:05Z",
+          "input_per_mtok_tiyn": 7,
+          "model": "text",
+          "output_per_mtok_tiyn": 7
+        }
+      ]
+    },
+    "status": 200
+  },
+  "listWorkspacePlatformLimits": {
+    "body": {
+      "concurrent_turns": {
+        "in_use": 7,
+        "limit": 7
+      },
+      "files": {
+        "attachment_bytes": 7,
+        "attachments_per_message": 7,
+        "attachments_total_bytes": 7,
+        "bank_statement_request_bytes": 7,
+        "chat_request_bytes": 7,
+        "hook_event_bytes": 7,
+        "image_bytes": 7,
+        "pdf_pages": 7,
+        "request_bytes": 7
+      },
+      "rate": {
+        "key": {
+          "limit_per_minute": 7,
+          "remaining": 7,
+          "reset_in_sec": 7
+        },
+        "workspace": {
+          "limit_per_minute": 7,
+          "remaining": 7,
+          "reset_in_sec": 7
+        }
+      }
+    },
+    "status": 200
+  },
+  "listWorkspacePlatformRequests": {
+    "body": {
+      "data": [
+        {
+          "api_key_id": "text",
+          "at": "2026-01-02T03:04:05Z",
+          "client_request_id": "text",
+          "company_id": "text",
+          "duration_ms": 7,
+          "id": "text",
+          "ip": "text",
+          "method": "text",
+          "path": "text",
+          "query": "text",
+          "request_id": "text",
+          "status": 7
+        }
+      ],
+      "next_cursor": "text"
+    },
+    "status": 200
+  },
+  "listWorkspaceWebhooksEndpointAttempts": {
+    "body": {
+      "data": [
+        {
+          "created_at": "2026-01-02T03:04:05Z",
+          "endpoint_id": "text",
+          "id": "text",
+          "message_id": "text",
+          "response_duration_ms": 7,
+          "response_status_code": 7,
+          "status": "succeeded",
+          "trigger": "scheduled",
+          "url": "text"
+        }
+      ],
+      "next_cursor": "text"
+    },
+    "status": 200
+  },
+  "listWorkspaceWebhooksEndpoints": {
+    "body": {
+      "data": [
+        {
+          "channels": [
+            "text"
+          ],
+          "created_at": "2026-01-02T03:04:05Z",
+          "description": "text",
+          "enabled": true,
+          "event_types": [
+            "text"
+          ],
+          "id": "text",
+          "updated_at": "2026-01-02T03:04:05Z",
+          "url": "text"
+        }
+      ],
+      "next_cursor": "text"
+    },
+    "status": 200
+  },
+  "listWorkspaceWebhooksEventTypes": {
+    "body": {
+      "data": [
+        {
+          "description": "text",
+          "example": {
+            "company_id": "text",
+            "created_at": "2026-01-02T03:04:05Z",
+            "data": {
+              "key": {
+                "anything": [
+                  1,
+                  "two",
+                  null
+                ]
+              }
+            },
+            "id": "text",
+            "type": "text",
+            "workspace_id": "text"
+          },
+          "name": "text",
+          "schema": {
+            "key": {
+              "anything": [
+                1,
+                "two",
+                null
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "status": 200
+  },
+  "listWorkspaceWebhooksMessageAttempts": {
+    "body": {
+      "data": [
+        {
+          "created_at": "2026-01-02T03:04:05Z",
+          "endpoint_id": "text",
+          "id": "text",
+          "message_id": "text",
+          "response_duration_ms": 7,
+          "response_status_code": 7,
+          "status": "succeeded",
+          "trigger": "scheduled",
+          "url": "text"
+        }
+      ],
+      "next_cursor": "text"
+    },
+    "status": 200
+  },
+  "listWorkspaceWebhooksMessages": {
+    "body": {
+      "data": [
+        {
+          "created_at": "2026-01-02T03:04:05Z",
+          "event_type": "text",
+          "id": "text",
+          "svix_message_id": "text"
+        }
+      ],
+      "next_cursor": "text"
+    },
+    "status": 200
+  },
+  "listWorkspaces": {
+    "body": {
+      "data": [
+        {
+          "id": "text",
+          "kind": "personal",
+          "name": "text",
+          "plan": {
+            "code": "text",
+            "is_free": true,
+            "name": "text"
+          },
+          "role": "text"
+        }
+      ]
+    },
+    "status": 200
+  },
+  "postHook": {
+    "body": {
+      "accepted": true,
+      "duplicate": true,
+      "event_id": "text",
+      "run_ids": [
+        "text"
+      ]
+    },
+    "status": 200
+  },
+  "putCompanyAutomationsScenario": {
+    "body": {
+      "action": "agent",
+      "auto_approve": {
+        "directbank": true,
+        "kinds": [
+          "sale"
+        ],
+        "max_amount_per_day_tiyn": 7,
+        "max_amount_per_document_tiyn": 7
+      },
+      "created_at": "2026-01-02T03:04:05Z",
+      "enabled": true,
+      "id": "text",
+      "instruction": "text",
+      "name": "text",
+      "next_run_at": "2026-01-02T03:04:05Z",
+      "output": {
+        "key": {
+          "description": "text",
+          "type": "number"
+        }
+      },
+      "run_as": "text",
+      "steps": [
+        {
+          "action": "agent",
+          "instruction": "text",
+          "output": {
+            "key": {
+              "description": "text",
+              "type": "number"
+            }
+          },
+          "when": "always"
+        }
+      ],
+      "trigger": {
+        "filter": {
+          "all": [
+            {
+              "op": "eq",
+              "path": "text"
+            }
+          ]
+        },
+        "hook_id": "text",
+        "kind": "hook"
+      },
+      "updated_at": "2026-01-02T03:04:05Z",
+      "warnings": [
+        "text"
+      ]
+    },
+    "status": 200
+  },
+  "putCompanyAutomationsState": {
+    "body": {
+      "paused": true,
+      "paused_at": "2026-01-02T03:04:05Z",
+      "queued": 7,
+      "reason": "text",
+      "running": 7
+    },
+    "status": 200
+  },
+  "putCompanyAutonomy": {
+    "body": {
+      "custom": {
+        "max_amount_per_day_tiyn": true,
+        "max_amount_per_document_tiyn": true
+      },
+      "defaults": {
+        "max_amount_per_day_tiyn": 7,
+        "max_amount_per_document_tiyn": 7
+      },
+      "levels": {
+        "advance_report": "L1",
+        "bank_payment": "L1",
+        "bank_receipt": "L1",
+        "cash_order_in": "L1",
+        "cash_order_out": "L1",
+        "contract": "L1",
+        "counterparty": "L1",
+        "inventory_writeoff": "L1",
+        "purchase": "L1",
+        "sale": "L1"
+      },
+      "max_amount_per_day_tiyn": 7,
+      "max_amount_per_document_tiyn": 7,
+      "updated_at": "2026-01-02T03:04:05Z"
+    },
+    "status": 200
+  },
+  "rejectCompanyProposal": {
+    "body": {
+      "document": {
+        "number": "text",
+        "posted": true,
+        "ref": "text"
+      },
+      "message": "text",
+      "mismatches": [
+        "text"
+      ],
+      "ok": true,
+      "postings": [
+        {
+          "amount": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "computed_by_1c": true,
+          "credit": "text",
+          "debit": "text",
+          "label": "text"
+        }
+      ],
+      "proposal": {
+        "actions": [
+          {
+            "action": "approve",
+            "body": {
+              "key": {
+                "anything": [
+                  1,
+                  "two",
+                  null
+                ]
+              }
+            },
+            "effect": "text",
+            "enabled": true,
+            "href": "text",
+            "label": "text",
+            "method": "POST"
+          }
+        ],
+        "advance_offset": {
+          "amount": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "credit": "text",
+          "debit": "text",
+          "note": "text",
+          "to_pay": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          }
+        },
+        "approval": {
+          "allowed": true,
+          "blocked_by_blockers": true,
+          "requires_right": "proposals.approve"
+        },
+        "blocker_count": 7,
+        "blockers": [
+          "text"
+        ],
+        "counterparty": {
+          "name": "text",
+          "ref": "text"
+        },
+        "created_at": "2026-01-02T03:04:05Z",
+        "dialog_id": "text",
+        "document_number": "text",
+        "header": {
+          "accounts": [
+            {
+              "code": "text",
+              "field": "text",
+              "ref": "text",
+              "title": "text"
+            }
+          ],
+          "date": "text",
+          "document_title": "text",
+          "entity_set": "text",
+          "net": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "total": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "vat": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          }
+        },
+        "history": [
+          {
+            "actor": "text",
+            "at": "2026-01-02T03:04:05Z",
+            "status": "previewed",
+            "status_title": "text"
+          }
+        ],
+        "href": "text",
+        "id": "text",
+        "intent": {
+          "key": {
+            "anything": [
+              1,
+              "two",
+              null
+            ]
+          }
+        },
+        "kind": "sale",
+        "kind_title": "text",
+        "level": "L0",
+        "level_title": "text",
+        "line_count": 7,
+        "lines": [
+          {
+            "accounts": [
+              {
+                "code": "text",
+                "field": "text",
+                "ref": "text",
+                "title": "text"
+              }
+            ],
+            "item": {
+              "name": "text",
+              "ref": "text"
+            },
+            "no": 7,
+            "price": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "quantity": 1.5,
+            "section": "goods",
+            "sum": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "total": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "vat": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "vat_rate_title": "text"
+          }
+        ],
+        "postings": [
+          {
+            "amount": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "computed_by_1c": true,
+            "credit": "text",
+            "debit": "text",
+            "label": "text"
+          }
+        ],
+        "result": {
+          "mismatches": [
+            "text"
+          ],
+          "number": "text",
+          "postings": [
+            {
+              "amount": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "computed_by_1c": true,
+              "credit": "text",
+              "debit": "text",
+              "label": "text"
+            }
+          ],
+          "ref": "text"
+        },
+        "source": {
+          "channel": "mcp"
+        },
+        "status": "previewed",
+        "status_title": "text",
+        "summary": "text",
+        "title": "text",
+        "total": {
+          "amount": 1.5,
+          "amount_tiyn": 7,
+          "formatted": "text"
+        },
+        "vat": {
+          "amount": 1.5,
+          "amount_tiyn": 7,
+          "formatted": "text"
+        },
+        "warning_count": 7,
+        "warnings": [
+          "text"
+        ]
+      },
+      "repeated": true
+    },
+    "status": 200
+  },
+  "resendWorkspaceWebhooksMessage": {
+    "body": null,
+    "status": 202
+  },
+  "retryCompanyAutomationsRun": {
+    "body": {
+      "answer": "text",
+      "attempt": 7,
+      "auto_retries": 7,
+      "cancel_requested": true,
+      "cost_tiyn": 7,
+      "created_at": "2026-01-02T03:04:05Z",
+      "current_step": 7,
+      "error": "text",
+      "error_code": "text",
+      "event_id": "text",
+      "event_type": "text",
+      "external_id": "text",
+      "finished_at": "2026-01-02T03:04:05Z",
+      "id": "text",
+      "output": {
+        "key": 1.5
+      },
+      "output_error": "not_returned",
+      "output_note": "text",
+      "proposals": [
+        {
+          "attempt": 7,
+          "id": "text"
+        }
+      ],
+      "requested_by": "text",
+      "retry_at": "2026-01-02T03:04:05Z",
+      "retryable": true,
+      "scenario_id": "text",
+      "slot_at": "2026-01-02T03:04:05Z",
+      "started_at": "2026-01-02T03:04:05Z",
+      "state": "queued",
+      "steps": [
+        {
+          "action": "agent",
+          "answer": "text",
+          "error": "text",
+          "error_code": "text",
+          "findings": 7,
+          "output": {
+            "key": 1.5
+          },
+          "output_error": "not_returned",
+          "output_note": "text",
+          "proposals": [
+            "text"
+          ],
+          "skipped_by": "always",
+          "state": "done",
+          "step": 7,
+          "stop_reason": "text"
+        }
+      ],
+      "stop_reason": "text",
+      "tools": [
+        "text"
+      ],
+      "trial": true,
+      "trigger": "hook"
+    },
+    "status": 202
+  },
+  "rotateCompanyAutomationsHook": {
+    "body": {
+      "created_at": "2026-01-02T03:04:05Z",
+      "enabled": true,
+      "id": "text",
+      "id_path": "text",
+      "name": "text",
+      "scenarios_url": "text",
+      "signature_header": "text",
+      "signed": true,
+      "token": "text",
+      "token_hint": "text",
+      "token_note": "text",
+      "updated_at": "2026-01-02T03:04:05Z",
+      "url": "text"
+    },
+    "status": 200
+  },
+  "rotateWorkspaceWebhooksEndpointSecret": {
+    "body": {
+      "endpoint_id": "text",
+      "secret": "text",
+      "secret_note": "text"
+    },
+    "status": 200
+  },
+  "runCompanyAutomationsScenario": {
+    "body": {
+      "answer": "text",
+      "attempt": 7,
+      "auto_retries": 7,
+      "cancel_requested": true,
+      "cost_tiyn": 7,
+      "created_at": "2026-01-02T03:04:05Z",
+      "current_step": 7,
+      "error": "text",
+      "error_code": "text",
+      "event_id": "text",
+      "event_type": "text",
+      "external_id": "text",
+      "filter_matched": true,
+      "finished_at": "2026-01-02T03:04:05Z",
+      "id": "text",
+      "output": {
+        "key": 1.5
+      },
+      "output_error": "not_returned",
+      "output_note": "text",
+      "proposals": [
+        {
+          "attempt": 7,
+          "id": "text"
+        }
+      ],
+      "requested_by": "text",
+      "retry_at": "2026-01-02T03:04:05Z",
+      "retryable": true,
+      "scenario_id": "text",
+      "slot_at": "2026-01-02T03:04:05Z",
+      "started_at": "2026-01-02T03:04:05Z",
+      "state": "queued",
+      "steps": [
+        {
+          "action": "agent",
+          "answer": "text",
+          "error": "text",
+          "error_code": "text",
+          "findings": 7,
+          "output": {
+            "key": 1.5
+          },
+          "output_error": "not_returned",
+          "output_note": "text",
+          "proposals": [
+            "text"
+          ],
+          "skipped_by": "always",
+          "state": "done",
+          "step": 7,
+          "stop_reason": "text"
+        }
+      ],
+      "stop_reason": "text",
+      "tools": [
+        "text"
+      ],
+      "trial": true,
+      "trigger": "hook"
+    },
+    "status": 202
+  },
+  "stopCompanyBatch": {
+    "body": {
+      "id": "text",
+      "stopped": true
+    },
+    "status": 200
+  },
+  "stopCompanyChat": {
+    "body": {
+      "dismissed": true,
+      "id": "text",
+      "stopped": true
+    },
+    "status": 200
+  },
+  "testCompanyAutomationsHook": {
+    "body": {
+      "event_id": "text",
+      "external_id": "text",
+      "external_id_note": "text",
+      "external_id_source": "id_path",
+      "hook_id": "text",
+      "json": true,
+      "run_ids": [
+        "text"
+      ],
+      "scenarios": [
+        {
+          "enabled": true,
+          "failed_condition": {
+            "index": 7,
+            "op": "text",
+            "path": "text"
+          },
+          "matched": true,
+          "name": "text",
+          "reason": "text",
+          "scenario_id": "text",
+          "would_run": true
+        }
+      ],
+      "signature_note": "text",
+      "signed": true
+    },
+    "status": 200
+  },
+  "testWorkspaceWebhooksEndpoint": {
+    "body": {
+      "created_at": "2026-01-02T03:04:05Z",
+      "event_type": "text",
+      "id": "text",
+      "svix_message_id": "text"
+    },
+    "status": 202
+  },
+  "updateCompanyAutomationsHook": {
+    "body": {
+      "created_at": "2026-01-02T03:04:05Z",
+      "enabled": true,
+      "id": "text",
+      "id_path": "text",
+      "name": "text",
+      "scenarios_url": "text",
+      "signature_header": "text",
+      "signed": true,
+      "token_hint": "text",
+      "updated_at": "2026-01-02T03:04:05Z"
+    },
+    "status": 200
+  },
+  "updateCompanyAutomationsScenario": {
+    "body": {
+      "action": "agent",
+      "auto_approve": {
+        "directbank": true,
+        "kinds": [
+          "sale"
+        ],
+        "max_amount_per_day_tiyn": 7,
+        "max_amount_per_document_tiyn": 7
+      },
+      "created_at": "2026-01-02T03:04:05Z",
+      "enabled": true,
+      "id": "text",
+      "instruction": "text",
+      "name": "text",
+      "next_run_at": "2026-01-02T03:04:05Z",
+      "output": {
+        "key": {
+          "description": "text",
+          "type": "number"
+        }
+      },
+      "run_as": "text",
+      "steps": [
+        {
+          "action": "agent",
+          "instruction": "text",
+          "output": {
+            "key": {
+              "description": "text",
+              "type": "number"
+            }
+          },
+          "when": "always"
+        }
+      ],
+      "trigger": {
+        "filter": {
+          "all": [
+            {
+              "op": "eq",
+              "path": "text"
+            }
+          ]
+        },
+        "hook_id": "text",
+        "kind": "hook"
+      },
+      "updated_at": "2026-01-02T03:04:05Z"
+    },
+    "status": 200
+  },
+  "updateCompanyChat": {
+    "body": {
+      "id": "text",
+      "title": "text"
+    },
+    "status": 200
+  },
+  "updateWorkspaceWebhooksEndpoint": {
+    "body": {
+      "channels": [
+        "text"
+      ],
+      "created_at": "2026-01-02T03:04:05Z",
+      "description": "text",
+      "enabled": true,
+      "event_types": [
+        "text"
+      ],
+      "id": "text",
+      "updated_at": "2026-01-02T03:04:05Z",
+      "url": "text"
+    },
+    "status": 200
+  }
+}
