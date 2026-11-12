@@ -114,6 +114,58 @@ def test_the_collected_turn_matches_the_conformance_vectors(
     assert (result.usage.to_dict() if result.usage is not None else None) == expect["usage"]
 
 
+REPLAYS: list[dict[str, Any]] = json.loads((ROOT / "conformance" / "vectors.json").read_text(encoding="utf-8"))[
+    "chat_stream_replay"
+]
+
+
+@pytest.mark.parametrize("case", [pytest.param(case, id=case["name"]) for case in REPLAYS])
+def test_a_turn_replayed_by_idempotency_key_arrives_as_its_events(
+    sync_client: Tungo, server: MockServer, case: dict[str, Any]
+) -> None:
+    expect = case["expect"]
+    content_type = case["headers"]["Content-Type"]
+    headers = {name: value for name, value in case["headers"].items() if name.lower() != "content-type"}
+    server.add(
+        "POST", CHAT, Reply(status=case["status"], json=case["body"], headers=headers, content_type=content_type)
+    )
+    if expect.get("decode_error"):
+        with pytest.raises(tungoai.DecodeError, match="not an event stream") as caught:
+            sync_client.chat.create_stream("co_1", message="?")
+        assert caught.value.status == case["status"]
+        return
+    stream = sync_client.chat.create_stream("co_1", message="?")
+    assert (stream.dialog_id, stream.turn_no) == (expect["dialog_id"], expect["turn_no"])
+    if expect["error"] is not None:
+        with pytest.raises(tungoai.ChatStreamError) as caught_error:
+            stream.get_final_result()
+        error = caught_error.value
+        assert (error.type, error.code, error.message, error.request_id, error.extra) == (
+            expect["error"]["type"],
+            expect["error"]["code"],
+            expect["error"]["message"],
+            expect["error"]["request_id"],
+            expect["error"]["extra"],
+        )
+        assert error.result is not None
+        result = error.result
+    else:
+        result = stream.get_final_result()
+    assert [event.to_dict()["type"] for event in result.events] == expect["event_types"]
+    assert (result.text, result.stop_reason, result.cost_tiyn, result.choice_id) == (
+        expect["text"],
+        expect["stop_reason"],
+        expect["cost_tiyn"],
+        expect["choice_id"],
+    )
+    assert (result.dialog_id, result.turn_no, len(result.events)) == (
+        expect["dialog_id"],
+        expect["turn_no"],
+        expect["event_count"],
+    )
+    assert (result.usage.to_dict() if result.usage is not None else None) == expect["usage"]
+
+
 def test_a_stream_that_ends_without_done_is_not_a_finished_turn(
     sync_client: Tungo, server: MockServer
 ) -> None:

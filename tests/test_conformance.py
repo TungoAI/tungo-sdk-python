@@ -60,6 +60,7 @@ def test_vectors_version_and_sections() -> None:
         "query",
         "sse",
         "chat_stream",
+        "chat_stream_replay",  # test_streaming_async.py
     }
     assert set(VECTORS) - {"version", "description"} == covered, "a new section of the vectors has no test"
 

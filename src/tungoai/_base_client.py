@@ -631,17 +631,99 @@ def is_event_stream(headers: httpx.Headers) -> bool:
     return content_type.strip().lower().startswith("text/event-stream")
 
 
+def is_replayed_json(headers: httpx.Headers) -> bool:
+    """Whether a stream call was answered with a stored result replayed by Idempotency-Key."""
+    media_type: str = headers.get("content-type", "").split(";")[0]
+    replayed: str = headers.get("idempotent-replayed", "")
+    return media_type.strip().lower() == "application/json" and replayed.strip().lower() == "true"
+
+
+def replay_as_event_stream(response: httpx.Response, body: bytes) -> httpx.Response | None:
+    """Turns a replayed ChatTurnResult into the event stream of the turn it stands for.
+
+    The stream has text (the answer), proposal, question, citation, error and choice events,
+    then done. The dialog id and the turn number, which a replay carries only in the body,
+    become the X-Dialog-Id and X-Turn-No headers when they are missing. Returns None when the
+    body is not a chat turn result.
+    """
+    try:
+        parsed: Any = json.loads(body)
+    except ValueError:
+        return None
+    if not isinstance(parsed, dict):
+        return None
+    result = cast("dict[str, Any]", parsed)
+    if not isinstance(result.get("dialog_id"), str):
+        return None
+    headers = httpx.Headers(response.headers)
+    if not headers.get("x-dialog-id"):
+        headers["x-dialog-id"] = result["dialog_id"]
+    turn_no = result.get("turn_no")
+    if not headers.get("x-turn-no") and isinstance(turn_no, int) and not isinstance(turn_no, bool):
+        headers["x-turn-no"] = str(turn_no)
+    headers["content-type"] = "text/event-stream"
+
+    def entries(key: str) -> list[dict[str, Any]]:
+        items = result.get(key)
+        if not isinstance(items, list):
+            return []
+        return [cast("dict[str, Any]", item) for item in cast("list[object]", items) if isinstance(item, dict)]
+
+    out: list[str] = []
+
+    def emit(kind: str, event: dict[str, Any]) -> None:
+        data = json.dumps({**event, "type": kind}, ensure_ascii=False, separators=(",", ":"))
+        out.append(f"event: {kind}\ndata: {data}\n\n")
+
+    answer = result.get("answer")
+    answer = answer if isinstance(answer, str) else ""
+    if answer:
+        emit("text", {"delta": answer})
+    for proposal in entries("proposals"):
+        emit("proposal", {**{k: v for k, v in proposal.items() if k != "id"}, "proposal_id": proposal.get("id")})
+    for question in entries("questions"):
+        emit("question", question)
+    for citation in entries("citations"):
+        emit("citation", citation)
+    request_id: str | None = response.headers.get("x-request-id") or None
+    for error in entries("errors"):
+        emit("error", {"error": error, "request_id": request_id})
+    done: dict[str, Any] = {"answer": answer}
+    if isinstance(result.get("stop_reason"), str):
+        done["stop_reason"] = result["stop_reason"]
+    usage = result.get("usage")
+    if isinstance(usage, dict):
+        usage = cast("dict[str, Any]", usage)
+        done["usage"] = {k: v for k, v in usage.items() if k != "cost_tiyn"}
+        if "cost_tiyn" in usage:
+            done["cost_tiyn"] = usage["cost_tiyn"]
+    pending = result.get("pending_question")
+    if isinstance(pending, dict):
+        pending = cast("dict[str, Any]", pending)
+        emit("choice", pending)
+        done["choice_id"] = pending.get("choice_id")
+    emit("done", done)
+    return httpx.Response(
+        response.status_code,
+        headers=headers,
+        content="".join(out).encode("utf-8"),
+        request=response.request,
+        extensions=response.extensions,
+    )
+
+
 def sync_open(client: httpx.Client, request: httpx.Request) -> tuple[httpx.Response, bytes]:
     """Opens a streaming request and leaves the response open when it is a successful event stream.
 
-    For an error status the body is read and the response closed. So is a successful
-    response that is not an event stream; only the beginning of its body is kept.
+    For an error status the body is read and the response closed, and so is a stored result
+    replayed by Idempotency-Key. So is any other successful response that is not an event
+    stream; only the beginning of its body is kept.
     """
     response = client.send(request, stream=True, follow_redirects=False)
     if response.is_success and is_event_stream(response.headers):
         return response, b""
     try:
-        if not response.is_success:
+        if not response.is_success or is_replayed_json(response.headers):
             return response, response.read()
         body = b""
         for chunk in response.iter_bytes():
@@ -659,7 +741,7 @@ async def async_open(client: httpx.AsyncClient, request: httpx.Request) -> tuple
     if response.is_success and is_event_stream(response.headers):
         return response, b""
     try:
-        if not response.is_success:
+        if not response.is_success or is_replayed_json(response.headers):
             return response, await response.aread()
         body = b""
         async for chunk in response.aiter_bytes():
@@ -1011,7 +1093,12 @@ class SyncAPIClient(BaseClient):
                 )
                 if response.is_success:
                     if stream and not is_event_stream(response.headers):
-                        raise _not_event_stream(spec, response, body)
+                        # A chat turn repeated with the same Idempotency-Key after it finished is
+                        # answered with its stored result: the caller gets the events of that turn.
+                        replay = replay_as_event_stream(response, body) if is_replayed_json(response.headers) else None
+                        if replay is None:
+                            raise _not_event_stream(spec, response, body)
+                        response = replay
                     return response, body, attempt
                 error, cause = make_api_error(response.status_code, response.headers, body), response.status_code
             if attempt >= max_retries or not should_retry(spec.method, repeatable, cause):
@@ -1251,7 +1338,12 @@ class AsyncAPIClient(BaseClient):
                 )
                 if response.is_success:
                     if stream and not is_event_stream(response.headers):
-                        raise _not_event_stream(spec, response, body)
+                        # A chat turn repeated with the same Idempotency-Key after it finished is
+                        # answered with its stored result: the caller gets the events of that turn.
+                        replay = replay_as_event_stream(response, body) if is_replayed_json(response.headers) else None
+                        if replay is None:
+                            raise _not_event_stream(spec, response, body)
+                        response = replay
                     return response, body, attempt
                 error, cause = make_api_error(response.status_code, response.headers, body), response.status_code
             if attempt >= max_retries or not should_retry(spec.method, repeatable, cause):
