@@ -101,6 +101,8 @@ class AutomationsResource:
             request_options: Per-request timeout, retries, headers and idempotency key.
         """
         content, media_type = raw_body(payload, content_type)
+        if event_id and "idempotency_key" not in (request_options or {}):
+            request_options = {**(request_options or {}), "idempotency_key": event_id}
         return self._client.request(
             RequestSpec(
                 method="POST",
@@ -950,6 +952,8 @@ class AsyncAutomationsResource:
             request_options: Per-request timeout, retries, headers and idempotency key.
         """
         content, media_type = raw_body(payload, content_type)
+        if event_id and "idempotency_key" not in (request_options or {}):
+            request_options = {**(request_options or {}), "idempotency_key": event_id}
         return await self._client.request(
             RequestSpec(
                 method="POST",

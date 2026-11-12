@@ -1016,6 +1016,23 @@ def test_send_hook_and_post_hook_send_the_same_request(sync_client: Tungo, serve
         assert "authorization" not in request.headers
 
 
+def test_the_hook_event_id_is_the_idempotency_key(sync_client: Tungo, server: MockServer) -> None:
+    # The backend reads Idempotency-Key before X-Event-Id: a random key would make a resend of the
+    # same event (after a timeout or a restart, with a changed body) a new event.
+    server.add("POST", "/hooks/th_token", Reply(status=202, json=fixture("postHook")))
+    sync_client.send_hook("th_token", {"n": 1}, event_id="pay_42")
+    sync_client.automations.post_hook("th_token", {"n": 2}, event_id="pay_42")
+    sync_client.send_hook("th_token", {"n": 3}, event_id="pay_42", request_options={"idempotency_key": "own"})
+    sync_client.send_hook("th_token", {"n": 4})
+    sync_client.send_hook("th_token", {"n": 5})
+    one, two, three, four, five = server.requests
+    assert one.headers["idempotency-key"] == two.headers["idempotency-key"] == "pay_42"
+    assert one.headers["x-event-id"] == two.headers["x-event-id"] == "pay_42"
+    assert (three.headers["idempotency-key"], three.headers["x-event-id"]) == ("own", "pay_42")
+    assert four.headers["idempotency-key"] != five.headers["idempotency-key"]
+    assert "x-event-id" not in four.headers
+
+
 def test_a_hook_body_given_as_bytes_or_text_is_sent_as_is(sync_client: Tungo, server: MockServer) -> None:
     server.add("POST", "/hooks/th_token", Reply(status=202, json=fixture("postHook")))
     raw = b'{ "id" : 1,\n  "note": "\xd0\xb6" }'
