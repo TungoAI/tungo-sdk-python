@@ -44,9 +44,10 @@ class RequestOptions(TypedDict, total=False):
     """Extra headers; they win over the client's default headers."""
 
     idempotency_key: str
-    """Value of the ``Idempotency-Key`` header. A request that carries it can be
-    retried safely, so it also makes a POST or PATCH request retryable. Passing the
-    header yourself in ``headers`` (or in the client's default headers) has the same effect."""
+    """Value of the ``Idempotency-Key`` header of an operation that declares it, instead of
+    the generated one; such a request is retried safely. Passing the header yourself in
+    ``headers`` (or in the client's default headers) has the same effect. Any other operation
+    sends no key, not even this one, and a POST or PATCH among them is never retried."""
 
     stream_idle_timeout: float | None
     """Streaming calls only: the longest silence, in seconds, allowed between two

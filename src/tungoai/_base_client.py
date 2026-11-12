@@ -792,7 +792,9 @@ class BaseClient:
         if key is not None:
             if not isinstance(key, str) or not key:
                 raise RequestValidationError("idempotency_key must be a non-empty string.")
-            return key
+            # The API ignores a key on an operation that declares none: sending one would make a
+            # retry look safe when it repeats the action.
+            return key if spec.idempotency_header else None
         if spec.idempotency_header:
             return str(uuid.uuid4())
         return None
@@ -830,6 +832,8 @@ class BaseClient:
             headers[spec.idempotency_header or "Idempotency-Key"] = idempotency_key
         for name, value in (options.get("headers") or {}).items():
             headers[name] = value
+        if not spec.idempotency_header:
+            headers.pop("Idempotency-Key", None)
         for name, value in headers.items():
             if _HEADER_FORBIDDEN.search(value):
                 # Refused here, without the value: the HTTP layer would quote it in its own error.
@@ -938,9 +942,12 @@ class SyncAPIClient(BaseClient):
             timeout = httpx.Timeout(total)
         accept = "text/event-stream" if stream else "application/json"
         url, headers, content = self._prepare(spec, opts, idempotency_key=idempotency_key, accept=accept)
-        # A key the caller put into the headers makes the request as safe to repeat as a generated one.
+        # A key the caller put into the headers makes the request as safe to repeat as a generated one
+        # (only an operation that declares the header keeps it: see _prepare).
         key_header = (spec.idempotency_header or "Idempotency-Key").lower()
-        repeatable = idempotency_key is not None or any(name.lower() == key_header for name in headers)
+        repeatable = idempotency_key is not None or (
+            bool(spec.idempotency_header) and any(name.lower() == key_header for name in headers)
+        )
         # httpx logs the URL of every request; a URL that carries a secret is replaced in that record.
         hidden = None if spec.log_path is None else SECRET_URL.set(secret_parts(url, spec.log_path))
         try:
@@ -1175,9 +1182,12 @@ class AsyncAPIClient(BaseClient):
             timeout = httpx.Timeout(total)
         accept = "text/event-stream" if stream else "application/json"
         url, headers, content = self._prepare(spec, opts, idempotency_key=idempotency_key, accept=accept)
-        # A key the caller put into the headers makes the request as safe to repeat as a generated one.
+        # A key the caller put into the headers makes the request as safe to repeat as a generated one
+        # (only an operation that declares the header keeps it: see _prepare).
         key_header = (spec.idempotency_header or "Idempotency-Key").lower()
-        repeatable = idempotency_key is not None or any(name.lower() == key_header for name in headers)
+        repeatable = idempotency_key is not None or (
+            bool(spec.idempotency_header) and any(name.lower() == key_header for name in headers)
+        )
         # httpx logs the URL of every request; a URL that carries a secret is replaced in that record.
         hidden = None if spec.log_path is None else SECRET_URL.set(secret_parts(url, spec.log_path))
         try:

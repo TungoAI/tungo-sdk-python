@@ -680,19 +680,22 @@ def test_a_post_without_an_idempotency_key_is_never_repeated(
                 reason="дубль",
                 request_options={"idempotency_key": "my-key-1", "max_retries": 2},
             )
-    repeated = server.requests[1:]
-    assert len(repeated) == 3, "with a key the same request is safe to repeat"
-    assert {request.headers["idempotency-key"] for request in repeated} == {"my-key-1"}
+        with pytest.raises(tungoai.UnavailableError):
+            client.proposals.reject(
+                "co_1", "p_1", reason="дубль", request_options={"headers": {"idempotency-key": "header-key-1"}}
+            )
+    # The operation declares no Idempotency-Key: the API would ignore a caller's key, so it is
+    # not sent and does not make the request repeatable.
+    assert len(server.requests) == 3
+    assert all("idempotency-key" not in request.headers for request in server.requests)
 
 
 def test_a_post_with_an_idempotency_key_header_is_repeated(server: MockServer) -> None:
-    path = COMPANY + "/proposals/p_1/reject"
+    path = COMPANY + "/proposals/p_1/approve"
     failure = Reply(status=503, json=error_body("unavailable_error", "Позже."))
-    server.add("POST", path, failure, Reply(json=fixture("rejectCompanyProposal")))
+    server.add("POST", path, failure, Reply(json=fixture("approveCompanyProposal")))
     with Tungo(api_key=API_KEY, base_url=server.url, max_retries=2) as client:
-        client.proposals.reject(
-            "co_1", "p_1", reason="дубль", request_options={"headers": {"idempotency-key": "header-key-1"}}
-        )
+        client.proposals.approve("co_1", "p_1", request_options={"headers": {"idempotency-key": "header-key-1"}})
     assert [request.headers["idempotency-key"] for request in server.requests] == ["header-key-1", "header-key-1"]
 
 

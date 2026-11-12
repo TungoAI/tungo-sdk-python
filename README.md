@@ -167,7 +167,7 @@ An error that a chat turn reports inside a successful response (an `error` event
 
 ## Retries and timeouts
 
-A request is retried up to 2 times (3 attempts) on connection errors, timeouts and the statuses 408, 429, 500, 502, 503 and 504, but only when repeating it is safe: `GET`, `HEAD`, `PUT` and `DELETE` requests, and `POST` or `PATCH` requests that carry an `Idempotency-Key`. For the operations whose contract declares that header the SDK generates a random key and reuses it for every attempt; you can pass your own.
+A request is retried up to 2 times (3 attempts) on connection errors, timeouts and the statuses 408, 429, 500, 502, 503 and 504, but only when repeating it is safe: `GET`, `HEAD`, `PUT` and `DELETE` requests, and `POST` or `PATCH` requests of the operations whose contract declares an `Idempotency-Key`. For those the SDK generates a random key and reuses it for every attempt; you can pass your own. Other operations send no key, not even one you pass, because the API would ignore it.
 
 The delay between attempts is `min(0.5 s × 2^attempt, 8 s)` with random jitter. A positive `retry-after-ms` or `Retry-After` response header overrides it; if the server asks for more than 60 s the SDK does not wait and raises the error with the delay filled in.
 
@@ -198,7 +198,7 @@ client.proposals.reject(
 client.close()
 ```
 
-A request is retried only when repeating it is safe: GET, HEAD, PUT and DELETE, or any request that carries an `Idempotency-Key` (generated for the operations that declare it, passed as `idempotency_key`, or put into the headers by you). A `Retry-After` of zero, or a date that has already passed, does not trigger an immediate retry: the computed backoff applies.
+A request is retried only when repeating it is safe: GET, HEAD, PUT and DELETE, or a request of an operation that declares an `Idempotency-Key` (generated, passed as `idempotency_key`, or put into the headers by you). Other operations send no key, not even one you pass, because the API would ignore it. A `Retry-After` of zero, or a date that has already passed, does not trigger an immediate retry: the computed backoff applies.
 
 The timeout is one deadline for the whole request. The asynchronous client enforces it exactly. The synchronous client gives each phase (connecting, sending, waiting for the headers, reading the body) only the time that is left and checks the deadline after every chunk of the body; a server that goes silent in the middle of a body is cut off when the time that was left at the start of the body runs out.
 
