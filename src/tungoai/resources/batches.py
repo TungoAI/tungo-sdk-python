@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 from .._base_client import (
     RequestSpec,
     async_to_raw_response,
+    date_param,
     json_body,
     optional_json_body,
     path_segment,
@@ -166,9 +167,9 @@ class BatchesResource:
                 path=f"/v1/companies/{path_segment('co', co)}/batch/esf-purchases",
                 body=optional_json_body(
                     {
-                        "from": from_,
+                        "from": date_param(from_),
                         "limit": limit,
-                        "to": to,
+                        "to": date_param(to),
                     }
                 ),
                 idempotency_header="Idempotency-Key",
@@ -483,9 +484,9 @@ class AsyncBatchesResource:
                 path=f"/v1/companies/{path_segment('co', co)}/batch/esf-purchases",
                 body=optional_json_body(
                     {
-                        "from": from_,
+                        "from": date_param(from_),
                         "limit": limit,
-                        "to": to,
+                        "to": date_param(to),
                     }
                 ),
                 idempotency_header="Idempotency-Key",

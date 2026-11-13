@@ -354,6 +354,20 @@ async def test_raw_server_sent_events(async_client: AsyncTungo, server: MockServ
     assert json.loads(raw[0][2]) == {"type": "text", "delta": "НДС ", "step": 1}
 
 
+async def test_a_typed_stream_keeps_the_last_event_id_for_resuming(
+    async_client: AsyncTungo, server: MockServer
+) -> None:
+    # Chat events carry no id in their data: the frame id is the only way to resume with
+    # Last-Event-ID without receiving the text deltas again.
+    server.add("GET", CHAT + "/d_1/events", Reply(chunks=[TEXT_1, PING, DONE]))
+    stream = await async_client.chat.list_events("co_1", "d_1")
+    assert stream.last_event_id is None
+    ids: list[str | None] = []
+    async for _ in stream:
+        ids.append(stream.last_event_id)
+    assert ids == ["1", "3"]
+
+
 async def test_the_events_of_a_running_turn(async_client: AsyncTungo, server: MockServer) -> None:
     server.add(
         "GET", CHAT + "/d_1/events", Reply(chunks=[TEXT_1, DONE], headers={"X-Dialog-Id": "d_1", "X-Turn-No": "2"})

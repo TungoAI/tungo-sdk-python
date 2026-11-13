@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import base64
 import copy
+import datetime as dt
 import hashlib
 import hmac
 import inspect
@@ -1019,6 +1020,34 @@ def test_send_hook_and_post_hook_send_the_same_request(sync_client: Tungo, serve
         assert "authorization" not in request.headers
 
 
+def test_a_hook_with_its_own_signature_header_is_signed_in_that_header(
+    sync_client: Tungo, server: MockServer
+) -> None:
+    # A hook created with signature_header="x-shop-signature" reads its signature only from that
+    # header: signing into X-Signature would make every call a 401.
+    server.add("POST", "/hooks/th_token", Reply(status=202, json=fixture("postHook")))
+    sync_client.send_hook("th_token", {"n": 1}, secret="hksec_test", signature_header="x-shop-signature")
+    sync_client.automations.post_hook(
+        "th_token", {"n": 2}, signature="sha256=abc", signature_header="X-Shop-Signature"
+    )
+    sync_client.send_hook("th_token", {"n": 3}, secret="hksec_test")
+    one, two, three = server.requests
+    assert one.headers["x-shop-signature"] == tungoai.hook_signature_header(one.body, "hksec_test")
+    assert "x-signature" not in one.headers
+    assert two.headers["x-shop-signature"] == "sha256=abc"
+    assert "x-signature" not in two.headers
+    assert three.headers["x-signature"] == tungoai.hook_signature_header(three.body, "hksec_test")
+    with pytest.raises(tungoai.RequestValidationError):
+        sync_client.automations.post_hook(
+            "th_token", {"n": 4}, secret="hksec_test", signature="sha256=abc", signature_header="x-shop-signature"
+        )
+    with pytest.raises(tungoai.RequestValidationError):
+        sync_client.automations.post_hook(
+            "th_token", {"n": 5}, secret="hksec_test", signature_header="bad header\r\n"
+        )
+    assert len(server.requests) == 3
+
+
 def test_the_hook_event_id_is_the_idempotency_key(sync_client: Tungo, server: MockServer) -> None:
     # The backend reads Idempotency-Key before X-Event-Id: a random key would make a resend of the
     # same event (after a timeout or a restart, with a changed body) a new event.
@@ -1202,3 +1231,38 @@ def test_verify_webhook_uses_the_secret_of_the_client() -> None:
     assert caught.value.reason == "signature_mismatch"
     with pytest.raises(tungoai.ConfigError):
         Tungo(api_key=API_KEY).verify_webhook(body, headers)
+
+
+def test_a_datetime_for_a_calendar_date_is_sent_as_its_date(sync_client: Tungo, server: MockServer) -> None:
+    # datetime is a subclass of date, so type checkers accept one for a `str | date` parameter;
+    # sent as date-time text it would be rejected by the API, which wants ГГГГ-ММ-ДД.
+    server.add("GET", COMPANY + "/esf/incoming", Reply(json=fixture("getCompanyEsfIncoming")))
+    server.add(
+        "POST", COMPANY + "/batch/esf-purchases", Reply(status=202, json=fixture("createCompanyBatchEsfPurchase"))
+    )
+    aware = dt.datetime(2026, 11, 1, 23, 30, tzinfo=dt.timezone.utc)
+    naive = dt.datetime(2026, 11, 30, 8, 0)
+    sync_client.esf.get_incoming("co_1", since=aware, until=naive)
+    sync_client.batches.create_esf_purchases("co_1", from_=aware, to=dt.date(2026, 11, 30))
+    incoming, batch = server.requests
+    assert dict(incoming.query) == {"since": "2026-11-01", "until": "2026-11-30"}
+    body = batch.json()
+    assert (body["from"], body["to"]) == ("2026-11-01", "2026-11-30")
+
+
+def test_the_idempotency_key_of_an_approval_body_is_the_header(
+    sync_client: Tungo, server: MockServer
+) -> None:
+    # The API prefers the Idempotency-Key header over the documented body field: a generated header
+    # would make a repeat of the same click a new approval.
+    server.add("POST", COMPANY + "/proposals/P-1/approve", Reply(json=fixture("approveCompanyProposal")))
+    sync_client.proposals.approve("co_1", "P-1", idempotency_key=" click-7 ")
+    sync_client.proposals.approve("co_1", "P-1", idempotency_key="click-7")
+    sync_client.proposals.approve(
+        "co_1", "P-1", idempotency_key="click-7", request_options={"idempotency_key": "own"}
+    )
+    sync_client.proposals.approve("co_1", "P-1")
+    keys = [request.headers["idempotency-key"] for request in server.requests]
+    assert keys[:3] == ["click-7", "click-7", "own"]
+    assert len(keys[3]) == 36
+    assert server.requests[0].json() == {"idempotency_key": " click-7 "}

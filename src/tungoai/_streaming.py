@@ -186,6 +186,7 @@ class Stream(Generic[T]):
         self._event_type = event_type
         self._label = label
         self._closed = False
+        self._last_event_id: str | None = None
         # Only for callers that pull events one by one (see __next__). A loop over the stream
         # gets its own generator, which the stream does not keep: see __iter__.
         self._iterator: Iterator[T] | None = None
@@ -216,6 +217,16 @@ class Stream(Generic[T]):
         """True once the connection has been released."""
         return self._closed
 
+    @property
+    def last_event_id(self) -> str | None:
+        """The id of the last event read from the stream (heart-beats included), or None.
+
+        To resume after a dropped connection without receiving the same events again, open the
+        events endpoint once more with this value in the ``Last-Event-ID`` header, for example
+        ``request_options={"headers": {"Last-Event-ID": stream.last_event_id}}``.
+        """
+        return self._last_event_id
+
     def __iter__(self) -> Iterator[T]:
         # The generator is deliberately not stored on the stream. The loop then holds the only
         # reference to it, so when the loop is left the generator is finalised without waiting
@@ -236,12 +247,14 @@ class Stream(Generic[T]):
             try:
                 for chunk in self._response.iter_bytes():
                     for event in decoder.feed(chunk):
+                        self._last_event_id = event.id or None
                         yield event
             except httpx.TimeoutException as exc:
                 raise APITimeoutError(f"{self._label}: the stream was silent for too long.") from exc
             except httpx.TransportError as exc:
                 raise APIConnectionError(f"{self._label}: the stream was interrupted: {type(exc).__name__}.") from exc
             for event in decoder.close():
+                self._last_event_id = event.id or None
                 yield event
         finally:
             self.close()
@@ -330,6 +343,7 @@ class AsyncStream(Generic[T]):
         self._event_type = event_type
         self._label = label
         self._closed = False
+        self._last_event_id: str | None = None
         # Only for callers that pull events one by one (see __anext__). A loop over the stream
         # gets its own generator, which the stream does not keep: see __aiter__.
         self._iterator: AsyncIterator[T] | None = None
@@ -360,6 +374,16 @@ class AsyncStream(Generic[T]):
         """True once the connection has been released."""
         return self._closed
 
+    @property
+    def last_event_id(self) -> str | None:
+        """The id of the last event read from the stream (heart-beats included), or None.
+
+        To resume after a dropped connection without receiving the same events again, open the
+        events endpoint once more with this value in the ``Last-Event-ID`` header, for example
+        ``request_options={"headers": {"Last-Event-ID": stream.last_event_id}}``.
+        """
+        return self._last_event_id
+
     def __aiter__(self) -> AsyncIterator[T]:
         # The generator is deliberately not stored on the stream. The loop then holds the only
         # reference to it, so when the loop is left the generator is finalised without waiting
@@ -380,12 +404,14 @@ class AsyncStream(Generic[T]):
             try:
                 async for chunk in self._response.aiter_bytes():
                     for event in decoder.feed(chunk):
+                        self._last_event_id = event.id or None
                         yield event
             except httpx.TimeoutException as exc:
                 raise APITimeoutError(f"{self._label}: the stream was silent for too long.") from exc
             except httpx.TransportError as exc:
                 raise APIConnectionError(f"{self._label}: the stream was interrupted: {type(exc).__name__}.") from exc
             for event in decoder.close():
+                self._last_event_id = event.id or None
                 yield event
         finally:
             await self.aclose()

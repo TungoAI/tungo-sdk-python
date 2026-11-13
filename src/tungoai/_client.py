@@ -224,13 +224,15 @@ class Tungo(SyncAPIClient):
         *,
         secret: str | None = None,
         event_id: str | None = None,
+        signature_header: str | None = None,
         content_type: str | None = None,
         request_options: RequestOptions | None = None,
     ) -> AutomationHookAccepted:
         """Posts an event to an incoming hook (``/hooks/{token}``).
 
         ``payload`` may be bytes or text, sent exactly as given, or any JSON value.
-        With ``secret`` the exact bytes sent are signed in the ``X-Signature`` header.
+        With ``secret`` the exact bytes sent are signed in the ``X-Signature`` header, or in
+        ``signature_header`` when the hook was created with its own signature_header.
         The API key is never sent. Same as ``client.automations.post_hook``.
         """
         return self.automations.post_hook(
@@ -238,6 +240,7 @@ class Tungo(SyncAPIClient):
             payload,
             secret=secret,
             event_id=event_id,
+            signature_header=signature_header,
             content_type=content_type,
             request_options=request_options,
         )
@@ -558,13 +561,15 @@ class AsyncTungo(AsyncAPIClient):
         *,
         secret: str | None = None,
         event_id: str | None = None,
+        signature_header: str | None = None,
         content_type: str | None = None,
         request_options: RequestOptions | None = None,
     ) -> AutomationHookAccepted:
         """Posts an event to an incoming hook (``/hooks/{token}``).
 
         ``payload`` may be bytes or text, sent exactly as given, or any JSON value.
-        With ``secret`` the exact bytes sent are signed in the ``X-Signature`` header.
+        With ``secret`` the exact bytes sent are signed in the ``X-Signature`` header, or in
+        ``signature_header`` when the hook was created with its own signature_header.
         The API key is never sent. Same as ``client.automations.post_hook``.
         """
         return await self.automations.post_hook(
@@ -572,6 +577,7 @@ class AsyncTungo(AsyncAPIClient):
             payload,
             secret=secret,
             event_id=event_id,
+            signature_header=signature_header,
             content_type=content_type,
             request_options=request_options,
         )

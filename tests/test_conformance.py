@@ -7,6 +7,8 @@ import base64
 import datetime as dt
 import json
 import math
+import time
+from decimal import Decimal
 from typing import Any
 
 import httpx
@@ -126,6 +128,34 @@ def test_money_to_tiyn_float(case: dict[str, Any]) -> None:
             TungoMoney.to_tiyn(amount)
         return
     assert str(TungoMoney.to_tiyn(amount)) == case["expect"]["tiyn"]
+
+
+@pytest.mark.parametrize(
+    ("amount", "tiyn"),
+    [
+        ("1E-999999999", 0),
+        ("-1E-999999999", 0),
+        ("0E-999999999", 0),
+        ("9.99E-4", 0),
+        ("5E-3", 1),
+        ("-5E-3", -1),
+        ("1.005E2", 10050),
+        ("9.2233720368547758E16", 9223372036854775800),
+        ("1E+999999999", None),
+        ("-1E+20000000", None),
+        ("1E19", None),
+    ],
+)
+def test_money_to_tiyn_decimal_with_a_huge_exponent(amount: str, tiyn: int | None) -> None:
+    # A Decimal parsed from user text may carry any exponent: the conversion must stay cheap
+    # (no billion-character string) and fail with MoneyError, never ValueError or MemoryError.
+    started = time.monotonic()
+    if tiyn is None:
+        with pytest.raises(MoneyError):
+            TungoMoney.to_tiyn(Decimal(amount))
+    else:
+        assert TungoMoney.to_tiyn(Decimal(amount)) == tiyn
+    assert time.monotonic() - started < 1
 
 
 @pytest.mark.parametrize("case", cases("money", "format_tiyn"))

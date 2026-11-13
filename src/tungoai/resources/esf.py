@@ -6,7 +6,7 @@ from __future__ import annotations
 from datetime import date
 from typing import TYPE_CHECKING
 
-from .._base_client import RequestSpec, async_to_raw_response, path_segment, query_params, to_raw_response
+from .._base_client import RequestSpec, async_to_raw_response, date_param, path_segment, query_params, to_raw_response
 from .._pagination import AsyncCursorPage, SyncCursorPage
 from .._types import Omit, RequestOptions, omit
 from ..types import EsfIncomingItem, EsfIncomingReport, EsfOutgoingItem, EsfOutgoingReport
@@ -65,8 +65,8 @@ class EsfResource:
                         "action": action,
                         "cursor": cursor,
                         "limit": limit,
-                        "since": since,
-                        "until": until,
+                        "since": date_param(since),
+                        "until": date_param(until),
                     }
                 ),
             ),
@@ -109,7 +109,7 @@ class EsfResource:
                     {
                         "cursor": cursor,
                         "limit": limit,
-                        "since": since,
+                        "since": date_param(since),
                         "verdict": verdict,
                     }
                 ),
@@ -168,8 +168,8 @@ class AsyncEsfResource:
                         "action": action,
                         "cursor": cursor,
                         "limit": limit,
-                        "since": since,
-                        "until": until,
+                        "since": date_param(since),
+                        "until": date_param(until),
                     }
                 ),
             ),
@@ -212,7 +212,7 @@ class AsyncEsfResource:
                     {
                         "cursor": cursor,
                         "limit": limit,
-                        "since": since,
+                        "since": date_param(since),
                         "verdict": verdict,
                     }
                 ),

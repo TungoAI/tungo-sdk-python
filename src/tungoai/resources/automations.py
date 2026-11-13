@@ -66,6 +66,7 @@ class AutomationsResource:
         payload: object,
         *,
         secret: str | None = None,
+        signature_header: str | None = None,
         event_id: str | None = None,
         signature: str | None = None,
         content_type: str | None = None,
@@ -94,7 +95,8 @@ class AutomationsResource:
         Args:
             token: Токен хука (th_…) из адреса, выданного при заведении или rotate
             payload: The event body: bytes or text are sent exactly as given, any other value is serialised to JSON.
-            secret: The hook secret: the exact bytes sent are signed and the signature is put into the X-Signature header.
+            secret: The hook secret: the exact bytes sent are signed and the signature is put into the signature header.
+            signature_header: The header the hook reads its signature from (the signature_header it was created with); X-Signature when not given. Used for both secret and signature.
             event_id: То же, что Idempotency-Key, если отправитель шлёт такой заголовок
             signature: Подпись тела, если у хука есть секрет: HMAC-SHA256(секрет, сырое тело) в hex, можно с приставкой sha256= (имя заголовка — signature_header хука)
             content_type: Content type of the body. By default application/json, or application/octet-stream for bytes.
@@ -109,7 +111,12 @@ class AutomationsResource:
                 path=f"/hooks/{path_segment('token', token)}",
                 content=content,
                 content_type=media_type,
-                headers=hook_headers(content, {"X-Event-Id": event_id, "X-Signature": signature}, secret=secret),
+                headers=hook_headers(
+                    content,
+                    {"X-Event-Id": event_id, "X-Signature": signature},
+                    secret=secret,
+                    signature_header=signature_header,
+                ),
                 auth="hook",
                 idempotency_header="Idempotency-Key",
                 log_path="/hooks/***",
@@ -917,6 +924,7 @@ class AsyncAutomationsResource:
         payload: object,
         *,
         secret: str | None = None,
+        signature_header: str | None = None,
         event_id: str | None = None,
         signature: str | None = None,
         content_type: str | None = None,
@@ -945,7 +953,8 @@ class AsyncAutomationsResource:
         Args:
             token: Токен хука (th_…) из адреса, выданного при заведении или rotate
             payload: The event body: bytes or text are sent exactly as given, any other value is serialised to JSON.
-            secret: The hook secret: the exact bytes sent are signed and the signature is put into the X-Signature header.
+            secret: The hook secret: the exact bytes sent are signed and the signature is put into the signature header.
+            signature_header: The header the hook reads its signature from (the signature_header it was created with); X-Signature when not given. Used for both secret and signature.
             event_id: То же, что Idempotency-Key, если отправитель шлёт такой заголовок
             signature: Подпись тела, если у хука есть секрет: HMAC-SHA256(секрет, сырое тело) в hex, можно с приставкой sha256= (имя заголовка — signature_header хука)
             content_type: Content type of the body. By default application/json, or application/octet-stream for bytes.
@@ -960,7 +969,12 @@ class AsyncAutomationsResource:
                 path=f"/hooks/{path_segment('token', token)}",
                 content=content,
                 content_type=media_type,
-                headers=hook_headers(content, {"X-Event-Id": event_id, "X-Signature": signature}, secret=secret),
+                headers=hook_headers(
+                    content,
+                    {"X-Event-Id": event_id, "X-Signature": signature},
+                    secret=secret,
+                    signature_header=signature_header,
+                ),
                 auth="hook",
                 idempotency_header="Idempotency-Key",
                 log_path="/hooks/***",

@@ -14,6 +14,9 @@ __all__ = ["TungoMoney", "is_valid_bin_iin"]
 _INT64_MIN = -(2**63)
 _INT64_MAX = 2**63 - 1
 _DECIMAL = re.compile(r"(-?)([0-9]+)(?:\.([0-9]+))?", re.ASCII)
+# The position of the leading digit (Decimal.adjusted) of the amounts to_tiyn writes out in full.
+_SMALLEST_DIGIT = -3
+_LARGEST_DIGIT = 18
 _SYMBOLS = {"KZT": "₸", "USD": "$", "EUR": "€", "RUB": "₽"}
 
 
@@ -64,6 +67,14 @@ class TungoMoney:
         if isinstance(amount, Decimal):
             if not amount.is_finite():
                 raise MoneyError("The amount is not a finite number.")
+            # Bound the exponent before writing the value out: Decimal("1E-999999999") would
+            # otherwise become a billion-character string. Below 10^-3 an amount rounds to zero
+            # tiyn; at 10^19 tenge and above it cannot fit into 64-bit tiyn.
+            magnitude = amount.adjusted()
+            if amount.is_zero() or magnitude < _SMALLEST_DIGIT:
+                return 0
+            if magnitude > _LARGEST_DIGIT:
+                raise MoneyError("The amount does not fit into a 64-bit number of tiyn.")
             return _parse(format(amount, "f"))
         raise MoneyError(f"Unsupported amount type: {type(amount).__name__}.")
 

@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, cast
 from .._base_client import (
     RequestSpec,
     async_to_raw_response,
+    date_param,
     json_body,
     optional_json_body,
     path_segment,
@@ -89,8 +90,8 @@ class ProposalsResource:
                 query=query_params(
                     {
                         "cursor": cursor,
-                        "date_from": date_from,
-                        "date_to": date_to,
+                        "date_from": date_param(date_from),
+                        "date_to": date_param(date_to),
                         "kind": kind,
                         "limit": limit,
                         "q": q,
@@ -326,8 +327,8 @@ class AsyncProposalsResource:
                 query=query_params(
                     {
                         "cursor": cursor,
-                        "date_from": date_from,
-                        "date_to": date_to,
+                        "date_from": date_param(date_from),
+                        "date_to": date_param(date_to),
                         "kind": kind,
                         "limit": limit,
                         "q": q,

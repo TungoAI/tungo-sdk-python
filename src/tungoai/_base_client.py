@@ -241,6 +241,17 @@ def _query_text(value: object) -> str:
     raise RequestValidationError(f"Unsupported query parameter type: {type(value).__name__}.")
 
 
+def date_param(value: T) -> T | dt.date:
+    """Reduces a datetime given for a calendar-date parameter (``format: date``) to its date.
+
+    ``datetime`` is a subclass of ``date``, so type checkers accept one where a date is expected;
+    sent as it is, it would become date-time text, which the API rejects for a date field.
+    """
+    if isinstance(value, dt.datetime):
+        return value.date()
+    return value
+
+
 def query_params(params: Mapping[str, object]) -> list[tuple[str, str]]:
     """Flattens named parameters into query pairs.
 
@@ -285,6 +296,10 @@ def whole_body(body: object) -> object:
     return UNSET if isinstance(body, Omit) else body
 
 
+DEFAULT_HOOK_SIGNATURE_HEADER = "X-Signature"
+_HOOK_SIGNATURE_HEADER = re.compile(r"[A-Za-z0-9-]{1,64}")
+
+
 def raw_body(payload: object, content_type: str | None) -> tuple[bytes, str]:
     """Returns the exact bytes and the content type of a body that may be bytes, text or a JSON value."""
     if isinstance(payload, (bytes, bytearray)):
@@ -294,13 +309,37 @@ def raw_body(payload: object, content_type: str | None) -> tuple[bytes, str]:
     return encode_json(payload), content_type or "application/json"
 
 
-def hook_headers(content: bytes, headers: Mapping[str, str | None], *, secret: str | None) -> dict[str, str]:
-    """Builds the headers of a hook request; with a secret the X-Signature header signs the exact bytes sent."""
+def hook_headers(
+    content: bytes,
+    headers: Mapping[str, str | None],
+    *,
+    secret: str | None,
+    signature_header: str | None = None,
+) -> dict[str, str]:
+    """Builds the headers of a hook request.
+
+    The signature travels in ``signature_header`` (the header the hook was created with),
+    X-Signature when it is not given: an explicit signature is moved there, and with a
+    secret the exact bytes sent are signed into it.
+    """
     result = {name: value for name, value in headers.items() if value is not None}
+    target = DEFAULT_HOOK_SIGNATURE_HEADER
+    if signature_header is not None:
+        if not isinstance(signature_header, str) or not _HOOK_SIGNATURE_HEADER.fullmatch(signature_header):
+            raise RequestValidationError(
+                "signature_header must be 1 to 64 Latin letters, digits or hyphens, like the hook's signature_header."
+            )
+        target = signature_header
+        if target.lower() != DEFAULT_HOOK_SIGNATURE_HEADER.lower():
+            for name in [name for name in result if name.lower() == DEFAULT_HOOK_SIGNATURE_HEADER.lower()]:
+                value = result.pop(name)
+                if any(other.lower() == target.lower() for other in result):
+                    raise RequestValidationError("The signature is given twice: as signature and in the headers.")
+                result[target] = value
     if secret is not None:
-        if any(name.lower() == "x-signature" for name in result):
+        if any(name.lower() == target.lower() for name in result):
             raise RequestValidationError("Pass either secret or signature, not both.")
-        result["X-Signature"] = hook_signature_header(content, secret)
+        result[target] = hook_signature_header(content, secret)
     return result
 
 
@@ -366,6 +405,28 @@ def encode_json(body: object) -> bytes:
 # ---------------------------------------------------------------------------
 # Retry policy
 # ---------------------------------------------------------------------------
+
+
+def _body_idempotency_key(body: object) -> str | None:
+    """The ``idempotency_key`` field of a JSON object body, trimmed like the API trims it.
+
+    Approving a proposal documents the field as the same as the Idempotency-Key header. The API
+    prefers the header, so a generated one would make the caller's own key useless. A key that
+    cannot travel in a header (outside printable ASCII) is ignored here.
+    """
+    if isinstance(body, Mapping):
+        value = cast("Mapping[str, object]", body).get("idempotency_key")
+    elif isinstance(body, pydantic.BaseModel):
+        value = getattr(body, "idempotency_key", None)
+    else:
+        return None
+    if not isinstance(value, str):
+        return None
+    key = value.strip()
+    return key if key and _PRINTABLE_ASCII.fullmatch(key) else None
+
+
+_PRINTABLE_ASCII = re.compile(r"[\x20-\x7e]+")
 
 
 def should_retry(method: str, has_idempotency_key: bool, cause: int | Literal["connection_error", "timeout"]) -> bool:
@@ -878,7 +939,7 @@ class BaseClient:
             # retry look safe when it repeats the action.
             return key if spec.idempotency_header else None
         if spec.idempotency_header:
-            return str(uuid.uuid4())
+            return _body_idempotency_key(spec.body) or str(uuid.uuid4())
         return None
 
     def _prepare(
