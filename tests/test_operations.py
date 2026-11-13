@@ -34,9 +34,13 @@ from tungoai.types import (
     ChatDialog,
     ChatDialogDeleted,
     ChatDialogList,
+    ChatDialogRated,
     ChatDialogRenamed,
     ChatDialogSummary,
     ChatMentionSearch,
+    ChatMessageRated,
+    ChatRatingDismissed,
+    ChatRatingOptions,
     ChatStopResult,
     ChatSuggestions,
     ChatTokenCount,
@@ -1319,6 +1323,36 @@ async def test_async_chat_list_mentions(async_client: AsyncTungo, server: MockSe
     expect_result(result, "listCompanyChatMentions")
 
 
+def test_sync_chat_get_rating_options(sync_client: Tungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/chat/rating-options", reply("listCompanyChatRatingOptions"))
+    result = sync_client.chat.get_rating_options("co/1", lang="ru")
+    assert_type(result, ChatRatingOptions)
+    expect_request(
+        server,
+        "GET",
+        "/v1/companies/co%2F1/chat/rating-options",
+        query=[
+            ("lang", "ru"),
+        ],
+    )
+    expect_result(result, "listCompanyChatRatingOptions")
+
+
+async def test_async_chat_get_rating_options(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/chat/rating-options", reply("listCompanyChatRatingOptions"))
+    result = await async_client.chat.get_rating_options("co/1", lang="ru")
+    assert_type(result, ChatRatingOptions)
+    expect_request(
+        server,
+        "GET",
+        "/v1/companies/co%2F1/chat/rating-options",
+        query=[
+            ("lang", "ru"),
+        ],
+    )
+    expect_result(result, "listCompanyChatRatingOptions")
+
+
 def test_sync_chat_list_suggestions(sync_client: Tungo, server: MockServer) -> None:
     server.add("GET", "/v1/companies/co%2F1/chat/suggestions", reply("listCompanyChatSuggestions"))
     result = sync_client.chat.list_suggestions("co/1", lang="ru")
@@ -1559,6 +1593,112 @@ async def test_async_chat_list_events(async_client: AsyncTungo, server: MockServ
         accept="text/event-stream",
     )
     expect_events(events, "listCompanyChatEvents")
+
+
+def test_sync_chat_rate_message(sync_client: Tungo, server: MockServer) -> None:
+    server.add("PUT", "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating", reply("putCompanyChatMessageRating"))
+    result = sync_client.chat.rate_message("co/1", "id/1", "turn/1", comment="text", reason="text", vote="up")
+    assert_type(result, ChatMessageRated)
+    expect_request(
+        server,
+        "PUT",
+        "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating",
+        body={
+            "comment": "text",
+            "reason": "text",
+            "vote": "up",
+        },
+    )
+    expect_result(result, "putCompanyChatMessageRating")
+
+
+async def test_async_chat_rate_message(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("PUT", "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating", reply("putCompanyChatMessageRating"))
+    result = await async_client.chat.rate_message("co/1", "id/1", "turn/1", comment="text", reason="text", vote="up")
+    assert_type(result, ChatMessageRated)
+    expect_request(
+        server,
+        "PUT",
+        "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating",
+        body={
+            "comment": "text",
+            "reason": "text",
+            "vote": "up",
+        },
+    )
+    expect_result(result, "putCompanyChatMessageRating")
+
+
+def test_sync_chat_delete_message_rating(sync_client: Tungo, server: MockServer) -> None:
+    server.add(
+        "DELETE",
+        "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating",
+        reply("deleteCompanyChatMessageRating"),
+    )
+    result = sync_client.chat.delete_message_rating("co/1", "id/1", "turn/1")
+    assert_type(result, ChatMessageRated)
+    expect_request(server, "DELETE", "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating")
+    expect_result(result, "deleteCompanyChatMessageRating")
+
+
+async def test_async_chat_delete_message_rating(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add(
+        "DELETE",
+        "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating",
+        reply("deleteCompanyChatMessageRating"),
+    )
+    result = await async_client.chat.delete_message_rating("co/1", "id/1", "turn/1")
+    assert_type(result, ChatMessageRated)
+    expect_request(server, "DELETE", "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating")
+    expect_result(result, "deleteCompanyChatMessageRating")
+
+
+def test_sync_chat_rate(sync_client: Tungo, server: MockServer) -> None:
+    server.add("PUT", "/v1/companies/co%2F1/chat/id%2F1/rating", reply("putCompanyChatRating"))
+    result = sync_client.chat.rate("co/1", "id/1", comment="text", score=7)
+    assert_type(result, ChatDialogRated)
+    expect_request(
+        server,
+        "PUT",
+        "/v1/companies/co%2F1/chat/id%2F1/rating",
+        body={
+            "comment": "text",
+            "score": 7,
+        },
+    )
+    expect_result(result, "putCompanyChatRating")
+
+
+async def test_async_chat_rate(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("PUT", "/v1/companies/co%2F1/chat/id%2F1/rating", reply("putCompanyChatRating"))
+    result = await async_client.chat.rate("co/1", "id/1", comment="text", score=7)
+    assert_type(result, ChatDialogRated)
+    expect_request(
+        server,
+        "PUT",
+        "/v1/companies/co%2F1/chat/id%2F1/rating",
+        body={
+            "comment": "text",
+            "score": 7,
+        },
+    )
+    expect_result(result, "putCompanyChatRating")
+
+
+def test_sync_chat_dismiss_rating(sync_client: Tungo, server: MockServer) -> None:
+    server.add("POST", "/v1/companies/co%2F1/chat/id%2F1/rating/dismiss", reply("dismissCompanyChatRating"))
+    result = sync_client.chat.dismiss_rating("co/1", "id/1")
+    assert_type(result, ChatRatingDismissed)
+    expect_request(server, "POST", "/v1/companies/co%2F1/chat/id%2F1/rating/dismiss")
+    expect_result(result, "dismissCompanyChatRating")
+
+
+async def test_async_chat_dismiss_rating(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("POST", "/v1/companies/co%2F1/chat/id%2F1/rating/dismiss", reply("dismissCompanyChatRating"))
+    result = await async_client.chat.dismiss_rating("co/1", "id/1")
+    assert_type(result, ChatRatingDismissed)
+    expect_request(server, "POST", "/v1/companies/co%2F1/chat/id%2F1/rating/dismiss")
+    expect_result(result, "dismissCompanyChatRating")
 
 
 def test_sync_chat_stop(sync_client: Tungo, server: MockServer) -> None:

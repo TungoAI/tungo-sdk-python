@@ -46,6 +46,7 @@ __all__ = [
     "ChatChoiceAnswer",
     "ChatMention",
     "ChatMentionType",
+    "ChatMessageRatingBodyVote",
     "ChatMessageRequestEffort",
     "ChatMessageRequestMode",
     "ChatTokenCountRequestMode",
@@ -61,6 +62,7 @@ __all__ = [
     "CompanyAutonomyInputLevelsPurchase",
     "CompanyAutonomyInputLevelsSale",
     "FeedSection",
+    "ListCompanyChatRatingOptionsLang",
     "ListCompanyChatSuggestionsLang",
     "ListCompanyProposalsApprovalRequested",
     "ListWorkspaceWebhooksEndpointAttemptsStatus",
@@ -133,6 +135,12 @@ ChatMentionType: TypeAlias = Literal[
     "proposal",
     "counterparty",
     "batch",
+]
+
+# up — ответ хороший, down — плохой. Повторная оценка того же ответа заменяет прежнюю
+ChatMessageRatingBodyVote: TypeAlias = Literal[
+    "up",
+    "down",
 ]
 
 # Усилие ИИ на этот вопрос: low < medium < high < xhigh < max — глубже думает, дольше и дороже (больше расход лимита). Не прислано или null — усилие выбирает Tungo. Только на тарифе с выбором усилия (max_effort тарифа в GET /v1/plans не null): иначе 402 effort_not_in_plan. Выше max_effort тарифа — опускается до него. Ответ на уточняющий вопрос продолжает ход с прежним усилием. Ключу API тариф не нужен: усилие — как прислано
@@ -233,6 +241,12 @@ FeedSection: TypeAlias = Literal[
     "auto",
     "decision",
     "question",
+]
+
+# Язык названий причин; по умолчанию ru
+ListCompanyChatRatingOptionsLang: TypeAlias = Literal[
+    "ru",
+    "kk",
 ]
 
 # Язык текстов — язык интерфейса кабинета. Не передан — язык ответов ИИ из профиля (`kk` — по-казахски, иначе по-русски)

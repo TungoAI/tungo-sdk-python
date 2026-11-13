@@ -320,7 +320,7 @@ print(is_valid_bin_iin("990140000017"))  # True
 
 ## Справочник API
 
-Создано из контракта API платформы Tungo: **ресурсов — 13, методов — 85, типов событий вебхуков — 22**.
+Создано из контракта API платформы Tungo: **ресурсов — 13, методов — 90, типов событий вебхуков — 22**.
 
 | Ресурс | Описание | Методы |
 | --- | --- | --- |
@@ -329,7 +329,7 @@ print(is_valid_bin_iin("990140000017"))  # True
 | `client.platform` | Баланс платформы, книга движений, отчёты о расходе, лимиты, аудит и тарифы моделей | `list_usage_rates` · `get_account` · `get_audit` · `get_ledger` · `list_limits` · `list_requests` · `get_usage` |
 | `client.api_keys` | Сведения о текущем ключе API и статистика его расхода | `get_current` · `get_current_usage` · `get_usage` |
 | `client.webhooks` | Исходящие вебхуки организации (Svix): адреса, каталог событий, доставки и проверка подписи | `list_endpoints` · `create_endpoint` · `get_endpoint` · `update_endpoint` · `delete_endpoint` · `list_endpoint_attempts` · `rotate_endpoint_secret` · `test_endpoint` · `list_event_types` · `list_messages` · `list_message_attempts` · `resend_message` · `get_usage` |
-| `client.chat` | Диалоги с ИИ-бухгалтером: вопросы, потоковый чат (SSE), подсчёт токенов и история | `list` · `create` · `create_stream` · `count_tokens` · `list_mentions` · `list_suggestions` · `get` · `update` · `delete` · `answer` · `answer_stream` · `list_events` · `stop` |
+| `client.chat` | Диалоги с ИИ-бухгалтером: вопросы, потоковый чат (SSE), подсчёт токенов и история | `list` · `create` · `create_stream` · `count_tokens` · `list_mentions` · `get_rating_options` · `list_suggestions` · `get` · `update` · `delete` · `answer` · `answer_stream` · `list_events` · `rate_message` · `delete_message_rating` · `rate` · `dismiss_rating` · `stop` |
 | `client.proposals` | Предложения документов ИИ-бухгалтера: просмотр, одобрение записи в 1С и отклонение | `list` · `approve_batch` · `get` · `approve` · `reject` · `request_approval` |
 | `client.feed` | Лента событий и предложений компании (страницы и живой поток SSE) | `get` · `list_events` |
 | `client.batches` | Пачки обработки банковских выписок, входящих ЭСФ и DirectBank | `list` · `create_bank_statement` · `create_esf_purchases` · `get` · `list_events` · `stop` · `get_summary` · `list_statements` · `poll_directbank` |

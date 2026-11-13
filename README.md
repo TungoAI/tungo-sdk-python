@@ -391,7 +391,7 @@ httpx, the HTTP library underneath, writes its own line for every request to the
 
 ## API reference
 
-Generated from the Tungo Platform API contract: **13 resources, 85 methods, 22 webhook event types**.
+Generated from the Tungo Platform API contract: **13 resources, 90 methods, 22 webhook event types**.
 
 | Resource | Description | Methods |
 | --- | --- | --- |
@@ -400,7 +400,7 @@ Generated from the Tungo Platform API contract: **13 resources, 85 methods, 22 w
 | `client.platform` | Platform balance, ledger, usage reports, limits, audit log and model rates | `list_usage_rates` · `get_account` · `get_audit` · `get_ledger` · `list_limits` · `list_requests` · `get_usage` |
 | `client.api_keys` | The current API key and its usage statistics | `get_current` · `get_current_usage` · `get_usage` |
 | `client.webhooks` | Outgoing webhooks of an organisation (Svix): endpoints, event catalogue, deliveries and signature check | `list_endpoints` · `create_endpoint` · `get_endpoint` · `update_endpoint` · `delete_endpoint` · `list_endpoint_attempts` · `rotate_endpoint_secret` · `test_endpoint` · `list_event_types` · `list_messages` · `list_message_attempts` · `resend_message` · `get_usage` |
-| `client.chat` | Conversations with the AI accountant: questions, streaming chat (SSE), token counting and history | `list` · `create` · `create_stream` · `count_tokens` · `list_mentions` · `list_suggestions` · `get` · `update` · `delete` · `answer` · `answer_stream` · `list_events` · `stop` |
+| `client.chat` | Conversations with the AI accountant: questions, streaming chat (SSE), token counting and history | `list` · `create` · `create_stream` · `count_tokens` · `list_mentions` · `get_rating_options` · `list_suggestions` · `get` · `update` · `delete` · `answer` · `answer_stream` · `list_events` · `rate_message` · `delete_message_rating` · `rate` · `dismiss_rating` · `stop` |
 | `client.proposals` | Documents proposed by the AI accountant: review, approval for posting to 1C, and rejection | `list` · `approve_batch` · `get` · `approve` · `reject` · `request_approval` |
 | `client.feed` | The company's feed of events and proposals (pages and a live SSE stream) | `get` · `list_events` |
 | `client.batches` | Processing batches for bank statements, incoming e-invoices and DirectBank | `list` · `create_bank_statement` · `create_esf_purchases` · `get` · `list_events` · `stop` · `get_summary` · `list_statements` · `poll_directbank` |

@@ -4,6 +4,8 @@
       "answer": "text",
       "citations": [
         {
+          "document": "text",
+          "label": "text",
           "source": "text",
           "title": "text"
         }
@@ -511,8 +513,17 @@
       },
       {
         "data": {
+          "article": "text",
+          "chapter": "text",
+          "document": "text",
           "edition": "text",
+          "edition_date": "text",
+          "heading": "text",
+          "label": "text",
+          "note": "text",
+          "point": "text",
           "source": "text",
+          "subpoint": "text",
           "title": "text",
           "type": "citation",
           "url": "text"
@@ -645,6 +656,7 @@
           "answer": "text",
           "choice_id": "text",
           "cost_tiyn": 7,
+          "rating_prompt": true,
           "stop_reason": "text",
           "type": "done",
           "usage": {
@@ -1197,6 +1209,8 @@
       "answer": "text",
       "citations": [
         {
+          "document": "text",
+          "label": "text",
           "source": "text",
           "title": "text"
         }
@@ -1704,8 +1718,17 @@
       },
       {
         "data": {
+          "article": "text",
+          "chapter": "text",
+          "document": "text",
           "edition": "text",
+          "edition_date": "text",
+          "heading": "text",
+          "label": "text",
+          "note": "text",
+          "point": "text",
           "source": "text",
+          "subpoint": "text",
           "title": "text",
           "type": "citation",
           "url": "text"
@@ -1838,6 +1861,7 @@
           "answer": "text",
           "choice_id": "text",
           "cost_tiyn": 7,
+          "rating_prompt": true,
           "stop_reason": "text",
           "type": "done",
           "usage": {
@@ -1908,6 +1932,20 @@
     },
     "status": 200
   },
+  "deleteCompanyChatMessageRating": {
+    "body": {
+      "dialog_id": "text",
+      "message_id": "text",
+      "rating": {
+        "at": "2026-01-02T03:04:05Z",
+        "comment": "text",
+        "reason": "text",
+        "vote": "up"
+      },
+      "turn_no": 7
+    },
+    "status": 200
+  },
   "deleteWorkspaceWebhooksEndpoint": {
     "body": null,
     "status": 204
@@ -1917,6 +1955,13 @@
       "created": 1.5,
       "documents": 1.5,
       "job_id": "text"
+    },
+    "status": 200
+  },
+  "dismissCompanyChatRating": {
+    "body": {
+      "id": "text",
+      "rating_prompt": false
     },
     "status": 200
   },
@@ -2407,6 +2452,12 @@
         }
       ],
       "pd_restored": true,
+      "rating": {
+        "at": "2026-01-02T03:04:05Z",
+        "comment": "text",
+        "score": 7
+      },
+      "rating_prompt": true,
       "running": true,
       "title": "text",
       "title_source": "first_message",
@@ -3570,8 +3621,17 @@
       },
       {
         "data": {
+          "article": "text",
+          "chapter": "text",
+          "document": "text",
           "edition": "text",
+          "edition_date": "text",
+          "heading": "text",
+          "label": "text",
+          "note": "text",
+          "point": "text",
           "source": "text",
+          "subpoint": "text",
           "title": "text",
           "type": "citation",
           "url": "text"
@@ -3704,6 +3764,7 @@
           "answer": "text",
           "choice_id": "text",
           "cost_tiyn": 7,
+          "rating_prompt": true,
           "stop_reason": "text",
           "type": "done",
           "usage": {
@@ -4009,8 +4070,17 @@
       },
       {
         "data": {
+          "article": "text",
+          "chapter": "text",
+          "document": "text",
           "edition": "text",
+          "edition_date": "text",
+          "heading": "text",
+          "label": "text",
+          "note": "text",
+          "point": "text",
           "source": "text",
+          "subpoint": "text",
           "title": "text",
           "type": "citation",
           "url": "text"
@@ -4143,6 +4213,7 @@
           "answer": "text",
           "choice_id": "text",
           "cost_tiyn": 7,
+          "rating_prompt": true,
           "stop_reason": "text",
           "type": "done",
           "usage": {
@@ -4177,6 +4248,22 @@
         {
           "reason": "no_access",
           "type": "proposal"
+        }
+      ]
+    },
+    "status": 200
+  },
+  "listCompanyChatRatingOptions": {
+    "body": {
+      "comment_chars": 7,
+      "dialog_scores": {
+        "max": 7,
+        "min": 7
+      },
+      "reasons": [
+        {
+          "key": "text",
+          "title": "text"
         }
       ]
     },
@@ -4817,6 +4904,32 @@
       "max_amount_per_day_tiyn": 7,
       "max_amount_per_document_tiyn": 7,
       "updated_at": "2026-01-02T03:04:05Z"
+    },
+    "status": 200
+  },
+  "putCompanyChatMessageRating": {
+    "body": {
+      "dialog_id": "text",
+      "message_id": "text",
+      "rating": {
+        "at": "2026-01-02T03:04:05Z",
+        "comment": "text",
+        "reason": "text",
+        "vote": "up"
+      },
+      "turn_no": 7
+    },
+    "status": 200
+  },
+  "putCompanyChatRating": {
+    "body": {
+      "id": "text",
+      "rating": {
+        "at": "2026-01-02T03:04:05Z",
+        "comment": "text",
+        "score": 7
+      },
+      "rating_prompt": false
     },
     "status": 200
   },

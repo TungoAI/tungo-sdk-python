@@ -14,9 +14,13 @@ from ..types import (
     ChatDialog,
     ChatDialogDeleted,
     ChatDialogList,
+    ChatDialogRated,
     ChatDialogRenamed,
     ChatDialogSummary,
     ChatMentionSearch,
+    ChatMessageRated,
+    ChatRatingDismissed,
+    ChatRatingOptions,
     ChatStopResult,
     ChatSuggestions,
     ChatTokenCount,
@@ -294,6 +298,40 @@ class ChatResource:
             options=request_options,
         )
 
+    def get_rating_options(
+        self,
+        co: str,
+        *,
+        lang: params.ListCompanyChatRatingOptionsLang | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> ChatRatingOptions:
+        """Что нужно форме оценки: причины «вниз» и предел комментария
+
+        Причины задаёт настройка платформы; названия — на языке lang. Список меняется редко: достаточно прочитать раз за сеанс.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            lang: Язык названий причин; по умолчанию ru
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request(
+            RequestSpec(
+                method="GET",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/rating-options",
+                query=query_params(
+                    {
+                        "lang": lang,
+                    }
+                ),
+            ),
+            cast_to=ChatRatingOptions,
+            options=request_options,
+        )
+
     def list_suggestions(
         self,
         co: str,
@@ -536,6 +574,149 @@ class ChatResource:
                     }
                 ),
             ),
+            options=request_options,
+        )
+
+    def rate_message(
+        self,
+        co: str,
+        id: str,
+        turn: str,
+        *,
+        vote: params.ChatMessageRatingBodyVote,
+        comment: str | None | Omit = omit,
+        reason: str | None | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> ChatMessageRated:
+        """Оценить ответ ИИ: палец вверх или вниз
+
+        Один голос на ответ: повторный PUT заменяет оценку (так же дописывают причину и комментарий). Оценить можно только законченный ответ своего разговора; идущий ход и несуществующий номер — 404 message_not_found. Поставленная оценка возвращается в истории (rating у сообщения). Отказы: 400 rating_comment_too_long — комментарий длиннее предела; 400 rating_reason_unknown — такой причины нет в списке; 400 rating_reason_not_allowed — причина у оценки up; 404 — разговор чужой или не найден.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+            turn: Номер ответа: turn_no сообщения ИИ в истории (он же X-Turn-No)
+            vote: up — ответ хороший, down — плохой. Повторная оценка того же ответа заменяет прежнюю
+            comment: Комментарий человека, необязательный; предел длины — comment_chars из GET …/chat/rating-options
+            reason: Причина оценки down — ключ из GET …/chat/rating-options; можно прислать позже повторным PUT. У оценки up причины нет
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request(
+            RequestSpec(
+                method="PUT",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/{path_segment('id', id)}/messages/{path_segment('turn', turn)}/rating",
+                body=json_body(
+                    {
+                        "comment": comment,
+                        "reason": reason,
+                        "vote": vote,
+                    }
+                ),
+            ),
+            cast_to=ChatMessageRated,
+            options=request_options,
+        )
+
+    def delete_message_rating(
+        self,
+        co: str,
+        id: str,
+        turn: str,
+        *,
+        request_options: RequestOptions | None = None,
+    ) -> ChatMessageRated:
+        """Снять свою оценку ответа
+
+        Оценки не было — всё равно 200.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+            turn: Номер ответа: turn_no сообщения ИИ в истории (он же X-Turn-No)
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request(
+            RequestSpec(
+                method="DELETE",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/{path_segment('id', id)}/messages/{path_segment('turn', turn)}/rating",
+            ),
+            cast_to=ChatMessageRated,
+            options=request_options,
+        )
+
+    def rate(
+        self,
+        co: str,
+        id: str,
+        *,
+        score: int,
+        comment: str | None | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> ChatDialogRated:
+        """Оценить разговор целиком: от 1 до 5
+
+        Повторный PUT заменяет оценку. В разговоре без единого ответа — 409 dialog_not_ratable. После оценки предложение оценить (rating_prompt) в этом разговоре больше не приходит. Отказы: 400 rating_comment_too_long — комментарий длиннее предела; 400 rating_reason_unknown — такой причины нет в списке; 400 rating_reason_not_allowed — причина у оценки up; 404 — разговор чужой или не найден.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+            score: Оценка разговора: от 1 (плохо) до 5 (отлично). Повторная оценка заменяет прежнюю
+            comment: Комментарий человека, необязательный; предел длины — comment_chars из GET …/chat/rating-options
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request(
+            RequestSpec(
+                method="PUT",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/{path_segment('id', id)}/rating",
+                body=json_body(
+                    {
+                        "comment": comment,
+                        "score": score,
+                    }
+                ),
+            ),
+            cast_to=ChatDialogRated,
+            options=request_options,
+        )
+
+    def dismiss_rating(
+        self,
+        co: str,
+        id: str,
+        *,
+        request_options: RequestOptions | None = None,
+    ) -> ChatRatingDismissed:
+        """Не сейчас: закрыть предложение оценить разговор
+
+        В этом разговоре предложение больше не появится, в других — не раньше срока из настройки. Уже поставленная оценка остаётся. Тела нет.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request(
+            RequestSpec(
+                method="POST",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/{path_segment('id', id)}/rating/dismiss",
+            ),
+            cast_to=ChatRatingDismissed,
             options=request_options,
         )
 
@@ -833,6 +1014,40 @@ class AsyncChatResource:
             options=request_options,
         )
 
+    async def get_rating_options(
+        self,
+        co: str,
+        *,
+        lang: params.ListCompanyChatRatingOptionsLang | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> ChatRatingOptions:
+        """Что нужно форме оценки: причины «вниз» и предел комментария
+
+        Причины задаёт настройка платформы; названия — на языке lang. Список меняется редко: достаточно прочитать раз за сеанс.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            lang: Язык названий причин; по умолчанию ru
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request(
+            RequestSpec(
+                method="GET",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/rating-options",
+                query=query_params(
+                    {
+                        "lang": lang,
+                    }
+                ),
+            ),
+            cast_to=ChatRatingOptions,
+            options=request_options,
+        )
+
     async def list_suggestions(
         self,
         co: str,
@@ -1078,6 +1293,149 @@ class AsyncChatResource:
             options=request_options,
         )
 
+    async def rate_message(
+        self,
+        co: str,
+        id: str,
+        turn: str,
+        *,
+        vote: params.ChatMessageRatingBodyVote,
+        comment: str | None | Omit = omit,
+        reason: str | None | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> ChatMessageRated:
+        """Оценить ответ ИИ: палец вверх или вниз
+
+        Один голос на ответ: повторный PUT заменяет оценку (так же дописывают причину и комментарий). Оценить можно только законченный ответ своего разговора; идущий ход и несуществующий номер — 404 message_not_found. Поставленная оценка возвращается в истории (rating у сообщения). Отказы: 400 rating_comment_too_long — комментарий длиннее предела; 400 rating_reason_unknown — такой причины нет в списке; 400 rating_reason_not_allowed — причина у оценки up; 404 — разговор чужой или не найден.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+            turn: Номер ответа: turn_no сообщения ИИ в истории (он же X-Turn-No)
+            vote: up — ответ хороший, down — плохой. Повторная оценка того же ответа заменяет прежнюю
+            comment: Комментарий человека, необязательный; предел длины — comment_chars из GET …/chat/rating-options
+            reason: Причина оценки down — ключ из GET …/chat/rating-options; можно прислать позже повторным PUT. У оценки up причины нет
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request(
+            RequestSpec(
+                method="PUT",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/{path_segment('id', id)}/messages/{path_segment('turn', turn)}/rating",
+                body=json_body(
+                    {
+                        "comment": comment,
+                        "reason": reason,
+                        "vote": vote,
+                    }
+                ),
+            ),
+            cast_to=ChatMessageRated,
+            options=request_options,
+        )
+
+    async def delete_message_rating(
+        self,
+        co: str,
+        id: str,
+        turn: str,
+        *,
+        request_options: RequestOptions | None = None,
+    ) -> ChatMessageRated:
+        """Снять свою оценку ответа
+
+        Оценки не было — всё равно 200.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+            turn: Номер ответа: turn_no сообщения ИИ в истории (он же X-Turn-No)
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request(
+            RequestSpec(
+                method="DELETE",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/{path_segment('id', id)}/messages/{path_segment('turn', turn)}/rating",
+            ),
+            cast_to=ChatMessageRated,
+            options=request_options,
+        )
+
+    async def rate(
+        self,
+        co: str,
+        id: str,
+        *,
+        score: int,
+        comment: str | None | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> ChatDialogRated:
+        """Оценить разговор целиком: от 1 до 5
+
+        Повторный PUT заменяет оценку. В разговоре без единого ответа — 409 dialog_not_ratable. После оценки предложение оценить (rating_prompt) в этом разговоре больше не приходит. Отказы: 400 rating_comment_too_long — комментарий длиннее предела; 400 rating_reason_unknown — такой причины нет в списке; 400 rating_reason_not_allowed — причина у оценки up; 404 — разговор чужой или не найден.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+            score: Оценка разговора: от 1 (плохо) до 5 (отлично). Повторная оценка заменяет прежнюю
+            comment: Комментарий человека, необязательный; предел длины — comment_chars из GET …/chat/rating-options
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request(
+            RequestSpec(
+                method="PUT",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/{path_segment('id', id)}/rating",
+                body=json_body(
+                    {
+                        "comment": comment,
+                        "score": score,
+                    }
+                ),
+            ),
+            cast_to=ChatDialogRated,
+            options=request_options,
+        )
+
+    async def dismiss_rating(
+        self,
+        co: str,
+        id: str,
+        *,
+        request_options: RequestOptions | None = None,
+    ) -> ChatRatingDismissed:
+        """Не сейчас: закрыть предложение оценить разговор
+
+        В этом разговоре предложение больше не появится, в других — не раньше срока из настройки. Уже поставленная оценка остаётся. Тела нет.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request(
+            RequestSpec(
+                method="POST",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/{path_segment('id', id)}/rating/dismiss",
+            ),
+            cast_to=ChatRatingDismissed,
+            options=request_options,
+        )
+
     async def stop(
         self,
         co: str,
@@ -1116,11 +1474,16 @@ class ChatResourceWithRawResponse:
         self.create = to_raw_response(resource.create)
         self.count_tokens = to_raw_response(resource.count_tokens)
         self.list_mentions = to_raw_response(resource.list_mentions)
+        self.get_rating_options = to_raw_response(resource.get_rating_options)
         self.list_suggestions = to_raw_response(resource.list_suggestions)
         self.get = to_raw_response(resource.get)
         self.update = to_raw_response(resource.update)
         self.delete = to_raw_response(resource.delete)
         self.answer = to_raw_response(resource.answer)
+        self.rate_message = to_raw_response(resource.rate_message)
+        self.delete_message_rating = to_raw_response(resource.delete_message_rating)
+        self.rate = to_raw_response(resource.rate)
+        self.dismiss_rating = to_raw_response(resource.dismiss_rating)
         self.stop = to_raw_response(resource.stop)
 
 
@@ -1132,9 +1495,14 @@ class AsyncChatResourceWithRawResponse:
         self.create = async_to_raw_response(resource.create)
         self.count_tokens = async_to_raw_response(resource.count_tokens)
         self.list_mentions = async_to_raw_response(resource.list_mentions)
+        self.get_rating_options = async_to_raw_response(resource.get_rating_options)
         self.list_suggestions = async_to_raw_response(resource.list_suggestions)
         self.get = async_to_raw_response(resource.get)
         self.update = async_to_raw_response(resource.update)
         self.delete = async_to_raw_response(resource.delete)
         self.answer = async_to_raw_response(resource.answer)
+        self.rate_message = async_to_raw_response(resource.rate_message)
+        self.delete_message_rating = async_to_raw_response(resource.delete_message_rating)
+        self.rate = async_to_raw_response(resource.rate)
+        self.dismiss_rating = async_to_raw_response(resource.dismiss_rating)
         self.stop = async_to_raw_response(resource.stop)
