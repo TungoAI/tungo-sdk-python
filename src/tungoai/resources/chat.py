@@ -16,7 +16,9 @@ from ..types import (
     ChatDialogList,
     ChatDialogRenamed,
     ChatDialogSummary,
+    ChatMentionSearch,
     ChatStopResult,
+    ChatSuggestions,
     ChatTokenCount,
     ChatTurnResult,
     params,
@@ -84,6 +86,8 @@ class ChatResource:
         attachments: Sequence[params.ChatAttachment] | Omit = omit,
         capabilities: Sequence[str] | Omit = omit,
         dialog_id: str | None | Omit = omit,
+        effort: params.ChatMessageRequestEffort | None | Omit = omit,
+        mentions: Sequence[params.ChatMention] | Omit = omit,
         message: str | Omit = omit,
         mode: params.ChatMessageRequestMode | Omit = omit,
         new_dialog: bool | Omit = omit,
@@ -93,7 +97,7 @@ class ChatResource:
     ) -> ChatTurnResult:
         """Сообщение ИИ-бухгалтеру (ход потоком SSE)
 
-        Агентный цикл над 1С компании. Записи в 1С здесь нет: документы попадают в очередь предложений. Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа; 503 — сервис модели не настроен. Повтор с тем же Idempotency-Key: ход закончен — его итог JSON (ChatTurnResult, Idempotent-Replayed: true), ход ещё идёт — 409 idempotency_in_progress с error.dialog_id, error.turn_no и error.events_url для переподключения (Last-Event-ID).
+        Агентный цикл над 1С компании. Записи в 1С здесь нет: документы попадают в очередь предложений. Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа (plan_limit_reached) или у человека уже идёт предельное число ходов без доп. использования (parallel_turns_limit, Retry-After; ход не начат); 503 — сервис модели не настроен. Повтор с тем же Idempotency-Key: ход закончен — его итог JSON (ChatTurnResult, Idempotent-Replayed: true), ход ещё идёт — 409 idempotency_in_progress с error.dialog_id, error.turn_no и error.events_url для переподключения (Last-Event-ID).
 
         Idempotency-Key: повтор с тем же ключом и тем же телом отдаёт прежний ответ (статус и тело) с заголовком Idempotent-Replayed: true и ничего не делает второй раз; тот же ключ с другим адресом или телом — 422 (error.code = idempotency_key_reused); первый запрос с этим ключом ещё идёт — 409 (error.code = idempotency_in_progress). Запоминается только удачный ответ (2xx): после отказа повтор с тем же ключом выполнится заново. Ключ живёт сутки (настройка idempotency.keys), область — организация и тот, кто прислал (ключ API или человек).
 
@@ -106,6 +110,8 @@ class ChatResource:
             attachments: Файлы к вопросу. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .docx, .xlsx, .xls, .csv, .txt. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
             capabilities: Что умеет клиент: ["choice"] — показывать уточняющие вопросы с вариантами (событие choice). Без него ИИ спрашивает обычным текстом
             dialog_id: Продолжить разговор с этим id. Без него — новый разговор, его id придёт в заголовке X-Dialog-Id
+            effort: Усилие ИИ на этот вопрос: low < medium < high < xhigh < max — глубже думает, дольше и дороже (больше расход лимита). Не прислано или null — усилие выбирает Tungo. Только на тарифе с выбором усилия (max_effort тарифа в GET /v1/plans не null): иначе 402 effort_not_in_plan. Выше max_effort тарифа — опускается до него. Ответ на уточняющий вопрос продолжает ход с прежним усилием. Ключу API тариф не нужен: усилие — как прислано
+            mentions: Упоминания через «@» в этом вопросе, до 10: ИИ получит их вместе с вопросом. Каждое проверяется на доступ: нет объекта в этой компании или нет права его видеть — 404 (error.code = mention_not_found, error.index — номер в списке), ход не начинается. Неверная форма — 400 (error.code = mentions_invalid)
             message: Вопрос человека, до 4000 знаков; можно не писать, если приложены файлы
             mode: Режим хода: auto (по умолчанию) — ИИ сам решает, ответить или подготовить документ; ask — только ответ и разбор, без документов; document — подготовить документ
             new_dialog: true — начать новый разговор именно с этим dialog_id (клиент задаёт id сам); id уже занят — 409
@@ -122,6 +128,8 @@ class ChatResource:
                         "attachments": attachments,
                         "capabilities": capabilities,
                         "dialog_id": dialog_id,
+                        "effort": effort,
+                        "mentions": mentions,
                         "message": message,
                         "mode": mode,
                         "new_dialog": new_dialog,
@@ -144,6 +152,8 @@ class ChatResource:
         attachments: Sequence[params.ChatAttachment] | Omit = omit,
         capabilities: Sequence[str] | Omit = omit,
         dialog_id: str | None | Omit = omit,
+        effort: params.ChatMessageRequestEffort | None | Omit = omit,
+        mentions: Sequence[params.ChatMention] | Omit = omit,
         message: str | Omit = omit,
         mode: params.ChatMessageRequestMode | Omit = omit,
         new_dialog: bool | Omit = omit,
@@ -153,7 +163,7 @@ class ChatResource:
     ) -> ChatStream:
         """Сообщение ИИ-бухгалтеру (ход потоком SSE)
 
-        Агентный цикл над 1С компании. Записи в 1С здесь нет: документы попадают в очередь предложений. Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа; 503 — сервис модели не настроен. Повтор с тем же Idempotency-Key: ход закончен — его итог JSON (ChatTurnResult, Idempotent-Replayed: true), ход ещё идёт — 409 idempotency_in_progress с error.dialog_id, error.turn_no и error.events_url для переподключения (Last-Event-ID).
+        Агентный цикл над 1С компании. Записи в 1С здесь нет: документы попадают в очередь предложений. Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа (plan_limit_reached) или у человека уже идёт предельное число ходов без доп. использования (parallel_turns_limit, Retry-After; ход не начат); 503 — сервис модели не настроен. Повтор с тем же Idempotency-Key: ход закончен — его итог JSON (ChatTurnResult, Idempotent-Replayed: true), ход ещё идёт — 409 idempotency_in_progress с error.dialog_id, error.turn_no и error.events_url для переподключения (Last-Event-ID).
 
         Idempotency-Key: повтор с тем же ключом и тем же телом отдаёт прежний ответ (статус и тело) с заголовком Idempotent-Replayed: true и ничего не делает второй раз; тот же ключ с другим адресом или телом — 422 (error.code = idempotency_key_reused); первый запрос с этим ключом ещё идёт — 409 (error.code = idempotency_in_progress). Запоминается только удачный ответ (2xx): после отказа повтор с тем же ключом выполнится заново. Ключ живёт сутки (настройка idempotency.keys), область — организация и тот, кто прислал (ключ API или человек).
 
@@ -168,6 +178,8 @@ class ChatResource:
             attachments: Файлы к вопросу. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .docx, .xlsx, .xls, .csv, .txt. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
             capabilities: Что умеет клиент: ["choice"] — показывать уточняющие вопросы с вариантами (событие choice). Без него ИИ спрашивает обычным текстом
             dialog_id: Продолжить разговор с этим id. Без него — новый разговор, его id придёт в заголовке X-Dialog-Id
+            effort: Усилие ИИ на этот вопрос: low < medium < high < xhigh < max — глубже думает, дольше и дороже (больше расход лимита). Не прислано или null — усилие выбирает Tungo. Только на тарифе с выбором усилия (max_effort тарифа в GET /v1/plans не null): иначе 402 effort_not_in_plan. Выше max_effort тарифа — опускается до него. Ответ на уточняющий вопрос продолжает ход с прежним усилием. Ключу API тариф не нужен: усилие — как прислано
+            mentions: Упоминания через «@» в этом вопросе, до 10: ИИ получит их вместе с вопросом. Каждое проверяется на доступ: нет объекта в этой компании или нет права его видеть — 404 (error.code = mention_not_found, error.index — номер в списке), ход не начинается. Неверная форма — 400 (error.code = mentions_invalid)
             message: Вопрос человека, до 4000 знаков; можно не писать, если приложены файлы
             mode: Режим хода: auto (по умолчанию) — ИИ сам решает, ответить или подготовить документ; ask — только ответ и разбор, без документов; document — подготовить документ
             new_dialog: true — начать новый разговор именно с этим dialog_id (клиент задаёт id сам); id уже занят — 409
@@ -184,6 +196,8 @@ class ChatResource:
                         "attachments": attachments,
                         "capabilities": capabilities,
                         "dialog_id": dialog_id,
+                        "effort": effort,
+                        "mentions": mentions,
                         "message": message,
                         "mode": mode,
                         "new_dialog": new_dialog,
@@ -240,6 +254,80 @@ class ChatResource:
             options=request_options,
         )
 
+    def list_mentions(
+        self,
+        co: str,
+        *,
+        limit: int | Omit = omit,
+        q: str | Omit = omit,
+        types: str | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> ChatMentionSearch:
+        """Что можно упомянуть через «@»
+
+        Поиск для списка упоминаний в поле ввода. Находит только то, что человек вправе открыть: предложения и задания — по праву company.read (задания — всех авторов компании; по ключу API — только начатые этим ключом), контрагентов — в 1С этой компании. Модель не вызывается.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            limit: Сколько на каждый вид: 1–20, по умолчанию 8
+            q: Что ищем: часть номера, названия, имени; у контрагента — от 2 знаков (или БИН цифрами). Пусто — свежие предложения и задания
+            types: Виды через запятую; по умолчанию все. `proposal` — предложение (документ для 1С), id — его номер P-000123; `counterparty` — контрагент из 1С компании, id — его ссылка из поиска; `batch` — задание пачки (разбор выписки, входящие ЭСФ), id — bat_…
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request(
+            RequestSpec(
+                method="GET",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/mentions",
+                query=query_params(
+                    {
+                        "limit": limit,
+                        "q": q,
+                        "types": types,
+                    }
+                ),
+            ),
+            cast_to=ChatMentionSearch,
+            options=request_options,
+        )
+
+    def list_suggestions(
+        self,
+        co: str,
+        *,
+        lang: params.ListCompanyChatSuggestionsLang | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> ChatSuggestions:
+        """Подсказки пустого чата
+
+        Что спросить в этой компании сейчас: разделы и карточки с готовыми текстами — кабинет рисует их как есть. Содержимое — настройка платформы, меняется без выката. Набор зависит от того, подключена ли 1С, есть ли документы, ждущие решения, от прав человека и от календаря: сезонные карточки появляются в свои недели сами, годы, кварталы и месяцы в текстах подставлены на сегодня по времени Алматы. Модель не вызывается, расхода нет.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            lang: Язык текстов — язык интерфейса кабинета. Не передан — язык ответов ИИ из профиля (`kk` — по-казахски, иначе по-русски)
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request(
+            RequestSpec(
+                method="GET",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/suggestions",
+                query=query_params(
+                    {
+                        "lang": lang,
+                    }
+                ),
+            ),
+            cast_to=ChatSuggestions,
+            options=request_options,
+        )
+
     def get(
         self,
         co: str,
@@ -279,7 +367,7 @@ class ChatResource:
     ) -> ChatDialogRenamed:
         """Переименовать свой разговор
 
-        Название видно в списке разговоров и в карточке разговора. Пустая строка — вернуть заголовок по первому вопросу. Пока ход идёт на другом сервере Tungo — 409 turn_in_progress (повторить после ответа); разговор только что изменился — 409 dialog_changed.
+        Название видно в списке разговоров и в карточке разговора. Пустая строка — вернуть автоматическое название (от ИИ, а пока его нет — первый вопрос). Пока ход идёт на другом сервере Tungo — 409 turn_in_progress (повторить после ответа); разговор только что изменился — 409 dialog_changed.
 
         Доступ: chat.use.
 
@@ -288,7 +376,7 @@ class ChatResource:
         Args:
             co: id компании, co_… — из GET /v1/companies
             id: id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
-            title: Новое название, до 64 символов; пустая строка — вернуть заголовок по первому вопросу
+            title: Новое название, до 64 символов; пустая строка — вернуть автоматическое название (от ИИ, а пока его нет — первый вопрос)
             request_options: Per-request timeout, retries, headers and idempotency key.
         """
         return self._client.request(
@@ -345,7 +433,7 @@ class ChatResource:
     ) -> ChatTurnResult:
         """Ответ на уточняющий вопрос ИИ (событие choice)
 
-        Продолжает ход потоком SSE. Повторный ответ на тот же choice_id — 409 (error.turn — номер хода с ответом; error.code = dismissed — вопрос закрыт без ответа). Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа; 503 — сервис модели не настроен.
+        Продолжает ход потоком SSE. Повторный ответ на тот же choice_id — 409 (error.turn — номер хода с ответом; error.code = dismissed — вопрос закрыт без ответа). Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа (plan_limit_reached) или у человека уже идёт предельное число ходов без доп. использования (parallel_turns_limit, Retry-After; ход не начат); 503 — сервис модели не настроен.
 
         Доступ: chat.use.
 
@@ -386,7 +474,7 @@ class ChatResource:
     ) -> ChatStream:
         """Ответ на уточняющий вопрос ИИ (событие choice)
 
-        Продолжает ход потоком SSE. Повторный ответ на тот же choice_id — 409 (error.turn — номер хода с ответом; error.code = dismissed — вопрос закрыт без ответа). Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа; 503 — сервис модели не настроен.
+        Продолжает ход потоком SSE. Повторный ответ на тот же choice_id — 409 (error.turn — номер хода с ответом; error.code = dismissed — вопрос закрыт без ответа). Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа (plan_limit_reached) или у человека уже идёт предельное число ходов без доп. использования (parallel_turns_limit, Retry-After; ход не начат); 503 — сервис модели не настроен.
 
         Доступ: chat.use.
 
@@ -537,6 +625,8 @@ class AsyncChatResource:
         attachments: Sequence[params.ChatAttachment] | Omit = omit,
         capabilities: Sequence[str] | Omit = omit,
         dialog_id: str | None | Omit = omit,
+        effort: params.ChatMessageRequestEffort | None | Omit = omit,
+        mentions: Sequence[params.ChatMention] | Omit = omit,
         message: str | Omit = omit,
         mode: params.ChatMessageRequestMode | Omit = omit,
         new_dialog: bool | Omit = omit,
@@ -546,7 +636,7 @@ class AsyncChatResource:
     ) -> ChatTurnResult:
         """Сообщение ИИ-бухгалтеру (ход потоком SSE)
 
-        Агентный цикл над 1С компании. Записи в 1С здесь нет: документы попадают в очередь предложений. Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа; 503 — сервис модели не настроен. Повтор с тем же Idempotency-Key: ход закончен — его итог JSON (ChatTurnResult, Idempotent-Replayed: true), ход ещё идёт — 409 idempotency_in_progress с error.dialog_id, error.turn_no и error.events_url для переподключения (Last-Event-ID).
+        Агентный цикл над 1С компании. Записи в 1С здесь нет: документы попадают в очередь предложений. Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа (plan_limit_reached) или у человека уже идёт предельное число ходов без доп. использования (parallel_turns_limit, Retry-After; ход не начат); 503 — сервис модели не настроен. Повтор с тем же Idempotency-Key: ход закончен — его итог JSON (ChatTurnResult, Idempotent-Replayed: true), ход ещё идёт — 409 idempotency_in_progress с error.dialog_id, error.turn_no и error.events_url для переподключения (Last-Event-ID).
 
         Idempotency-Key: повтор с тем же ключом и тем же телом отдаёт прежний ответ (статус и тело) с заголовком Idempotent-Replayed: true и ничего не делает второй раз; тот же ключ с другим адресом или телом — 422 (error.code = idempotency_key_reused); первый запрос с этим ключом ещё идёт — 409 (error.code = idempotency_in_progress). Запоминается только удачный ответ (2xx): после отказа повтор с тем же ключом выполнится заново. Ключ живёт сутки (настройка idempotency.keys), область — организация и тот, кто прислал (ключ API или человек).
 
@@ -559,6 +649,8 @@ class AsyncChatResource:
             attachments: Файлы к вопросу. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .docx, .xlsx, .xls, .csv, .txt. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
             capabilities: Что умеет клиент: ["choice"] — показывать уточняющие вопросы с вариантами (событие choice). Без него ИИ спрашивает обычным текстом
             dialog_id: Продолжить разговор с этим id. Без него — новый разговор, его id придёт в заголовке X-Dialog-Id
+            effort: Усилие ИИ на этот вопрос: low < medium < high < xhigh < max — глубже думает, дольше и дороже (больше расход лимита). Не прислано или null — усилие выбирает Tungo. Только на тарифе с выбором усилия (max_effort тарифа в GET /v1/plans не null): иначе 402 effort_not_in_plan. Выше max_effort тарифа — опускается до него. Ответ на уточняющий вопрос продолжает ход с прежним усилием. Ключу API тариф не нужен: усилие — как прислано
+            mentions: Упоминания через «@» в этом вопросе, до 10: ИИ получит их вместе с вопросом. Каждое проверяется на доступ: нет объекта в этой компании или нет права его видеть — 404 (error.code = mention_not_found, error.index — номер в списке), ход не начинается. Неверная форма — 400 (error.code = mentions_invalid)
             message: Вопрос человека, до 4000 знаков; можно не писать, если приложены файлы
             mode: Режим хода: auto (по умолчанию) — ИИ сам решает, ответить или подготовить документ; ask — только ответ и разбор, без документов; document — подготовить документ
             new_dialog: true — начать новый разговор именно с этим dialog_id (клиент задаёт id сам); id уже занят — 409
@@ -575,6 +667,8 @@ class AsyncChatResource:
                         "attachments": attachments,
                         "capabilities": capabilities,
                         "dialog_id": dialog_id,
+                        "effort": effort,
+                        "mentions": mentions,
                         "message": message,
                         "mode": mode,
                         "new_dialog": new_dialog,
@@ -597,6 +691,8 @@ class AsyncChatResource:
         attachments: Sequence[params.ChatAttachment] | Omit = omit,
         capabilities: Sequence[str] | Omit = omit,
         dialog_id: str | None | Omit = omit,
+        effort: params.ChatMessageRequestEffort | None | Omit = omit,
+        mentions: Sequence[params.ChatMention] | Omit = omit,
         message: str | Omit = omit,
         mode: params.ChatMessageRequestMode | Omit = omit,
         new_dialog: bool | Omit = omit,
@@ -606,7 +702,7 @@ class AsyncChatResource:
     ) -> AsyncChatStream:
         """Сообщение ИИ-бухгалтеру (ход потоком SSE)
 
-        Агентный цикл над 1С компании. Записи в 1С здесь нет: документы попадают в очередь предложений. Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа; 503 — сервис модели не настроен. Повтор с тем же Idempotency-Key: ход закончен — его итог JSON (ChatTurnResult, Idempotent-Replayed: true), ход ещё идёт — 409 idempotency_in_progress с error.dialog_id, error.turn_no и error.events_url для переподключения (Last-Event-ID).
+        Агентный цикл над 1С компании. Записи в 1С здесь нет: документы попадают в очередь предложений. Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа (plan_limit_reached) или у человека уже идёт предельное число ходов без доп. использования (parallel_turns_limit, Retry-After; ход не начат); 503 — сервис модели не настроен. Повтор с тем же Idempotency-Key: ход закончен — его итог JSON (ChatTurnResult, Idempotent-Replayed: true), ход ещё идёт — 409 idempotency_in_progress с error.dialog_id, error.turn_no и error.events_url для переподключения (Last-Event-ID).
 
         Idempotency-Key: повтор с тем же ключом и тем же телом отдаёт прежний ответ (статус и тело) с заголовком Idempotent-Replayed: true и ничего не делает второй раз; тот же ключ с другим адресом или телом — 422 (error.code = idempotency_key_reused); первый запрос с этим ключом ещё идёт — 409 (error.code = idempotency_in_progress). Запоминается только удачный ответ (2xx): после отказа повтор с тем же ключом выполнится заново. Ключ живёт сутки (настройка idempotency.keys), область — организация и тот, кто прислал (ключ API или человек).
 
@@ -621,6 +717,8 @@ class AsyncChatResource:
             attachments: Файлы к вопросу. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .docx, .xlsx, .xls, .csv, .txt. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
             capabilities: Что умеет клиент: ["choice"] — показывать уточняющие вопросы с вариантами (событие choice). Без него ИИ спрашивает обычным текстом
             dialog_id: Продолжить разговор с этим id. Без него — новый разговор, его id придёт в заголовке X-Dialog-Id
+            effort: Усилие ИИ на этот вопрос: low < medium < high < xhigh < max — глубже думает, дольше и дороже (больше расход лимита). Не прислано или null — усилие выбирает Tungo. Только на тарифе с выбором усилия (max_effort тарифа в GET /v1/plans не null): иначе 402 effort_not_in_plan. Выше max_effort тарифа — опускается до него. Ответ на уточняющий вопрос продолжает ход с прежним усилием. Ключу API тариф не нужен: усилие — как прислано
+            mentions: Упоминания через «@» в этом вопросе, до 10: ИИ получит их вместе с вопросом. Каждое проверяется на доступ: нет объекта в этой компании или нет права его видеть — 404 (error.code = mention_not_found, error.index — номер в списке), ход не начинается. Неверная форма — 400 (error.code = mentions_invalid)
             message: Вопрос человека, до 4000 знаков; можно не писать, если приложены файлы
             mode: Режим хода: auto (по умолчанию) — ИИ сам решает, ответить или подготовить документ; ask — только ответ и разбор, без документов; document — подготовить документ
             new_dialog: true — начать новый разговор именно с этим dialog_id (клиент задаёт id сам); id уже занят — 409
@@ -637,6 +735,8 @@ class AsyncChatResource:
                         "attachments": attachments,
                         "capabilities": capabilities,
                         "dialog_id": dialog_id,
+                        "effort": effort,
+                        "mentions": mentions,
                         "message": message,
                         "mode": mode,
                         "new_dialog": new_dialog,
@@ -693,6 +793,80 @@ class AsyncChatResource:
             options=request_options,
         )
 
+    async def list_mentions(
+        self,
+        co: str,
+        *,
+        limit: int | Omit = omit,
+        q: str | Omit = omit,
+        types: str | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> ChatMentionSearch:
+        """Что можно упомянуть через «@»
+
+        Поиск для списка упоминаний в поле ввода. Находит только то, что человек вправе открыть: предложения и задания — по праву company.read (задания — всех авторов компании; по ключу API — только начатые этим ключом), контрагентов — в 1С этой компании. Модель не вызывается.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            limit: Сколько на каждый вид: 1–20, по умолчанию 8
+            q: Что ищем: часть номера, названия, имени; у контрагента — от 2 знаков (или БИН цифрами). Пусто — свежие предложения и задания
+            types: Виды через запятую; по умолчанию все. `proposal` — предложение (документ для 1С), id — его номер P-000123; `counterparty` — контрагент из 1С компании, id — его ссылка из поиска; `batch` — задание пачки (разбор выписки, входящие ЭСФ), id — bat_…
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request(
+            RequestSpec(
+                method="GET",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/mentions",
+                query=query_params(
+                    {
+                        "limit": limit,
+                        "q": q,
+                        "types": types,
+                    }
+                ),
+            ),
+            cast_to=ChatMentionSearch,
+            options=request_options,
+        )
+
+    async def list_suggestions(
+        self,
+        co: str,
+        *,
+        lang: params.ListCompanyChatSuggestionsLang | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> ChatSuggestions:
+        """Подсказки пустого чата
+
+        Что спросить в этой компании сейчас: разделы и карточки с готовыми текстами — кабинет рисует их как есть. Содержимое — настройка платформы, меняется без выката. Набор зависит от того, подключена ли 1С, есть ли документы, ждущие решения, от прав человека и от календаря: сезонные карточки появляются в свои недели сами, годы, кварталы и месяцы в текстах подставлены на сегодня по времени Алматы. Модель не вызывается, расхода нет.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            lang: Язык текстов — язык интерфейса кабинета. Не передан — язык ответов ИИ из профиля (`kk` — по-казахски, иначе по-русски)
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request(
+            RequestSpec(
+                method="GET",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/suggestions",
+                query=query_params(
+                    {
+                        "lang": lang,
+                    }
+                ),
+            ),
+            cast_to=ChatSuggestions,
+            options=request_options,
+        )
+
     async def get(
         self,
         co: str,
@@ -732,7 +906,7 @@ class AsyncChatResource:
     ) -> ChatDialogRenamed:
         """Переименовать свой разговор
 
-        Название видно в списке разговоров и в карточке разговора. Пустая строка — вернуть заголовок по первому вопросу. Пока ход идёт на другом сервере Tungo — 409 turn_in_progress (повторить после ответа); разговор только что изменился — 409 dialog_changed.
+        Название видно в списке разговоров и в карточке разговора. Пустая строка — вернуть автоматическое название (от ИИ, а пока его нет — первый вопрос). Пока ход идёт на другом сервере Tungo — 409 turn_in_progress (повторить после ответа); разговор только что изменился — 409 dialog_changed.
 
         Доступ: chat.use.
 
@@ -741,7 +915,7 @@ class AsyncChatResource:
         Args:
             co: id компании, co_… — из GET /v1/companies
             id: id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
-            title: Новое название, до 64 символов; пустая строка — вернуть заголовок по первому вопросу
+            title: Новое название, до 64 символов; пустая строка — вернуть автоматическое название (от ИИ, а пока его нет — первый вопрос)
             request_options: Per-request timeout, retries, headers and idempotency key.
         """
         return await self._client.request(
@@ -798,7 +972,7 @@ class AsyncChatResource:
     ) -> ChatTurnResult:
         """Ответ на уточняющий вопрос ИИ (событие choice)
 
-        Продолжает ход потоком SSE. Повторный ответ на тот же choice_id — 409 (error.turn — номер хода с ответом; error.code = dismissed — вопрос закрыт без ответа). Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа; 503 — сервис модели не настроен.
+        Продолжает ход потоком SSE. Повторный ответ на тот же choice_id — 409 (error.turn — номер хода с ответом; error.code = dismissed — вопрос закрыт без ответа). Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа (plan_limit_reached) или у человека уже идёт предельное число ходов без доп. использования (parallel_turns_limit, Retry-After; ход не начат); 503 — сервис модели не настроен.
 
         Доступ: chat.use.
 
@@ -839,7 +1013,7 @@ class AsyncChatResource:
     ) -> AsyncChatStream:
         """Ответ на уточняющий вопрос ИИ (событие choice)
 
-        Продолжает ход потоком SSE. Повторный ответ на тот же choice_id — 409 (error.turn — номер хода с ответом; error.code = dismissed — вопрос закрыт без ответа). Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа; 503 — сервис модели не настроен.
+        Продолжает ход потоком SSE. Повторный ответ на тот же choice_id — 409 (error.turn — номер хода с ответом; error.code = dismissed — вопрос закрыт без ответа). Отказы: 402 — ИИ компании не подключён (не оплачено подключение); 409 — идёт предыдущий ход или разговор закрыт (error.code = dialog_closed); 410 — разговор не найден или истёк, начните новый; 429 — кончился лимит тарифа (plan_limit_reached) или у человека уже идёт предельное число ходов без доп. использования (parallel_turns_limit, Retry-After; ход не начат); 503 — сервис модели не настроен.
 
         Доступ: chat.use.
 
@@ -941,6 +1115,8 @@ class ChatResourceWithRawResponse:
         self.list = to_raw_response(resource.list)
         self.create = to_raw_response(resource.create)
         self.count_tokens = to_raw_response(resource.count_tokens)
+        self.list_mentions = to_raw_response(resource.list_mentions)
+        self.list_suggestions = to_raw_response(resource.list_suggestions)
         self.get = to_raw_response(resource.get)
         self.update = to_raw_response(resource.update)
         self.delete = to_raw_response(resource.delete)
@@ -955,6 +1131,8 @@ class AsyncChatResourceWithRawResponse:
         self.list = async_to_raw_response(resource.list)
         self.create = async_to_raw_response(resource.create)
         self.count_tokens = async_to_raw_response(resource.count_tokens)
+        self.list_mentions = async_to_raw_response(resource.list_mentions)
+        self.list_suggestions = async_to_raw_response(resource.list_suggestions)
         self.get = async_to_raw_response(resource.get)
         self.update = async_to_raw_response(resource.update)
         self.delete = async_to_raw_response(resource.delete)

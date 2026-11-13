@@ -320,7 +320,7 @@ print(is_valid_bin_iin("990140000017"))  # True
 
 ## API анықтамалығы
 
-Tungo платформасы API-інің келісімшартынан жасалған: **ресурстар — 13, әдістер — 82, вебхук оқиғаларының түрлері — 22**.
+Tungo платформасы API-інің келісімшартынан жасалған: **ресурстар — 13, әдістер — 85, вебхук оқиғаларының түрлері — 22**.
 
 | Ресурс | Сипаттама | Әдістер |
 | --- | --- | --- |
@@ -329,8 +329,8 @@ Tungo платформасы API-інің келісімшартынан жас�
 | `client.platform` | Платформа балансы, қозғалыстар кітабы, шығын есептері, лимиттер, аудит және модельдер тарифтері | `list_usage_rates` · `get_account` · `get_audit` · `get_ledger` · `list_limits` · `list_requests` · `get_usage` |
 | `client.api_keys` | Ағымдағы API кілті туралы мәлімет және оның шығын статистикасы | `get_current` · `get_current_usage` · `get_usage` |
 | `client.webhooks` | Ұйымның шығыс вебхуктары (Svix): мекенжайлар, оқиғалар каталогы, жеткізулер және қолтаңбаны тексеру | `list_endpoints` · `create_endpoint` · `get_endpoint` · `update_endpoint` · `delete_endpoint` · `list_endpoint_attempts` · `rotate_endpoint_secret` · `test_endpoint` · `list_event_types` · `list_messages` · `list_message_attempts` · `resend_message` · `get_usage` |
-| `client.chat` | ЖИ-бухгалтермен диалогтар: сұрақтар, ағынды чат (SSE), токендерді санау және тарих | `list` · `create` · `create_stream` · `count_tokens` · `get` · `update` · `delete` · `answer` · `answer_stream` · `list_events` · `stop` |
-| `client.proposals` | ЖИ-бухгалтер ұсынған құжаттар: қарау, 1С-ке жазуды мақұлдау және қабылдамау | `list` · `approve_batch` · `get` · `approve` · `reject` |
+| `client.chat` | ЖИ-бухгалтермен диалогтар: сұрақтар, ағынды чат (SSE), токендерді санау және тарих | `list` · `create` · `create_stream` · `count_tokens` · `list_mentions` · `list_suggestions` · `get` · `update` · `delete` · `answer` · `answer_stream` · `list_events` · `stop` |
+| `client.proposals` | ЖИ-бухгалтер ұсынған құжаттар: қарау, 1С-ке жазуды мақұлдау және қабылдамау | `list` · `approve_batch` · `get` · `approve` · `reject` · `request_approval` |
 | `client.feed` | Компанияның оқиғалар мен ұсыныстар таспасы (беттер және тікелей SSE ағыны) | `get` · `list_events` |
 | `client.batches` | Банк үзінді көшірмелерін, кіріс ЭШФ-ларды және DirectBank-ті өңдеу бумалары | `list` · `create_bank_statement` · `create_esf_purchases` · `get` · `list_events` · `stop` · `get_summary` · `list_statements` · `poll_directbank` |
 | `client.esf` | Кіріс және шығыс электрондық шот-фактуралар (ЭШФ АЖ) | `get_incoming` · `get_outgoing` |
@@ -357,7 +357,7 @@ Tungo платформасы API-інің келісімшартынан жас�
 
 ## Нұсқалар және қолдау
 
-Кітапхана [семантикалық нұсқалауды](https://semver.org/) ұстанады. Жоғарғы нұсқа 0 болып тұрғанда аралық шығарылымда үйлесімсіз өзгерістер болуы мүмкін; олар әрдайым [өзгерістер тарихында](https://github.com/TungoAI/tungo-sdk-python/blob/main/CHANGELOG.md) келтіріледі. Бұл README 0.2.0 нұсқасын сипаттайды.
+Кітапхана [семантикалық нұсқалауды](https://semver.org/) ұстанады. Жоғарғы нұсқа 0 болып тұрғанда аралық шығарылымда үйлесімсіз өзгерістер болуы мүмкін; олар әрдайым [өзгерістер тарихында](https://github.com/TungoAI/tungo-sdk-python/blob/main/CHANGELOG.md) келтіріледі. Бұл README 0.3.0 нұсқасын сипаттайды.
 
 Код генератормен жасалады: мәселелер мен ұсыныстар туралы жасалған файлдарға түзету жібермей, [өтініштерге](https://github.com/TungoAI/tungo-sdk-python/issues) жазыңыз. Осалдық туралы [қауіпсіздік саясаты](https://github.com/TungoAI/tungo-sdk-python/blob/main/SECURITY.md) бойынша хабарлаңыз.
 

@@ -36,7 +36,9 @@ from tungoai.types import (
     ChatDialogList,
     ChatDialogRenamed,
     ChatDialogSummary,
+    ChatMentionSearch,
     ChatStopResult,
+    ChatSuggestions,
     ChatTokenCount,
     ChatTurnResult,
     Company,
@@ -71,6 +73,7 @@ from tungoai.types import (
     PlatformLimits,
     PlatformRequest,
     PlatformUsage,
+    ProposalApprovalRequestResult,
     ProposalCard,
     ProposalDecision,
     ProposalListItem,
@@ -972,6 +975,13 @@ def test_sync_chat_create(sync_client: Tungo, server: MockServer) -> None:
             "text",
         ],
         dialog_id="text",
+        effort="low",
+        mentions=[
+            {
+                "id": "text",
+                "type": "proposal",
+            },
+        ],
         message="text",
         mode="auto",
         new_dialog=True,
@@ -994,6 +1004,13 @@ def test_sync_chat_create(sync_client: Tungo, server: MockServer) -> None:
                 "text",
             ],
             "dialog_id": "text",
+            "effort": "low",
+            "mentions": [
+                {
+                    "id": "text",
+                    "type": "proposal",
+                },
+            ],
             "message": "text",
             "mode": "auto",
             "new_dialog": True,
@@ -1020,6 +1037,13 @@ async def test_async_chat_create(async_client: AsyncTungo, server: MockServer) -
             "text",
         ],
         dialog_id="text",
+        effort="low",
+        mentions=[
+            {
+                "id": "text",
+                "type": "proposal",
+            },
+        ],
         message="text",
         mode="auto",
         new_dialog=True,
@@ -1042,6 +1066,13 @@ async def test_async_chat_create(async_client: AsyncTungo, server: MockServer) -
                 "text",
             ],
             "dialog_id": "text",
+            "effort": "low",
+            "mentions": [
+                {
+                    "id": "text",
+                    "type": "proposal",
+                },
+            ],
             "message": "text",
             "mode": "auto",
             "new_dialog": True,
@@ -1068,6 +1099,13 @@ def test_sync_chat_create_stream(sync_client: Tungo, server: MockServer) -> None
             "text",
         ],
         dialog_id="text",
+        effort="low",
+        mentions=[
+            {
+                "id": "text",
+                "type": "proposal",
+            },
+        ],
         message="text",
         mode="auto",
         new_dialog=True,
@@ -1093,6 +1131,13 @@ def test_sync_chat_create_stream(sync_client: Tungo, server: MockServer) -> None
                 "text",
             ],
             "dialog_id": "text",
+            "effort": "low",
+            "mentions": [
+                {
+                    "id": "text",
+                    "type": "proposal",
+                },
+            ],
             "message": "text",
             "mode": "auto",
             "new_dialog": True,
@@ -1120,6 +1165,13 @@ async def test_async_chat_create_stream(async_client: AsyncTungo, server: MockSe
             "text",
         ],
         dialog_id="text",
+        effort="low",
+        mentions=[
+            {
+                "id": "text",
+                "type": "proposal",
+            },
+        ],
         message="text",
         mode="auto",
         new_dialog=True,
@@ -1145,6 +1197,13 @@ async def test_async_chat_create_stream(async_client: AsyncTungo, server: MockSe
                 "text",
             ],
             "dialog_id": "text",
+            "effort": "low",
+            "mentions": [
+                {
+                    "id": "text",
+                    "type": "proposal",
+                },
+            ],
             "message": "text",
             "mode": "auto",
             "new_dialog": True,
@@ -1224,6 +1283,70 @@ async def test_async_chat_count_tokens(async_client: AsyncTungo, server: MockSer
         },
     )
     expect_result(result, "createCompanyChatCountToken")
+
+
+def test_sync_chat_list_mentions(sync_client: Tungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/chat/mentions", reply("listCompanyChatMentions"))
+    result = sync_client.chat.list_mentions("co/1", limit=7, q="text", types="text")
+    assert_type(result, ChatMentionSearch)
+    expect_request(
+        server,
+        "GET",
+        "/v1/companies/co%2F1/chat/mentions",
+        query=[
+            ("limit", "7"),
+            ("q", "text"),
+            ("types", "text"),
+        ],
+    )
+    expect_result(result, "listCompanyChatMentions")
+
+
+async def test_async_chat_list_mentions(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/chat/mentions", reply("listCompanyChatMentions"))
+    result = await async_client.chat.list_mentions("co/1", limit=7, q="text", types="text")
+    assert_type(result, ChatMentionSearch)
+    expect_request(
+        server,
+        "GET",
+        "/v1/companies/co%2F1/chat/mentions",
+        query=[
+            ("limit", "7"),
+            ("q", "text"),
+            ("types", "text"),
+        ],
+    )
+    expect_result(result, "listCompanyChatMentions")
+
+
+def test_sync_chat_list_suggestions(sync_client: Tungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/chat/suggestions", reply("listCompanyChatSuggestions"))
+    result = sync_client.chat.list_suggestions("co/1", lang="ru")
+    assert_type(result, ChatSuggestions)
+    expect_request(
+        server,
+        "GET",
+        "/v1/companies/co%2F1/chat/suggestions",
+        query=[
+            ("lang", "ru"),
+        ],
+    )
+    expect_result(result, "listCompanyChatSuggestions")
+
+
+async def test_async_chat_list_suggestions(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/chat/suggestions", reply("listCompanyChatSuggestions"))
+    result = await async_client.chat.list_suggestions("co/1", lang="ru")
+    assert_type(result, ChatSuggestions)
+    expect_request(
+        server,
+        "GET",
+        "/v1/companies/co%2F1/chat/suggestions",
+        query=[
+            ("lang", "ru"),
+        ],
+    )
+    expect_result(result, "listCompanyChatSuggestions")
 
 
 def test_sync_chat_get(sync_client: Tungo, server: MockServer) -> None:
@@ -1458,12 +1581,15 @@ def test_sync_proposals_list(sync_client: Tungo, server: MockServer) -> None:
     server.add("GET", "/v1/companies/co%2F1/proposals", reply("listCompanyProposals"))
     page = sync_client.proposals.list(
         "co/1",
+        approval_requested="true",
+        batch_id="text",
         cursor="text",
         date_from="2026-01-02",
         date_to="2026-01-02",
         kind="text",
         limit=7,
         q="text",
+        source="text",
         status="text",
     )
     assert_type(page, SyncCursorPage[ProposalListItem, ProposalPage])
@@ -1472,12 +1598,15 @@ def test_sync_proposals_list(sync_client: Tungo, server: MockServer) -> None:
         "GET",
         "/v1/companies/co%2F1/proposals",
         query=[
+            ("approval_requested", "true"),
+            ("batch_id", "text"),
             ("cursor", "text"),
             ("date_from", "2026-01-02"),
             ("date_to", "2026-01-02"),
             ("kind", "text"),
             ("limit", "7"),
             ("q", "text"),
+            ("source", "text"),
             ("status", "text"),
         ],
     )
@@ -1488,12 +1617,15 @@ async def test_async_proposals_list(async_client: AsyncTungo, server: MockServer
     server.add("GET", "/v1/companies/co%2F1/proposals", reply("listCompanyProposals"))
     page = await async_client.proposals.list(
         "co/1",
+        approval_requested="true",
+        batch_id="text",
         cursor="text",
         date_from="2026-01-02",
         date_to="2026-01-02",
         kind="text",
         limit=7,
         q="text",
+        source="text",
         status="text",
     )
     assert_type(page, AsyncCursorPage[ProposalListItem, ProposalPage])
@@ -1502,12 +1634,15 @@ async def test_async_proposals_list(async_client: AsyncTungo, server: MockServer
         "GET",
         "/v1/companies/co%2F1/proposals",
         query=[
+            ("approval_requested", "true"),
+            ("batch_id", "text"),
             ("cursor", "text"),
             ("date_from", "2026-01-02"),
             ("date_to", "2026-01-02"),
             ("kind", "text"),
             ("limit", "7"),
             ("q", "text"),
+            ("source", "text"),
             ("status", "text"),
         ],
     )
@@ -1674,6 +1809,44 @@ async def test_async_proposals_reject(async_client: AsyncTungo, server: MockServ
         },
     )
     expect_result(result, "rejectCompanyProposal")
+
+
+def test_sync_proposals_request_approval(sync_client: Tungo, server: MockServer) -> None:
+    server.add(
+        "POST",
+        "/v1/companies/co%2F1/proposals/id%2F1/request-approval",
+        reply("requestApprovalCompanyProposal"),
+    )
+    result = sync_client.proposals.request_approval("co/1", "id/1", note="text")
+    assert_type(result, ProposalApprovalRequestResult)
+    expect_request(
+        server,
+        "POST",
+        "/v1/companies/co%2F1/proposals/id%2F1/request-approval",
+        body={
+            "note": "text",
+        },
+    )
+    expect_result(result, "requestApprovalCompanyProposal")
+
+
+async def test_async_proposals_request_approval(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add(
+        "POST",
+        "/v1/companies/co%2F1/proposals/id%2F1/request-approval",
+        reply("requestApprovalCompanyProposal"),
+    )
+    result = await async_client.proposals.request_approval("co/1", "id/1", note="text")
+    assert_type(result, ProposalApprovalRequestResult)
+    expect_request(
+        server,
+        "POST",
+        "/v1/companies/co%2F1/proposals/id%2F1/request-approval",
+        body={
+            "note": "text",
+        },
+    )
+    expect_result(result, "requestApprovalCompanyProposal")
 
 
 def test_sync_feed_get(sync_client: Tungo, server: MockServer) -> None:

@@ -16,10 +16,21 @@
           "type": "text"
         }
       ],
+      "followups": [
+        "text"
+      ],
+      "next_action": {
+        "code": "prepare_document",
+        "params": {
+          "key": "text"
+        },
+        "prompt": "text"
+      },
       "pending_question": {
         "choice_id": "text",
         "questions": [
           {
+            "confirm": true,
             "header": "text",
             "multi_select": true,
             "options": [
@@ -58,6 +69,15 @@
               "allowed": true,
               "blocked_by_blockers": true,
               "requires_right": "proposals.approve"
+            },
+            "approval_request": {
+              "can_request": true,
+              "href": "text",
+              "requested": {
+                "at": "2026-01-02T03:04:05Z",
+                "by": "text",
+                "by_name": "text"
+              }
             },
             "blocker_count": 7,
             "blockers": [
@@ -157,6 +177,12 @@
                 "vat_rate_title": "text"
               }
             ],
+            "origin": {
+              "batch_id": "text",
+              "dialog_id": "text",
+              "run_id": "text",
+              "source": "chat"
+            },
             "postings": [
               {
                 "amount": {
@@ -174,6 +200,10 @@
               "channel": "mcp"
             },
             "status": "previewed",
+            "status_reason": {
+              "code": "text",
+              "message": "text"
+            },
             "status_title": "text",
             "summary": "text",
             "title": "text",
@@ -297,6 +327,15 @@
               "blocked_by_blockers": true,
               "requires_right": "proposals.approve"
             },
+            "approval_request": {
+              "can_request": true,
+              "href": "text",
+              "requested": {
+                "at": "2026-01-02T03:04:05Z",
+                "by": "text",
+                "by_name": "text"
+              }
+            },
             "blocker_count": 7,
             "blockers": [
               "text"
@@ -400,6 +439,12 @@
                 "vat_rate_title": "text"
               }
             ],
+            "origin": {
+              "batch_id": "text",
+              "dialog_id": "text",
+              "run_id": "text",
+              "source": "chat"
+            },
             "postings": [
               {
                 "amount": {
@@ -437,6 +482,10 @@
               "channel": "mcp"
             },
             "status": "previewed",
+            "status_reason": {
+              "code": "text",
+              "message": "text"
+            },
             "status_title": "text",
             "summary": "text",
             "title": "text",
@@ -483,6 +532,7 @@
           "choice_id": "text",
           "questions": [
             {
+              "confirm": true,
               "header": "text",
               "multi_select": true,
               "options": [
@@ -576,6 +626,22 @@
       },
       {
         "data": {
+          "action": {
+            "code": "prepare_document",
+            "params": {
+              "key": "text"
+            },
+            "prompt": "text"
+          },
+          "followups": [
+            "text"
+          ],
+          "type": "next"
+        },
+        "event": "next"
+      },
+      {
+        "data": {
           "answer": "text",
           "choice_id": "text",
           "cost_tiyn": 7,
@@ -589,6 +655,13 @@
           }
         },
         "event": "done"
+      },
+      {
+        "data": {
+          "title": "text",
+          "type": "title"
+        },
+        "event": "title"
       }
     ]
   },
@@ -687,6 +760,15 @@
           "allowed": true,
           "blocked_by_blockers": true,
           "requires_right": "proposals.approve"
+        },
+        "approval_request": {
+          "can_request": true,
+          "href": "text",
+          "requested": {
+            "at": "2026-01-02T03:04:05Z",
+            "by": "text",
+            "by_name": "text"
+          }
         },
         "blocker_count": 7,
         "blockers": [
@@ -791,6 +873,12 @@
             "vat_rate_title": "text"
           }
         ],
+        "origin": {
+          "batch_id": "text",
+          "dialog_id": "text",
+          "run_id": "text",
+          "source": "chat"
+        },
         "postings": [
           {
             "amount": {
@@ -828,6 +916,10 @@
           "channel": "mcp"
         },
         "status": "previewed",
+        "status_reason": {
+          "code": "text",
+          "message": "text"
+        },
         "status_title": "text",
         "summary": "text",
         "title": "text",
@@ -1117,10 +1209,21 @@
           "type": "text"
         }
       ],
+      "followups": [
+        "text"
+      ],
+      "next_action": {
+        "code": "prepare_document",
+        "params": {
+          "key": "text"
+        },
+        "prompt": "text"
+      },
       "pending_question": {
         "choice_id": "text",
         "questions": [
           {
+            "confirm": true,
             "header": "text",
             "multi_select": true,
             "options": [
@@ -1159,6 +1262,15 @@
               "allowed": true,
               "blocked_by_blockers": true,
               "requires_right": "proposals.approve"
+            },
+            "approval_request": {
+              "can_request": true,
+              "href": "text",
+              "requested": {
+                "at": "2026-01-02T03:04:05Z",
+                "by": "text",
+                "by_name": "text"
+              }
             },
             "blocker_count": 7,
             "blockers": [
@@ -1258,6 +1370,12 @@
                 "vat_rate_title": "text"
               }
             ],
+            "origin": {
+              "batch_id": "text",
+              "dialog_id": "text",
+              "run_id": "text",
+              "source": "chat"
+            },
             "postings": [
               {
                 "amount": {
@@ -1275,6 +1393,10 @@
               "channel": "mcp"
             },
             "status": "previewed",
+            "status_reason": {
+              "code": "text",
+              "message": "text"
+            },
             "status_title": "text",
             "summary": "text",
             "title": "text",
@@ -1398,6 +1520,15 @@
               "blocked_by_blockers": true,
               "requires_right": "proposals.approve"
             },
+            "approval_request": {
+              "can_request": true,
+              "href": "text",
+              "requested": {
+                "at": "2026-01-02T03:04:05Z",
+                "by": "text",
+                "by_name": "text"
+              }
+            },
             "blocker_count": 7,
             "blockers": [
               "text"
@@ -1501,6 +1632,12 @@
                 "vat_rate_title": "text"
               }
             ],
+            "origin": {
+              "batch_id": "text",
+              "dialog_id": "text",
+              "run_id": "text",
+              "source": "chat"
+            },
             "postings": [
               {
                 "amount": {
@@ -1538,6 +1675,10 @@
               "channel": "mcp"
             },
             "status": "previewed",
+            "status_reason": {
+              "code": "text",
+              "message": "text"
+            },
             "status_title": "text",
             "summary": "text",
             "title": "text",
@@ -1584,6 +1725,7 @@
           "choice_id": "text",
           "questions": [
             {
+              "confirm": true,
               "header": "text",
               "multi_select": true,
               "options": [
@@ -1677,6 +1819,22 @@
       },
       {
         "data": {
+          "action": {
+            "code": "prepare_document",
+            "params": {
+              "key": "text"
+            },
+            "prompt": "text"
+          },
+          "followups": [
+            "text"
+          ],
+          "type": "next"
+        },
+        "event": "next"
+      },
+      {
+        "data": {
           "answer": "text",
           "choice_id": "text",
           "cost_tiyn": 7,
@@ -1690,6 +1848,13 @@
           }
         },
         "event": "done"
+      },
+      {
+        "data": {
+          "title": "text",
+          "type": "title"
+        },
+        "event": "title"
       }
     ]
   },
@@ -1779,6 +1944,7 @@
       },
       "monthly_cap_tiyn": 7,
       "name": "text",
+      "no_companies": true,
       "permissions": [
         "company.read"
       ],
@@ -2146,6 +2312,40 @@
       ],
       "reason": "text",
       "running": true,
+      "statement": {
+        "accounts": [
+          {
+            "account": "text",
+            "balanced": true,
+            "bank": "text",
+            "bank_bic": "text",
+            "closing_balance": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "incoming": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "opening_balance": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "outgoing": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            }
+          }
+        ],
+        "balanced": true,
+        "period_from": "2026-01-02",
+        "period_to": "2026-01-02",
+        "sender": "text"
+      },
       "title": "text",
       "totals": {
         "blocked": 1.5,
@@ -2177,6 +2377,7 @@
         "choice_id": "text",
         "questions": [
           {
+            "confirm": true,
             "header": "text",
             "multi_select": true,
             "options": [
@@ -2208,6 +2409,7 @@
       "pd_restored": true,
       "running": true,
       "title": "text",
+      "title_source": "first_message",
       "turn": 1.5,
       "updated_at": "2026-01-02T03:04:05Z"
     },
@@ -2515,6 +2717,15 @@
         "reason": "text",
         "requires_right": "proposals.approve"
       },
+      "approval_request": {
+        "can_request": true,
+        "href": "text",
+        "requested": {
+          "at": "2026-01-02T03:04:05Z",
+          "by": "text",
+          "by_name": "text"
+        }
+      },
       "blocker_count": 7,
       "blockers": [
         "text"
@@ -2634,6 +2845,12 @@
           "vat_rate_title": "text"
         }
       ],
+      "origin": {
+        "batch_id": "text",
+        "dialog_id": "text",
+        "run_id": "text",
+        "source": "chat"
+      },
       "postings": [
         {
           "amount": {
@@ -2672,6 +2889,10 @@
         "note": "text"
       },
       "status": "previewed",
+      "status_reason": {
+        "code": "text",
+        "message": "text"
+      },
       "status_title": "text",
       "summary": "text",
       "title": "text",
@@ -2751,7 +2972,8 @@
       "purchase_limits": {
         "daily_max_tiyn": 7,
         "max_tiyn": 7,
-        "min_tiyn": 7
+        "min_tiyn": 7,
+        "today_tiyn": 7
       },
       "spent_tiyn": 7
     },
@@ -2772,6 +2994,13 @@
           "company_id": "text",
           "id": "text",
           "ip": "text",
+          "object": {
+            "amount_tiyn": 7,
+            "id": "text",
+            "name": "text",
+            "purpose": "subscription",
+            "type": "text"
+          },
           "request_id": "text",
           "target": {
             "id": "text",
@@ -2779,7 +3008,9 @@
           }
         }
       ],
-      "next_cursor": "text"
+      "next_cursor": "text",
+      "total": 7,
+      "total_more": true
     },
     "status": 200
   },
@@ -2791,6 +3022,12 @@
           "api_key_id": "text",
           "at": "2026-01-02T03:04:05Z",
           "balance_after_tiyn": 7,
+          "documents": {
+            "act_number": "text",
+            "invoice_number": "text",
+            "receipt_status": "not_required",
+            "receipt_url": "text"
+          },
           "id": "text",
           "kind": "purchase",
           "model": "text",
@@ -3149,6 +3386,15 @@
               "blocked_by_blockers": true,
               "requires_right": "proposals.approve"
             },
+            "approval_request": {
+              "can_request": true,
+              "href": "text",
+              "requested": {
+                "at": "2026-01-02T03:04:05Z",
+                "by": "text",
+                "by_name": "text"
+              }
+            },
             "blocker_count": 7,
             "blockers": [
               "text"
@@ -3252,6 +3498,12 @@
                 "vat_rate_title": "text"
               }
             ],
+            "origin": {
+              "batch_id": "text",
+              "dialog_id": "text",
+              "run_id": "text",
+              "source": "chat"
+            },
             "postings": [
               {
                 "amount": {
@@ -3289,6 +3541,10 @@
               "channel": "mcp"
             },
             "status": "previewed",
+            "status_reason": {
+              "code": "text",
+              "message": "text"
+            },
             "status_title": "text",
             "summary": "text",
             "title": "text",
@@ -3335,6 +3591,7 @@
           "choice_id": "text",
           "questions": [
             {
+              "confirm": true,
               "header": "text",
               "multi_select": true,
               "options": [
@@ -3428,6 +3685,22 @@
       },
       {
         "data": {
+          "action": {
+            "code": "prepare_document",
+            "params": {
+              "key": "text"
+            },
+            "prompt": "text"
+          },
+          "followups": [
+            "text"
+          ],
+          "type": "next"
+        },
+        "event": "next"
+      },
+      {
+        "data": {
           "answer": "text",
           "choice_id": "text",
           "cost_tiyn": 7,
@@ -3441,6 +3714,13 @@
           }
         },
         "event": "done"
+      },
+      {
+        "data": {
+          "title": "text",
+          "type": "title"
+        },
+        "event": "title"
       }
     ]
   },
@@ -3452,6 +3732,7 @@
           "message_count": 1.5,
           "running": true,
           "title": "text",
+          "title_source": "first_message",
           "updated_at": "2026-01-02T03:04:05Z"
         }
       ],
@@ -3544,6 +3825,15 @@
               "blocked_by_blockers": true,
               "requires_right": "proposals.approve"
             },
+            "approval_request": {
+              "can_request": true,
+              "href": "text",
+              "requested": {
+                "at": "2026-01-02T03:04:05Z",
+                "by": "text",
+                "by_name": "text"
+              }
+            },
             "blocker_count": 7,
             "blockers": [
               "text"
@@ -3647,6 +3937,12 @@
                 "vat_rate_title": "text"
               }
             ],
+            "origin": {
+              "batch_id": "text",
+              "dialog_id": "text",
+              "run_id": "text",
+              "source": "chat"
+            },
             "postings": [
               {
                 "amount": {
@@ -3684,6 +3980,10 @@
               "channel": "mcp"
             },
             "status": "previewed",
+            "status_reason": {
+              "code": "text",
+              "message": "text"
+            },
             "status_title": "text",
             "summary": "text",
             "title": "text",
@@ -3730,6 +4030,7 @@
           "choice_id": "text",
           "questions": [
             {
+              "confirm": true,
               "header": "text",
               "multi_select": true,
               "options": [
@@ -3823,6 +4124,22 @@
       },
       {
         "data": {
+          "action": {
+            "code": "prepare_document",
+            "params": {
+              "key": "text"
+            },
+            "prompt": "text"
+          },
+          "followups": [
+            "text"
+          ],
+          "type": "next"
+        },
+        "event": "next"
+      },
+      {
+        "data": {
           "answer": "text",
           "choice_id": "text",
           "cost_tiyn": 7,
@@ -3836,8 +4153,57 @@
           }
         },
         "event": "done"
+      },
+      {
+        "data": {
+          "title": "text",
+          "type": "title"
+        },
+        "event": "title"
       }
     ]
+  },
+  "listCompanyChatMentions": {
+    "body": {
+      "data": [
+        {
+          "hint": "text",
+          "id": "text",
+          "title": "text",
+          "type": "proposal"
+        }
+      ],
+      "unavailable": [
+        {
+          "reason": "no_access",
+          "type": "proposal"
+        }
+      ]
+    },
+    "status": 200
+  },
+  "listCompanyChatSuggestions": {
+    "body": {
+      "data": [
+        {
+          "code": "text",
+          "suggestions": [
+            {
+              "action": "ask",
+              "code": "text",
+              "hint": "text",
+              "prompt": "text",
+              "seasonal": true,
+              "title": "text"
+            }
+          ],
+          "title": "text"
+        }
+      ],
+      "locale": "ru",
+      "onec_linked": true
+    },
+    "status": 200
   },
   "listCompanyFeedEvents": {
     "events": [
@@ -4069,6 +4435,7 @@
   },
   "listCompanyProposals": {
     "body": {
+      "approval_requested_count": 7,
       "counts": {
         "key": 1.5
       },
@@ -4078,6 +4445,15 @@
             "allowed": true,
             "blocked_by_blockers": true,
             "requires_right": "proposals.approve"
+          },
+          "approval_request": {
+            "can_request": true,
+            "href": "text",
+            "requested": {
+              "at": "2026-01-02T03:04:05Z",
+              "by": "text",
+              "by_name": "text"
+            }
           },
           "blocker_count": 7,
           "created_at": "2026-01-02T03:04:05Z",
@@ -4089,7 +4465,17 @@
           "level": "L0",
           "level_title": "text",
           "line_count": 7,
+          "origin": {
+            "batch_id": "text",
+            "dialog_id": "text",
+            "run_id": "text",
+            "source": "chat"
+          },
           "status": "previewed",
+          "status_reason": {
+            "code": "text",
+            "message": "text"
+          },
           "status_title": "text",
           "title": "text",
           "total": {
@@ -4132,11 +4518,13 @@
       "data": [
         {
           "cache_read_per_mtok_tiyn": 7,
+          "cache_write_1h_per_mtok_tiyn": 7,
           "cache_write_per_mtok_tiyn": 7,
           "effective_from": "2026-01-02T03:04:05Z",
           "input_per_mtok_tiyn": 7,
           "model": "text",
-          "output_per_mtok_tiyn": 7
+          "output_per_mtok_tiyn": 7,
+          "title": "text"
         }
       ]
     },
@@ -4182,6 +4570,7 @@
           "at": "2026-01-02T03:04:05Z",
           "client_request_id": "text",
           "company_id": "text",
+          "cost_tiyn": 7,
           "duration_ms": 7,
           "id": "text",
           "ip": "text",
@@ -4192,7 +4581,9 @@
           "status": 7
         }
       ],
-      "next_cursor": "text"
+      "next_cursor": "text",
+      "total": 7,
+      "total_more": true
     },
     "status": 200
   },
@@ -4494,6 +4885,15 @@
           "blocked_by_blockers": true,
           "requires_right": "proposals.approve"
         },
+        "approval_request": {
+          "can_request": true,
+          "href": "text",
+          "requested": {
+            "at": "2026-01-02T03:04:05Z",
+            "by": "text",
+            "by_name": "text"
+          }
+        },
         "blocker_count": 7,
         "blockers": [
           "text"
@@ -4597,6 +4997,12 @@
             "vat_rate_title": "text"
           }
         ],
+        "origin": {
+          "batch_id": "text",
+          "dialog_id": "text",
+          "run_id": "text",
+          "source": "chat"
+        },
         "postings": [
           {
             "amount": {
@@ -4634,6 +5040,235 @@
           "channel": "mcp"
         },
         "status": "previewed",
+        "status_reason": {
+          "code": "text",
+          "message": "text"
+        },
+        "status_title": "text",
+        "summary": "text",
+        "title": "text",
+        "total": {
+          "amount": 1.5,
+          "amount_tiyn": 7,
+          "formatted": "text"
+        },
+        "vat": {
+          "amount": 1.5,
+          "amount_tiyn": 7,
+          "formatted": "text"
+        },
+        "warning_count": 7,
+        "warnings": [
+          "text"
+        ]
+      },
+      "repeated": true
+    },
+    "status": 200
+  },
+  "requestApprovalCompanyProposal": {
+    "body": {
+      "notified": true,
+      "ok": true,
+      "proposal": {
+        "actions": [
+          {
+            "action": "approve",
+            "body": {
+              "key": {
+                "anything": [
+                  1,
+                  "two",
+                  null
+                ]
+              }
+            },
+            "effect": "text",
+            "enabled": true,
+            "href": "text",
+            "label": "text",
+            "method": "POST"
+          }
+        ],
+        "advance_offset": {
+          "amount": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "credit": "text",
+          "debit": "text",
+          "note": "text",
+          "to_pay": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          }
+        },
+        "approval": {
+          "allowed": true,
+          "blocked_by_blockers": true,
+          "requires_right": "proposals.approve"
+        },
+        "approval_request": {
+          "can_request": true,
+          "href": "text",
+          "requested": {
+            "at": "2026-01-02T03:04:05Z",
+            "by": "text",
+            "by_name": "text"
+          }
+        },
+        "blocker_count": 7,
+        "blockers": [
+          "text"
+        ],
+        "counterparty": {
+          "name": "text",
+          "ref": "text"
+        },
+        "created_at": "2026-01-02T03:04:05Z",
+        "dialog_id": "text",
+        "document_number": "text",
+        "header": {
+          "accounts": [
+            {
+              "code": "text",
+              "field": "text",
+              "ref": "text",
+              "title": "text"
+            }
+          ],
+          "date": "text",
+          "document_title": "text",
+          "entity_set": "text",
+          "net": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "total": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          },
+          "vat": {
+            "amount": 1.5,
+            "amount_tiyn": 7,
+            "formatted": "text"
+          }
+        },
+        "history": [
+          {
+            "actor": "text",
+            "at": "2026-01-02T03:04:05Z",
+            "status": "previewed",
+            "status_title": "text"
+          }
+        ],
+        "href": "text",
+        "id": "text",
+        "intent": {
+          "key": {
+            "anything": [
+              1,
+              "two",
+              null
+            ]
+          }
+        },
+        "kind": "sale",
+        "kind_title": "text",
+        "level": "L0",
+        "level_title": "text",
+        "line_count": 7,
+        "lines": [
+          {
+            "accounts": [
+              {
+                "code": "text",
+                "field": "text",
+                "ref": "text",
+                "title": "text"
+              }
+            ],
+            "item": {
+              "name": "text",
+              "ref": "text"
+            },
+            "no": 7,
+            "price": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "quantity": 1.5,
+            "section": "goods",
+            "sum": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "total": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "vat": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "vat_rate_title": "text"
+          }
+        ],
+        "origin": {
+          "batch_id": "text",
+          "dialog_id": "text",
+          "run_id": "text",
+          "source": "chat"
+        },
+        "postings": [
+          {
+            "amount": {
+              "amount": 1.5,
+              "amount_tiyn": 7,
+              "formatted": "text"
+            },
+            "computed_by_1c": true,
+            "credit": "text",
+            "debit": "text",
+            "label": "text"
+          }
+        ],
+        "result": {
+          "mismatches": [
+            "text"
+          ],
+          "number": "text",
+          "postings": [
+            {
+              "amount": {
+                "amount": 1.5,
+                "amount_tiyn": 7,
+                "formatted": "text"
+              },
+              "computed_by_1c": true,
+              "credit": "text",
+              "debit": "text",
+              "label": "text"
+            }
+          ],
+          "ref": "text"
+        },
+        "source": {
+          "channel": "mcp"
+        },
+        "status": "previewed",
+        "status_reason": {
+          "code": "text",
+          "message": "text"
+        },
         "status_title": "text",
         "summary": "text",
         "title": "text",
@@ -4941,7 +5576,8 @@
   "updateCompanyChat": {
     "body": {
       "id": "text",
-      "title": "text"
+      "title": "text",
+      "title_source": "first_message"
     },
     "status": 200
   },

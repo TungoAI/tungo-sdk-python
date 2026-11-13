@@ -44,6 +44,9 @@ __all__ = [
     "AutomationStepWhen",
     "ChatAttachment",
     "ChatChoiceAnswer",
+    "ChatMention",
+    "ChatMentionType",
+    "ChatMessageRequestEffort",
     "ChatMessageRequestMode",
     "ChatTokenCountRequestMode",
     "CompanyAutonomyInputLevels",
@@ -58,6 +61,8 @@ __all__ = [
     "CompanyAutonomyInputLevelsPurchase",
     "CompanyAutonomyInputLevelsSale",
     "FeedSection",
+    "ListCompanyChatSuggestionsLang",
+    "ListCompanyProposalsApprovalRequested",
     "ListWorkspaceWebhooksEndpointAttemptsStatus",
 ]
 
@@ -121,6 +126,22 @@ AutomationStepWhen: TypeAlias = Literal[
     "previous_created_proposals",
     "checks_found_issues",
     "previous_failed",
+]
+
+# Что упомянуто: `proposal` — предложение (документ для 1С), id — его номер P-000123; `counterparty` — контрагент из 1С компании, id — его ссылка из поиска; `batch` — задание пачки (разбор выписки, входящие ЭСФ), id — bat_…
+ChatMentionType: TypeAlias = Literal[
+    "proposal",
+    "counterparty",
+    "batch",
+]
+
+# Усилие ИИ на этот вопрос: low < medium < high < xhigh < max — глубже думает, дольше и дороже (больше расход лимита). Не прислано или null — усилие выбирает Tungo. Только на тарифе с выбором усилия (max_effort тарифа в GET /v1/plans не null): иначе 402 effort_not_in_plan. Выше max_effort тарифа — опускается до него. Ответ на уточняющий вопрос продолжает ход с прежним усилием. Ключу API тариф не нужен: усилие — как прислано
+ChatMessageRequestEffort: TypeAlias = Literal[
+    "low",
+    "medium",
+    "high",
+    "xhigh",
+    "max",
 ]
 
 # Режим хода: auto (по умолчанию) — ИИ сам решает, ответить или подготовить документ; ask — только ответ и разбор, без документов; document — подготовить документ
@@ -212,6 +233,18 @@ FeedSection: TypeAlias = Literal[
     "auto",
     "decision",
     "question",
+]
+
+# Язык текстов — язык интерфейса кабинета. Не передан — язык ответов ИИ из профиля (`kk` — по-казахски, иначе по-русски)
+ListCompanyChatSuggestionsLang: TypeAlias = Literal[
+    "ru",
+    "kk",
+]
+
+# true — только отправленные на одобрение и ещё не решённые; false — только остальные
+ListCompanyProposalsApprovalRequested: TypeAlias = Literal[
+    "true",
+    "false",
 ]
 
 # Только попытки в этом состоянии: `succeeded` — доставлено; `pending` — ждёт отправки или повтора; `failed` — не доставлено; `sending` — отправляется сейчас
@@ -411,9 +444,20 @@ class ChatChoiceAnswer(TypedDict, total=False):
     """Ответ на один вопрос из события choice"""
 
     other: str
-    """Свой ответ текстом (вариант «свой ответ»). Нужен selected или other — хотя бы одно"""
+    """Свой ответ текстом (вариант «свой ответ»). Нужен selected или other — хотя бы одно (или skipped)"""
     selected: Sequence[str]
     """Выбранные варианты — их label из options, в любом порядке; без повторов. В вопросе без multi_select — не больше одного"""
+    skipped: bool
+    """true — «Пропустить»: вопрос оставлен без ответа, selected и other не передавать. ИИ узнаёт, что вопрос пропущен, и продолжает без этого ответа. У вопроса-подтверждения действия пропуск равен отказу: действие не выполняется"""
+
+
+class ChatMention(TypedDict, total=False):
+    """Упоминание через «@» в вопросе: вид и id"""
+
+    id: Required[str]
+    """id упомянутого — как его отдал GET …/chat/mentions"""
+    type: Required[ChatMentionType]
+    """Что упомянуто: `proposal` — предложение (документ для 1С), id — его номер P-000123; `counterparty` — контрагент из 1С компании, id — его ссылка из поиска; `batch` — задание пачки (разбор выписки, входящие ЭСФ), id — bat_…"""
 
 
 class CompanyAutonomyInputLevels(TypedDict, total=False):

@@ -23,10 +23,12 @@ from ..types import (
     ApproveBatchCompanyProposalsResponse,
     BatchApproveJob,
     BatchApproveResponse,
+    ProposalApprovalRequestResult,
     ProposalCard,
     ProposalDecision,
     ProposalListItem,
     ProposalPage,
+    params,
 )
 
 if TYPE_CHECKING:
@@ -55,12 +57,15 @@ class ProposalsResource:
         self,
         co: str,
         *,
+        approval_requested: params.ListCompanyProposalsApprovalRequested | Omit = omit,
+        batch_id: str | Omit = omit,
         cursor: str | Omit = omit,
         date_from: str | date | Omit = omit,
         date_to: str | date | Omit = omit,
         kind: str | Omit = omit,
         limit: int | Omit = omit,
         q: str | Omit = omit,
+        source: str | Omit = omit,
         status: str | Omit = omit,
         request_options: RequestOptions | None = None,
     ) -> SyncCursorPage[ProposalListItem, ProposalPage]:
@@ -74,12 +79,15 @@ class ProposalsResource:
 
         Args:
             co: id компании, co_… — из GET /v1/companies
+            approval_requested: true — только отправленные на одобрение и ещё не решённые; false — только остальные
+            batch_id: Только документы одного задания пачки (bat_…) — тот же состав, что в сводке задания и у «Одобрить и отправить в 1С». Не id задания — 400; задания нет — пустой список
             cursor: next_cursor из ответа прошлой страницы; без него — первая (самая свежая) страница. Остальные фильтры — те же, что у первой страницы.
             date_from: Созданные не раньше этого дня (ГГГГ-ММ-ДД, день по Алматы)
             date_to: Созданные не позже этого дня включительно (ГГГГ-ММ-ДД, день по Алматы)
             kind: Только этих видов: один или несколько через запятую (sale, purchase, bank_receipt, bank_payment, counterparty, contract, revert, inventory_writeoff, cash_order_in, cash_order_out, advance_report). Неизвестный — 400
             limit: Сколько на странице: 1–100, по умолчанию 20
-            q: Поиск без учёта регистра: номер предложения (P-…), номер документа 1С, контрагент (имя из превью), БИН/ИИН и другие реквизиты документа
+            q: Поиск без учёта регистра: номер предложения (P-…), номер документа 1С, контрагент (имя из превью), БИН/ИИН, сумма (как пишут: «150 000,50» или 150000.5) и другие реквизиты документа
+            source: Только из этих источников (origin.source): один или несколько через запятую (chat, statement, esf, automation). Неизвестный — 400
             status: Только в этих статусах: один или несколько через запятую (previewed, approved, rejected, committed, posted, verified, mismatch, failed); без него — все. Неизвестный — 400
             request_options: Per-request timeout, retries, headers and idempotency key.
         """
@@ -89,12 +97,15 @@ class ProposalsResource:
                 path=f"/v1/companies/{path_segment('co', co)}/proposals",
                 query=query_params(
                     {
+                        "approval_requested": approval_requested,
+                        "batch_id": batch_id,
                         "cursor": cursor,
                         "date_from": date_param(date_from),
                         "date_to": date_param(date_to),
                         "kind": kind,
                         "limit": limit,
                         "q": q,
+                        "source": source,
                         "status": status,
                     }
                 ),
@@ -276,6 +287,42 @@ class ProposalsResource:
             options=request_options,
         )
 
+    def request_approval(
+        self,
+        co: str,
+        id: str,
+        *,
+        note: str | None | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> ProposalApprovalRequestResult:
+        """Отправить на одобрение
+
+        Человек, который готовит документы, но не вправе записывать их в 1С, просит решения у тех, у кого право proposals.approve: им уходит письмо «документы ждут решения», просьба видна в карточке и списке (approval_request, фильтр approval_requested). Статус предложения не меняется; одобряют и отклоняют обычными POST …/approve и …/reject. Повтор, пока просьба действует, — repeated: true без второго письма. Письма одному получателю по одной компании уходят не чаще раза в 15 минут (настройка платформы): просьба записывается всегда, придержанное письмо — notified: false. Отказы: 409 error.code = approval_not_needed (у вас самого есть право одобрять) и wrong_status (решение уже принято, нынешний статус — error.status); 422 has_blockers (есть блокеры — одобрить нельзя, список — error.blockers). Чужая компания и неизвестное предложение — 404, участник без права — 403.
+
+        Доступ: proposals.create.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: Номер предложения внутри компании: P- и шесть цифр (P-000123). У двух компаний номера могут совпадать
+            note: Пояснение для того, кто одобряет, до 1000 знаков; попадёт в историю предложения и журнал
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request(
+            RequestSpec(
+                method="POST",
+                path=f"/v1/companies/{path_segment('co', co)}/proposals/{path_segment('id', id)}/request-approval",
+                body=optional_json_body(
+                    {
+                        "note": note,
+                    }
+                ),
+            ),
+            cast_to=ProposalApprovalRequestResult,
+            options=request_options,
+        )
+
 
 class AsyncProposalsResource:
     """Предложения документов ИИ-бухгалтера: просмотр, одобрение записи в 1С и отклонение"""
@@ -292,12 +339,15 @@ class AsyncProposalsResource:
         self,
         co: str,
         *,
+        approval_requested: params.ListCompanyProposalsApprovalRequested | Omit = omit,
+        batch_id: str | Omit = omit,
         cursor: str | Omit = omit,
         date_from: str | date | Omit = omit,
         date_to: str | date | Omit = omit,
         kind: str | Omit = omit,
         limit: int | Omit = omit,
         q: str | Omit = omit,
+        source: str | Omit = omit,
         status: str | Omit = omit,
         request_options: RequestOptions | None = None,
     ) -> AsyncCursorPage[ProposalListItem, ProposalPage]:
@@ -311,12 +361,15 @@ class AsyncProposalsResource:
 
         Args:
             co: id компании, co_… — из GET /v1/companies
+            approval_requested: true — только отправленные на одобрение и ещё не решённые; false — только остальные
+            batch_id: Только документы одного задания пачки (bat_…) — тот же состав, что в сводке задания и у «Одобрить и отправить в 1С». Не id задания — 400; задания нет — пустой список
             cursor: next_cursor из ответа прошлой страницы; без него — первая (самая свежая) страница. Остальные фильтры — те же, что у первой страницы.
             date_from: Созданные не раньше этого дня (ГГГГ-ММ-ДД, день по Алматы)
             date_to: Созданные не позже этого дня включительно (ГГГГ-ММ-ДД, день по Алматы)
             kind: Только этих видов: один или несколько через запятую (sale, purchase, bank_receipt, bank_payment, counterparty, contract, revert, inventory_writeoff, cash_order_in, cash_order_out, advance_report). Неизвестный — 400
             limit: Сколько на странице: 1–100, по умолчанию 20
-            q: Поиск без учёта регистра: номер предложения (P-…), номер документа 1С, контрагент (имя из превью), БИН/ИИН и другие реквизиты документа
+            q: Поиск без учёта регистра: номер предложения (P-…), номер документа 1С, контрагент (имя из превью), БИН/ИИН, сумма (как пишут: «150 000,50» или 150000.5) и другие реквизиты документа
+            source: Только из этих источников (origin.source): один или несколько через запятую (chat, statement, esf, automation). Неизвестный — 400
             status: Только в этих статусах: один или несколько через запятую (previewed, approved, rejected, committed, posted, verified, mismatch, failed); без него — все. Неизвестный — 400
             request_options: Per-request timeout, retries, headers and idempotency key.
         """
@@ -326,12 +379,15 @@ class AsyncProposalsResource:
                 path=f"/v1/companies/{path_segment('co', co)}/proposals",
                 query=query_params(
                     {
+                        "approval_requested": approval_requested,
+                        "batch_id": batch_id,
                         "cursor": cursor,
                         "date_from": date_param(date_from),
                         "date_to": date_param(date_to),
                         "kind": kind,
                         "limit": limit,
                         "q": q,
+                        "source": source,
                         "status": status,
                     }
                 ),
@@ -513,6 +569,42 @@ class AsyncProposalsResource:
             options=request_options,
         )
 
+    async def request_approval(
+        self,
+        co: str,
+        id: str,
+        *,
+        note: str | None | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> ProposalApprovalRequestResult:
+        """Отправить на одобрение
+
+        Человек, который готовит документы, но не вправе записывать их в 1С, просит решения у тех, у кого право proposals.approve: им уходит письмо «документы ждут решения», просьба видна в карточке и списке (approval_request, фильтр approval_requested). Статус предложения не меняется; одобряют и отклоняют обычными POST …/approve и …/reject. Повтор, пока просьба действует, — repeated: true без второго письма. Письма одному получателю по одной компании уходят не чаще раза в 15 минут (настройка платформы): просьба записывается всегда, придержанное письмо — notified: false. Отказы: 409 error.code = approval_not_needed (у вас самого есть право одобрять) и wrong_status (решение уже принято, нынешний статус — error.status); 422 has_blockers (есть блокеры — одобрить нельзя, список — error.blockers). Чужая компания и неизвестное предложение — 404, участник без права — 403.
+
+        Доступ: proposals.create.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: Номер предложения внутри компании: P- и шесть цифр (P-000123). У двух компаний номера могут совпадать
+            note: Пояснение для того, кто одобряет, до 1000 знаков; попадёт в историю предложения и журнал
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request(
+            RequestSpec(
+                method="POST",
+                path=f"/v1/companies/{path_segment('co', co)}/proposals/{path_segment('id', id)}/request-approval",
+                body=optional_json_body(
+                    {
+                        "note": note,
+                    }
+                ),
+            ),
+            cast_to=ProposalApprovalRequestResult,
+            options=request_options,
+        )
+
 
 class ProposalsResourceWithRawResponse:
     """Methods of ProposalsResource that return the raw response next to the decoded body."""
@@ -523,6 +615,7 @@ class ProposalsResourceWithRawResponse:
         self.get = to_raw_response(resource.get)
         self.approve = to_raw_response(resource.approve)
         self.reject = to_raw_response(resource.reject)
+        self.request_approval = to_raw_response(resource.request_approval)
 
 
 class AsyncProposalsResourceWithRawResponse:
@@ -534,3 +627,4 @@ class AsyncProposalsResourceWithRawResponse:
         self.get = async_to_raw_response(resource.get)
         self.approve = async_to_raw_response(resource.approve)
         self.reject = async_to_raw_response(resource.reject)
+        self.request_approval = async_to_raw_response(resource.request_approval)
