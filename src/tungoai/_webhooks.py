@@ -8,6 +8,7 @@ import binascii
 import hashlib
 import hmac
 import json
+import math
 import time
 from collections.abc import Callable, Mapping
 
@@ -69,6 +70,7 @@ def verify_webhook_signature(
         not isinstance(tolerance_seconds, (int, float))
         or isinstance(tolerance_seconds, bool)
         or not tolerance_seconds > 0
+        or (isinstance(tolerance_seconds, float) and not math.isfinite(tolerance_seconds))
     ):
         raise WebhookVerificationError(
             "The timestamp tolerance must be a positive number of seconds.", reason="invalid_tolerance"

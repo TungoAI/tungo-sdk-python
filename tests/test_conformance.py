@@ -89,6 +89,17 @@ def test_webhook_verification(case: dict[str, Any]) -> None:
             assert caught.value.reason == case["expect"]["reason"]
 
 
+@pytest.mark.parametrize("tolerance", [float("inf"), float("nan")])
+def test_webhook_non_finite_tolerance_is_invalid(tolerance: float) -> None:
+    # JSON cannot hold infinity, so this case lives here instead of in the vectors: an
+    # infinite tolerance would turn the replay check off, which must be impossible.
+    case = next(c for c in VECTORS["webhook_verification"]["cases"] if c["expect"]["valid"])
+    for verify in (tungoai.verify_webhook, tungoai.verify_webhook_signature):
+        with pytest.raises(WebhookVerificationError) as caught:
+            verify(case["body"], case["headers"], case["secret"], tolerance_seconds=tolerance, now=lambda: 1e12)
+        assert caught.value.reason == "invalid_tolerance"
+
+
 @pytest.mark.parametrize("case", cases("hook_signature", "sign"))
 def test_hook_signature_sign(case: dict[str, Any]) -> None:
     body = base64.b64decode(case["body_base64"])
