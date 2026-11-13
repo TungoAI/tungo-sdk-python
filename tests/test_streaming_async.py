@@ -152,6 +152,9 @@ async def test_a_turn_replayed_by_idempotency_key_arrives_as_its_events(
     else:
         result = await stream.get_final_result()
     assert [event.to_dict()["type"] for event in result.events] == expect["event_types"]
+    if "next" in expect:
+        nexts = [event.to_dict() for event in result.events if event.to_dict()["type"] == "next"]
+        assert [{"followups": n["followups"], "action": n.get("action")} for n in nexts] == [expect["next"]]
     assert (result.text, result.stop_reason, result.cost_tiyn, result.choice_id) == (
         expect["text"],
         expect["stop_reason"],

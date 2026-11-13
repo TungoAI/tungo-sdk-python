@@ -702,8 +702,8 @@ def is_replayed_json(headers: httpx.Headers) -> bool:
 def replay_as_event_stream(response: httpx.Response, body: bytes) -> httpx.Response | None:
     """Turns a replayed ChatTurnResult into the event stream of the turn it stands for.
 
-    The stream has text (the answer), proposal, question, citation, error and choice events,
-    then done. The dialog id and the turn number, which a replay carries only in the body,
+    The stream has text (the answer), proposal, question, citation, error, choice and next
+    events, then done. The dialog id and the turn number, which a replay carries only in the body,
     become the X-Dialog-Id and X-Turn-No headers when they are missing. Returns None when the
     body is not a chat turn result.
     """
@@ -763,6 +763,14 @@ def replay_as_event_stream(response: httpx.Response, body: bytes) -> httpx.Respo
         pending = cast("dict[str, Any]", pending)
         emit("choice", pending)
         done["choice_id"] = pending.get("choice_id")
+    # A live turn ends its finished answer with next right before done; the stored result keeps it
+    # as followups and next_action.
+    raw_followups = result.get("followups")
+    followups = cast("list[object]", raw_followups) if isinstance(raw_followups, list) else []
+    raw_action = result.get("next_action")
+    action = cast("dict[str, Any]", raw_action) if isinstance(raw_action, dict) else None
+    if followups or action is not None:
+        emit("next", {"followups": followups, "action": action})
     emit("done", done)
     return httpx.Response(
         response.status_code,
