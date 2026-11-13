@@ -268,7 +268,7 @@ Every streaming operation of the API is available: `chat.create_stream`, `chat.a
 
 Leaving a `for` loop over a stream early (`break`, `return`, an exception) closes the connection: at once on CPython with the synchronous client, at the next step of the event loop with the asynchronous one. A `with` block, or `close()` / `aclose()`, makes the moment explicit on every interpreter. If you pull events with `next(stream)` instead of a loop, close the stream yourself.
 
-`get_final_result()` never returns a half answer: a stream that ends without its `done` event raises `DecodeError` (`error.result` holds what arrived). A successful answer to a streaming call that is not `text/event-stream` raises `DecodeError` too, instead of looking like an empty stream. Plain iteration simply ends when the stream ends.
+`get_final_result()` never returns a half answer: a stream that ends without its `done` event raises `DecodeError` (`error.result` holds what arrived). A successful answer to a streaming call that is not `text/event-stream` raises `DecodeError` too, instead of looking like an empty stream. The exception is a finished chat turn that the API replays for a repeated `Idempotency-Key` (`application/json` with `Idempotent-Replayed: true`): its stored result arrives as the events of that turn, ending with `done`. Plain iteration simply ends when the stream ends.
 
 ## Webhooks
 
