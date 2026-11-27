@@ -89,6 +89,10 @@ class Tungo(SyncAPIClient):
     """Состояние подключения компании к базе 1С"""
     automations: resources.AutomationsResource
     """Автоматизации компании: входящие хуки, сценарии, цепочки шагов, запуски и уровень автономности ИИ"""
+    verification: resources.VerificationResource
+    """Публичная проверка электронной подписи документов Tungo: по коду, по файлу, по блоку QR и ключи подписи (без ключа API)"""
+    releases: resources.ReleasesResource
+    """Публичный список загрузок: расширение 1С и Tungo Connector (без ключа API)"""
 
     def __init__(
         self,
@@ -127,6 +131,8 @@ class Tungo(SyncAPIClient):
         self.forms = resources.FormsResource(self)
         self.onec = resources.OnecResource(self)
         self.automations = resources.AutomationsResource(self)
+        self.verification = resources.VerificationResource(self)
+        self.releases = resources.ReleasesResource(self)
 
     def with_options(
         self,
@@ -426,6 +432,10 @@ class AsyncTungo(AsyncAPIClient):
     """Состояние подключения компании к базе 1С"""
     automations: resources.AsyncAutomationsResource
     """Автоматизации компании: входящие хуки, сценарии, цепочки шагов, запуски и уровень автономности ИИ"""
+    verification: resources.AsyncVerificationResource
+    """Публичная проверка электронной подписи документов Tungo: по коду, по файлу, по блоку QR и ключи подписи (без ключа API)"""
+    releases: resources.AsyncReleasesResource
+    """Публичный список загрузок: расширение 1С и Tungo Connector (без ключа API)"""
 
     def __init__(
         self,
@@ -464,6 +474,8 @@ class AsyncTungo(AsyncAPIClient):
         self.forms = resources.AsyncFormsResource(self)
         self.onec = resources.AsyncOnecResource(self)
         self.automations = resources.AsyncAutomationsResource(self)
+        self.verification = resources.AsyncVerificationResource(self)
+        self.releases = resources.AsyncReleasesResource(self)
 
     def with_options(
         self,

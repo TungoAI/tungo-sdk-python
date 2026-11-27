@@ -12,6 +12,8 @@ from .forms import AsyncFormsResource, FormsResource
 from .onec import AsyncOnecResource, OnecResource
 from .platform import AsyncPlatformResource, PlatformResource
 from .proposals import AsyncProposalsResource, ProposalsResource
+from .releases import AsyncReleasesResource, ReleasesResource
+from .verification import AsyncVerificationResource, VerificationResource
 from .webhooks import AsyncWebhooksResource, WebhooksResource
 from .workspaces import AsyncWorkspacesResource, WorkspacesResource
 
@@ -28,6 +30,8 @@ __all__ = [
     "AsyncOnecResource",
     "AsyncPlatformResource",
     "AsyncProposalsResource",
+    "AsyncReleasesResource",
+    "AsyncVerificationResource",
     "AsyncWebhooksResource",
     "AsyncWorkspacesResource",
     "AutomationsResource",
@@ -40,6 +44,8 @@ __all__ = [
     "OnecResource",
     "PlatformResource",
     "ProposalsResource",
+    "ReleasesResource",
+    "VerificationResource",
     "WebhooksResource",
     "WorkspacesResource",
 ]

@@ -37,18 +37,24 @@ from tungoai.types import (
     ChatDialogRated,
     ChatDialogRenamed,
     ChatDialogSummary,
+    ChatFileItem,
+    ChatFileList,
     ChatMentionSearch,
     ChatMessageRated,
     ChatRatingDismissed,
     ChatRatingOptions,
     ChatStopResult,
     ChatSuggestions,
+    ChatThinkingTranslation,
     ChatTokenCount,
     ChatTurnResult,
+    ChatUpload,
+    ChatUploadPart,
     Company,
     CompanyAutonomy,
     DataGaps,
     DirectBankPollResult,
+    Downloads,
     EsfIncomingItem,
     EsfIncomingReport,
     EsfOutgoingItem,
@@ -82,10 +88,14 @@ from tungoai.types import (
     ProposalDecision,
     ProposalListItem,
     ProposalPage,
+    PublicVerification,
     StatementDay,
     StatementDayList,
     TaxFormsYear,
     TaxFormView,
+    VerifyCheck,
+    VerifyKeys,
+    VerifyQrResult,
     WebhookAttempt,
     WebhookEndpoint,
     WebhookEndpointCreated,
@@ -980,6 +990,7 @@ def test_sync_chat_create(sync_client: Tungo, server: MockServer) -> None:
         ],
         dialog_id="text",
         effort="low",
+        memory=True,
         mentions=[
             {
                 "id": "text",
@@ -1009,6 +1020,7 @@ def test_sync_chat_create(sync_client: Tungo, server: MockServer) -> None:
             ],
             "dialog_id": "text",
             "effort": "low",
+            "memory": True,
             "mentions": [
                 {
                     "id": "text",
@@ -1042,6 +1054,7 @@ async def test_async_chat_create(async_client: AsyncTungo, server: MockServer) -
         ],
         dialog_id="text",
         effort="low",
+        memory=True,
         mentions=[
             {
                 "id": "text",
@@ -1071,6 +1084,7 @@ async def test_async_chat_create(async_client: AsyncTungo, server: MockServer) -
             ],
             "dialog_id": "text",
             "effort": "low",
+            "memory": True,
             "mentions": [
                 {
                     "id": "text",
@@ -1104,6 +1118,7 @@ def test_sync_chat_create_stream(sync_client: Tungo, server: MockServer) -> None
         ],
         dialog_id="text",
         effort="low",
+        memory=True,
         mentions=[
             {
                 "id": "text",
@@ -1136,6 +1151,7 @@ def test_sync_chat_create_stream(sync_client: Tungo, server: MockServer) -> None
             ],
             "dialog_id": "text",
             "effort": "low",
+            "memory": True,
             "mentions": [
                 {
                     "id": "text",
@@ -1170,6 +1186,7 @@ async def test_async_chat_create_stream(async_client: AsyncTungo, server: MockSe
         ],
         dialog_id="text",
         effort="low",
+        memory=True,
         mentions=[
             {
                 "id": "text",
@@ -1202,6 +1219,7 @@ async def test_async_chat_create_stream(async_client: AsyncTungo, server: MockSe
             ],
             "dialog_id": "text",
             "effort": "low",
+            "memory": True,
             "mentions": [
                 {
                     "id": "text",
@@ -1287,6 +1305,44 @@ async def test_async_chat_count_tokens(async_client: AsyncTungo, server: MockSer
         },
     )
     expect_result(result, "createCompanyChatCountToken")
+
+
+def test_sync_chat_list_files(sync_client: Tungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/chat/files", reply("listCompanyChatFiles"))
+    page = sync_client.chat.list_files("co/1", cursor="text", dialog_id="text", format="xlsx", limit=7, q="text")
+    assert_type(page, SyncCursorPage[ChatFileItem, ChatFileList])
+    expect_request(
+        server,
+        "GET",
+        "/v1/companies/co%2F1/chat/files",
+        query=[
+            ("cursor", "text"),
+            ("dialog_id", "text"),
+            ("format", "xlsx"),
+            ("limit", "7"),
+            ("q", "text"),
+        ],
+    )
+    expect_page(page.body, page.data, page.next_cursor, "listCompanyChatFiles")
+
+
+async def test_async_chat_list_files(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/chat/files", reply("listCompanyChatFiles"))
+    page = await async_client.chat.list_files("co/1", cursor="text", dialog_id="text", format="xlsx", limit=7, q="text")
+    assert_type(page, AsyncCursorPage[ChatFileItem, ChatFileList])
+    expect_request(
+        server,
+        "GET",
+        "/v1/companies/co%2F1/chat/files",
+        query=[
+            ("cursor", "text"),
+            ("dialog_id", "text"),
+            ("format", "xlsx"),
+            ("limit", "7"),
+            ("q", "text"),
+        ],
+    )
+    expect_page(page.body, page.data, page.next_cursor, "listCompanyChatFiles")
 
 
 def test_sync_chat_list_mentions(sync_client: Tungo, server: MockServer) -> None:
@@ -1381,6 +1437,66 @@ async def test_async_chat_list_suggestions(async_client: AsyncTungo, server: Moc
         ],
     )
     expect_result(result, "listCompanyChatSuggestions")
+
+
+def test_sync_chat_create_upload(sync_client: Tungo, server: MockServer) -> None:
+    server.add("POST", "/v1/companies/co%2F1/chat/uploads", reply("createCompanyChatUpload"))
+    result = sync_client.chat.create_upload("co/1", name="text", size=7)
+    assert_type(result, ChatUpload)
+    expect_request(
+        server,
+        "POST",
+        "/v1/companies/co%2F1/chat/uploads",
+        body={
+            "name": "text",
+            "size": 7,
+        },
+    )
+    expect_result(result, "createCompanyChatUpload")
+
+
+async def test_async_chat_create_upload(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("POST", "/v1/companies/co%2F1/chat/uploads", reply("createCompanyChatUpload"))
+    result = await async_client.chat.create_upload("co/1", name="text", size=7)
+    assert_type(result, ChatUpload)
+    expect_request(
+        server,
+        "POST",
+        "/v1/companies/co%2F1/chat/uploads",
+        body={
+            "name": "text",
+            "size": 7,
+        },
+    )
+    expect_result(result, "createCompanyChatUpload")
+
+
+def test_sync_chat_delete_upload(sync_client: Tungo, server: MockServer) -> None:
+    server.add("DELETE", "/v1/companies/co%2F1/chat/uploads/upload%2F1", reply("deleteCompanyChatUpload"))
+    sync_client.chat.delete_upload("co/1", "upload/1")
+    expect_request(server, "DELETE", "/v1/companies/co%2F1/chat/uploads/upload%2F1")
+
+
+async def test_async_chat_delete_upload(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("DELETE", "/v1/companies/co%2F1/chat/uploads/upload%2F1", reply("deleteCompanyChatUpload"))
+    await async_client.chat.delete_upload("co/1", "upload/1")
+    expect_request(server, "DELETE", "/v1/companies/co%2F1/chat/uploads/upload%2F1")
+
+
+def test_sync_chat_put_upload_part(sync_client: Tungo, server: MockServer) -> None:
+    server.add("PUT", "/v1/companies/co%2F1/chat/uploads/upload%2F1/parts/n%2F1", reply("putCompanyChatUploadPart"))
+    result = sync_client.chat.put_upload_part("co/1", "upload/1", "n/1")
+    assert_type(result, ChatUploadPart)
+    expect_request(server, "PUT", "/v1/companies/co%2F1/chat/uploads/upload%2F1/parts/n%2F1")
+    expect_result(result, "putCompanyChatUploadPart")
+
+
+async def test_async_chat_put_upload_part(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("PUT", "/v1/companies/co%2F1/chat/uploads/upload%2F1/parts/n%2F1", reply("putCompanyChatUploadPart"))
+    result = await async_client.chat.put_upload_part("co/1", "upload/1", "n/1")
+    assert_type(result, ChatUploadPart)
+    expect_request(server, "PUT", "/v1/companies/co%2F1/chat/uploads/upload%2F1/parts/n%2F1")
+    expect_result(result, "putCompanyChatUploadPart")
 
 
 def test_sync_chat_get(sync_client: Tungo, server: MockServer) -> None:
@@ -1715,6 +1831,30 @@ async def test_async_chat_stop(async_client: AsyncTungo, server: MockServer) -> 
     assert_type(result, ChatStopResult)
     expect_request(server, "POST", "/v1/companies/co%2F1/chat/id%2F1/stop")
     expect_result(result, "stopCompanyChat")
+
+
+def test_sync_chat_translate_thinking(sync_client: Tungo, server: MockServer) -> None:
+    server.add(
+        "POST",
+        "/v1/companies/co%2F1/chat/id%2F1/thinking/tid%2F1/translate",
+        reply("translateCompanyChatThinking"),
+    )
+    result = sync_client.chat.translate_thinking("co/1", "id/1", "tid/1")
+    assert_type(result, ChatThinkingTranslation)
+    expect_request(server, "POST", "/v1/companies/co%2F1/chat/id%2F1/thinking/tid%2F1/translate")
+    expect_result(result, "translateCompanyChatThinking")
+
+
+async def test_async_chat_translate_thinking(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add(
+        "POST",
+        "/v1/companies/co%2F1/chat/id%2F1/thinking/tid%2F1/translate",
+        reply("translateCompanyChatThinking"),
+    )
+    result = await async_client.chat.translate_thinking("co/1", "id/1", "tid/1")
+    assert_type(result, ChatThinkingTranslation)
+    expect_request(server, "POST", "/v1/companies/co%2F1/chat/id%2F1/thinking/tid%2F1/translate")
+    expect_result(result, "translateCompanyChatThinking")
 
 
 def test_sync_proposals_list(sync_client: Tungo, server: MockServer) -> None:
@@ -3567,3 +3707,115 @@ async def test_async_automations_put_autonomy(async_client: AsyncTungo, server: 
         },
     )
     expect_result(result, "putCompanyAutonomy")
+
+
+def test_sync_verification_list_keys(sync_client: Tungo, server: MockServer) -> None:
+    server.add("GET", "/v1/public/verify-keys", reply("listPublicVerifyKeys"))
+    result = sync_client.verification.list_keys()
+    assert_type(result, VerifyKeys)
+    expect_request(server, "GET", "/v1/public/verify-keys", auth="public")
+    expect_result(result, "listPublicVerifyKeys")
+
+
+async def test_async_verification_list_keys(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("GET", "/v1/public/verify-keys", reply("listPublicVerifyKeys"))
+    result = await async_client.verification.list_keys()
+    assert_type(result, VerifyKeys)
+    expect_request(server, "GET", "/v1/public/verify-keys", auth="public")
+    expect_result(result, "listPublicVerifyKeys")
+
+
+def test_sync_verification_verify_qr(sync_client: Tungo, server: MockServer) -> None:
+    server.add("POST", "/v1/public/verify/qr", reply("qrPublicVerify"))
+    result = sync_client.verification.verify_qr(payload="text")
+    assert_type(result, VerifyQrResult)
+    expect_request(
+        server,
+        "POST",
+        "/v1/public/verify/qr",
+        body={
+            "payload": "text",
+        },
+        auth="public",
+    )
+    expect_result(result, "qrPublicVerify")
+
+
+async def test_async_verification_verify_qr(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("POST", "/v1/public/verify/qr", reply("qrPublicVerify"))
+    result = await async_client.verification.verify_qr(payload="text")
+    assert_type(result, VerifyQrResult)
+    expect_request(
+        server,
+        "POST",
+        "/v1/public/verify/qr",
+        body={
+            "payload": "text",
+        },
+        auth="public",
+    )
+    expect_result(result, "qrPublicVerify")
+
+
+def test_sync_verification_get(sync_client: Tungo, server: MockServer) -> None:
+    server.add("GET", "/v1/public/verify/code%2F1", reply("getPublicVerify"))
+    result = sync_client.verification.get("code/1")
+    assert_type(result, PublicVerification)
+    expect_request(server, "GET", "/v1/public/verify/code%2F1", auth="public")
+    expect_result(result, "getPublicVerify")
+
+
+async def test_async_verification_get(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("GET", "/v1/public/verify/code%2F1", reply("getPublicVerify"))
+    result = await async_client.verification.get("code/1")
+    assert_type(result, PublicVerification)
+    expect_request(server, "GET", "/v1/public/verify/code%2F1", auth="public")
+    expect_result(result, "getPublicVerify")
+
+
+def test_sync_verification_check(sync_client: Tungo, server: MockServer) -> None:
+    server.add("POST", "/v1/public/verify/code%2F1/check", reply("checkPublicVerify"))
+    result = sync_client.verification.check("code/1", sha256="text")
+    assert_type(result, VerifyCheck)
+    expect_request(
+        server,
+        "POST",
+        "/v1/public/verify/code%2F1/check",
+        body={
+            "sha256": "text",
+        },
+        auth="public",
+    )
+    expect_result(result, "checkPublicVerify")
+
+
+async def test_async_verification_check(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("POST", "/v1/public/verify/code%2F1/check", reply("checkPublicVerify"))
+    result = await async_client.verification.check("code/1", sha256="text")
+    assert_type(result, VerifyCheck)
+    expect_request(
+        server,
+        "POST",
+        "/v1/public/verify/code%2F1/check",
+        body={
+            "sha256": "text",
+        },
+        auth="public",
+    )
+    expect_result(result, "checkPublicVerify")
+
+
+def test_sync_releases_list(sync_client: Tungo, server: MockServer) -> None:
+    server.add("GET", "/v1/public/downloads", reply("listPublicDownloads"))
+    result = sync_client.releases.list()
+    assert_type(result, Downloads)
+    expect_request(server, "GET", "/v1/public/downloads", auth="public")
+    expect_result(result, "listPublicDownloads")
+
+
+async def test_async_releases_list(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("GET", "/v1/public/downloads", reply("listPublicDownloads"))
+    result = await async_client.releases.list()
+    assert_type(result, Downloads)
+    expect_request(server, "GET", "/v1/public/downloads", auth="public")
+    expect_result(result, "listPublicDownloads")

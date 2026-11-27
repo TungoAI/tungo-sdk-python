@@ -280,6 +280,8 @@ class AutomationsResource:
     ) -> AutomationDeleted:
         """Удалить хук
 
+        Сценарии этого хука не удаляются: они остаются с trigger.hook_id = null и не запускаются событиями, пока им не назначат другой хук (PUT …/scenarios/{id}).
+
         Доступ: automations.manage | company.manage.
 
         Доступно по ключу API.
@@ -820,7 +822,7 @@ class AutomationsResource:
 
         Args:
             co: id компании, co_… — из GET /v1/companies
-            paused: true — поставить все автоматизации компании на паузу: новые запуски не начинаются (идущий доводит текущий шаг, остановить его — POST …/runs/{id}/cancel), события хуков принимаются и ждут в очереди; false — снять паузу (при сценариях с автоодобрением — только с правом proposals.approve)
+            paused: true — поставить все автоматизации компании на паузу: новые запуски не начинаются (идущий доводит текущий шаг и ждёт снятия паузы в очереди, потом продолжит со следующего шага; остановить его совсем — POST …/runs/{id}/cancel), события хуков принимаются и ждут в очереди; false — снять паузу (при сценариях с автоодобрением — только с правом proposals.approve)
             reason: Почему пауза — для журнала и коллег (до 500 знаков)
             request_options: Per-request timeout, retries, headers and idempotency key.
         """
@@ -1137,6 +1139,8 @@ class AsyncAutomationsResource:
         request_options: RequestOptions | None = None,
     ) -> AutomationDeleted:
         """Удалить хук
+
+        Сценарии этого хука не удаляются: они остаются с trigger.hook_id = null и не запускаются событиями, пока им не назначат другой хук (PUT …/scenarios/{id}).
 
         Доступ: automations.manage | company.manage.
 
@@ -1678,7 +1682,7 @@ class AsyncAutomationsResource:
 
         Args:
             co: id компании, co_… — из GET /v1/companies
-            paused: true — поставить все автоматизации компании на паузу: новые запуски не начинаются (идущий доводит текущий шаг, остановить его — POST …/runs/{id}/cancel), события хуков принимаются и ждут в очереди; false — снять паузу (при сценариях с автоодобрением — только с правом proposals.approve)
+            paused: true — поставить все автоматизации компании на паузу: новые запуски не начинаются (идущий доводит текущий шаг и ждёт снятия паузы в очереди, потом продолжит со следующего шага; остановить его совсем — POST …/runs/{id}/cancel), события хуков принимаются и ждут в очереди; false — снять паузу (при сценариях с автоодобрением — только с правом proposals.approve)
             reason: Почему пауза — для журнала и коллег (до 500 знаков)
             request_options: Per-request timeout, retries, headers and idempotency key.
         """

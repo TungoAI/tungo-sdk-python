@@ -43,6 +43,8 @@ __all__ = [
     "AutomationStepAction",
     "AutomationStepWhen",
     "ChatAttachment",
+    "ChatAttachmentData",
+    "ChatAttachmentUpload",
     "ChatChoiceAnswer",
     "ChatMention",
     "ChatMentionType",
@@ -62,6 +64,7 @@ __all__ = [
     "CompanyAutonomyInputLevelsPurchase",
     "CompanyAutonomyInputLevelsSale",
     "FeedSection",
+    "ListCompanyChatFilesFormat",
     "ListCompanyChatRatingOptionsLang",
     "ListCompanyChatSuggestionsLang",
     "ListCompanyProposalsApprovalRequested",
@@ -241,6 +244,14 @@ FeedSection: TypeAlias = Literal[
     "auto",
     "decision",
     "question",
+]
+
+# Только этого формата: xlsx, docx, pdf или csv
+ListCompanyChatFilesFormat: TypeAlias = Literal[
+    "xlsx",
+    "docx",
+    "pdf",
+    "csv",
 ]
 
 # Язык названий причин; по умолчанию ru
@@ -443,8 +454,8 @@ class AutomationStep(TypedDict, total=False):
     """Когда выполнять шаг (нет — `always`): `always` — всегда; `previous_created_proposals` — прошлый шаг подготовил предложения; `checks_found_issues` — последние проверки этого запуска нашли ошибки; `previous_failed` — прошлый шаг упал (только такой шаг идёт после упавшего, запуск всё равно закончится ошибкой). Условие не выполнено — шаг пропускается (state skipped). У первого шага — только always."""
 
 
-class ChatAttachment(TypedDict, total=False):
-    """Файл к вопросу: PDF, скан, Excel, Word, выписка"""
+class ChatAttachmentData(TypedDict, total=False):
+    """Файл в теле запроса, base64"""
 
     data: Required[str]
     """Содержимое файла в base64 (можно с префиксом data:…;base64,)"""
@@ -452,6 +463,13 @@ class ChatAttachment(TypedDict, total=False):
     """MIME-тип; не обязателен: тип файла определяется по расширению и содержимому"""
     name: Required[str]
     """Имя файла с расширением — по нему определяется тип"""
+
+
+class ChatAttachmentUpload(TypedDict, total=False):
+    """Архив, загруженный заранее по частям"""
+
+    upload_id: Required[str]
+    """Законченная загрузка архива по частям (POST …/chat/uploads)"""
 
 
 class ChatChoiceAnswer(TypedDict, total=False):
@@ -530,3 +548,6 @@ AutomationScenarioInputTrigger: TypeAlias = (
 AutomationSchedule: TypeAlias = (
     AutomationScheduleDaily | AutomationScheduleWeekly | AutomationScheduleMonthly | AutomationScheduleInterval
 )
+
+# Файл к вопросу: PDF, скан, Excel, Word (.docx, .doc), выписка, архив (.zip, .rar, .7z) — base64 в теле или upload_id загрузки по частям
+ChatAttachment: TypeAlias = ChatAttachmentData | ChatAttachmentUpload

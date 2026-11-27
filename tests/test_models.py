@@ -203,5 +203,3 @@ def test_repr_of_models_hides_credentials() -> None:
     hook = types.AutomationHookWithToken.model_validate(body)
     assert "TOPSECRET" not in repr(hook)
     assert hook.token == "th_TOPSECRET"
-    rolled = types.ApiKeyRolled.model_validate({"key": "tg_TOPSECRET"})
-    assert "TOPSECRET" not in repr(rolled)

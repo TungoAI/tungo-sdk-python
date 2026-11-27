@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from types import NoneType
 from typing import TYPE_CHECKING
 
 from .._base_client import RequestSpec, async_to_raw_response, json_body, path_segment, query_params, to_raw_response
@@ -17,14 +18,19 @@ from ..types import (
     ChatDialogRated,
     ChatDialogRenamed,
     ChatDialogSummary,
+    ChatFileItem,
+    ChatFileList,
     ChatMentionSearch,
     ChatMessageRated,
     ChatRatingDismissed,
     ChatRatingOptions,
     ChatStopResult,
     ChatSuggestions,
+    ChatThinkingTranslation,
     ChatTokenCount,
     ChatTurnResult,
+    ChatUpload,
+    ChatUploadPart,
     params,
 )
 
@@ -91,6 +97,7 @@ class ChatResource:
         capabilities: Sequence[str] | Omit = omit,
         dialog_id: str | None | Omit = omit,
         effort: params.ChatMessageRequestEffort | None | Omit = omit,
+        memory: bool | Omit = omit,
         mentions: Sequence[params.ChatMention] | Omit = omit,
         message: str | Omit = omit,
         mode: params.ChatMessageRequestMode | Omit = omit,
@@ -111,10 +118,11 @@ class ChatResource:
 
         Args:
             co: id компании, co_… — из GET /v1/companies
-            attachments: Файлы к вопросу. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .docx, .xlsx, .xls, .csv, .txt. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
+            attachments: Файлы к вопросу. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .svg, .docx, .doc, .xlsx, .xls, .csv, .txt, .zip, .rar, .7z. Архив (.zip, .rar, .7z) — 1 на сообщение, до 100 МБ: больше 10 МБ — только загрузкой по частям (POST …/chat/uploads) и ссылкой upload_id; файлы внутри проходят те же проверки, модель видит опись архива. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
             capabilities: Что умеет клиент: ["choice"] — показывать уточняющие вопросы с вариантами (событие choice). Без него ИИ спрашивает обычным текстом
             dialog_id: Продолжить разговор с этим id. Без него — новый разговор, его id придёт в заголовке X-Dialog-Id
             effort: Усилие ИИ на этот вопрос: low < medium < high < xhigh < max — глубже думает, дольше и дороже (больше расход лимита). Не прислано или null — усилие выбирает Tungo. Только на тарифе с выбором усилия (max_effort тарифа в GET /v1/plans не null): иначе 402 effort_not_in_plan. Выше max_effort тарифа — опускается до него. Ответ на уточняющий вопрос продолжает ход с прежним усилием. Ключу API тариф не нужен: усилие — как прислано
+            memory: false — разговор «без памяти»: ИИ не видит, что запомнил раньше, ничего не запоминает и не ищет по прошлым разговорам, а сам разговор не попадает в поиск. Действует только в первом сообщении нового разговора и не меняется до его конца; по умолчанию true
             mentions: Упоминания через «@» в этом вопросе, до 10: ИИ получит их вместе с вопросом. Каждое проверяется на доступ: нет объекта в этой компании или нет права его видеть — 404 (error.code = mention_not_found, error.index — номер в списке), ход не начинается. Неверная форма — 400 (error.code = mentions_invalid)
             message: Вопрос человека, до 4000 знаков; можно не писать, если приложены файлы
             mode: Режим хода: auto (по умолчанию) — ИИ сам решает, ответить или подготовить документ; ask — только ответ и разбор, без документов; document — подготовить документ
@@ -133,6 +141,7 @@ class ChatResource:
                         "capabilities": capabilities,
                         "dialog_id": dialog_id,
                         "effort": effort,
+                        "memory": memory,
                         "mentions": mentions,
                         "message": message,
                         "mode": mode,
@@ -157,6 +166,7 @@ class ChatResource:
         capabilities: Sequence[str] | Omit = omit,
         dialog_id: str | None | Omit = omit,
         effort: params.ChatMessageRequestEffort | None | Omit = omit,
+        memory: bool | Omit = omit,
         mentions: Sequence[params.ChatMention] | Omit = omit,
         message: str | Omit = omit,
         mode: params.ChatMessageRequestMode | Omit = omit,
@@ -179,10 +189,11 @@ class ChatResource:
 
         Args:
             co: id компании, co_… — из GET /v1/companies
-            attachments: Файлы к вопросу. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .docx, .xlsx, .xls, .csv, .txt. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
+            attachments: Файлы к вопросу. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .svg, .docx, .doc, .xlsx, .xls, .csv, .txt, .zip, .rar, .7z. Архив (.zip, .rar, .7z) — 1 на сообщение, до 100 МБ: больше 10 МБ — только загрузкой по частям (POST …/chat/uploads) и ссылкой upload_id; файлы внутри проходят те же проверки, модель видит опись архива. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
             capabilities: Что умеет клиент: ["choice"] — показывать уточняющие вопросы с вариантами (событие choice). Без него ИИ спрашивает обычным текстом
             dialog_id: Продолжить разговор с этим id. Без него — новый разговор, его id придёт в заголовке X-Dialog-Id
             effort: Усилие ИИ на этот вопрос: low < medium < high < xhigh < max — глубже думает, дольше и дороже (больше расход лимита). Не прислано или null — усилие выбирает Tungo. Только на тарифе с выбором усилия (max_effort тарифа в GET /v1/plans не null): иначе 402 effort_not_in_plan. Выше max_effort тарифа — опускается до него. Ответ на уточняющий вопрос продолжает ход с прежним усилием. Ключу API тариф не нужен: усилие — как прислано
+            memory: false — разговор «без памяти»: ИИ не видит, что запомнил раньше, ничего не запоминает и не ищет по прошлым разговорам, а сам разговор не попадает в поиск. Действует только в первом сообщении нового разговора и не меняется до его конца; по умолчанию true
             mentions: Упоминания через «@» в этом вопросе, до 10: ИИ получит их вместе с вопросом. Каждое проверяется на доступ: нет объекта в этой компании или нет права его видеть — 404 (error.code = mention_not_found, error.index — номер в списке), ход не начинается. Неверная форма — 400 (error.code = mentions_invalid)
             message: Вопрос человека, до 4000 знаков; можно не писать, если приложены файлы
             mode: Режим хода: auto (по умолчанию) — ИИ сам решает, ответить или подготовить документ; ask — только ответ и разбор, без документов; document — подготовить документ
@@ -201,6 +212,7 @@ class ChatResource:
                         "capabilities": capabilities,
                         "dialog_id": dialog_id,
                         "effort": effort,
+                        "memory": memory,
                         "mentions": mentions,
                         "message": message,
                         "mode": mode,
@@ -235,7 +247,7 @@ class ChatResource:
 
         Args:
             co: id компании, co_… — из GET /v1/companies
-            attachments: Файлы, как в POST …/chat. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .docx, .xlsx, .xls, .csv, .txt. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
+            attachments: Файлы, как в POST …/chat. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .svg, .docx, .doc, .xlsx, .xls, .csv, .txt, .zip, .rar, .7z. Архив (.zip, .rar, .7z) — 1 на сообщение, до 100 МБ: больше 10 МБ — только загрузкой по частям (POST …/chat/uploads) и ссылкой upload_id; файлы внутри проходят те же проверки, модель видит опись архива. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
             dialog_id: Разговор, чья история считается; нет — новый разговор
             message: Текст вопроса; без него нужны файлы
             mode: Режим хода, как в POST …/chat: от него зависят инструменты
@@ -255,6 +267,53 @@ class ChatResource:
                 ),
             ),
             cast_to=ChatTokenCount,
+            options=request_options,
+        )
+
+    def list_files(
+        self,
+        co: str,
+        *,
+        cursor: str | Omit = omit,
+        dialog_id: str | Omit = omit,
+        format: params.ListCompanyChatFilesFormat | Omit = omit,
+        limit: int | Omit = omit,
+        q: str | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> SyncCursorPage[ChatFileItem, ChatFileList]:
+        """Файлы от ИИ в своих разговорах, новые сверху
+
+        Excel, Word, PDF и CSV, которые ИИ собрал в разговорах компании (событие file). Видно то же, что можно скачать: только файлы своих разговоров — чужие не видны никому, даже владельцу; по ключу API — разговоры самого ключа. Разговор стёрт или истёк срок хранения — его файлов нет. Файл разговора, у которого ещё идёт первый ход, появится, когда ход запишется. Страницы курсором.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            cursor: next_cursor прошлой страницы; без него — самые новые файлы. Фильтры — те же, что у первой страницы
+            dialog_id: Только из этого разговора
+            format: Только этого формата: xlsx, docx, pdf или csv
+            limit: Сколько на странице: 1–200, по умолчанию 50
+            q: Подстрока имени файла, без учёта регистра
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request_page(
+            RequestSpec(
+                method="GET",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/files",
+                query=query_params(
+                    {
+                        "cursor": cursor,
+                        "dialog_id": dialog_id,
+                        "format": format,
+                        "limit": limit,
+                        "q": q,
+                    }
+                ),
+            ),
+            body_type=ChatFileList,
+            item_type=ChatFileItem,
             options=request_options,
         )
 
@@ -363,6 +422,103 @@ class ChatResource:
                 ),
             ),
             cast_to=ChatSuggestions,
+            options=request_options,
+        )
+
+    def create_upload(
+        self,
+        co: str,
+        *,
+        name: str,
+        size: int,
+        request_options: RequestOptions | None = None,
+    ) -> ChatUpload:
+        """Начать загрузку архива к сообщению
+
+        Архив (.zip, .rar, .7z) до 100 МБ одним телом не проходит (предел тела у прокси), поэтому — по частям: начать здесь, прислать части PUT …/parts/{n}, затем отправить сообщение с attachments: [{ "upload_id": "…" }]. Ход, принявший архив, удаляет загрузку; брошенная удаляется по сроку. Видит загрузку только тот, кто её начал (человек или ключ), в этой компании; одновременно — до 3 загрузок. Лимит тарифа проверяется сразу (402/429, как у сообщения). error.code: upload_part_invalid (имя не архива, размер), file_too_large, too_many_uploads (429), uploads_unavailable (503).
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            name: Имя архива с расширением .zip, .rar или .7z
+            size: Размер файла в байтах, до 104857600
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request(
+            RequestSpec(
+                method="POST",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/uploads",
+                body=json_body(
+                    {
+                        "name": name,
+                        "size": size,
+                    }
+                ),
+            ),
+            cast_to=ChatUpload,
+            options=request_options,
+        )
+
+    def delete_upload(
+        self,
+        co: str,
+        upload: str,
+        *,
+        request_options: RequestOptions | None = None,
+    ) -> None:
+        """Отменить загрузку архива
+
+        Части удаляются сразу. Нет такой загрузки (устарела, уже отправлена, чужая) — 404 с error.code = upload_not_found.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            upload: id загрузки (upl_…)
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request(
+            RequestSpec(
+                method="DELETE",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/uploads/{path_segment('upload', upload)}",
+            ),
+            cast_to=NoneType,
+            options=request_options,
+        )
+
+    def put_upload_part(
+        self,
+        co: str,
+        upload: str,
+        n: str,
+        *,
+        request_options: RequestOptions | None = None,
+    ) -> ChatUploadPart:
+        """Часть архива
+
+        Тело — сырые байты части (Content-Type: application/octet-stream), ровно part_bytes (8388608), у последней — остаток. Части — в любом порядке и параллельно; повтор той же части заменяет её. error.code: upload_part_invalid (номер или размер), payload_too_large, upload_not_found (404: устарела, отменена, чужая).
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            upload: id загрузки (upl_…)
+            n: Номер части с 0
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request(
+            RequestSpec(
+                method="PUT",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/uploads/{path_segment('upload', upload)}/parts/{path_segment('n', n)}",
+            ),
+            cast_to=ChatUploadPart,
             options=request_options,
         )
 
@@ -749,6 +905,37 @@ class ChatResource:
             options=request_options,
         )
 
+    def translate_thinking(
+        self,
+        co: str,
+        id: str,
+        tid: str,
+        *,
+        request_options: RequestOptions | None = None,
+    ) -> ChatThinkingTranslation:
+        """Перевести размышление на русский
+
+        Модель часто рассуждает по-английски. Блок не по-русски приходит оригиналом с translate_id (событие thinking и thinking_parts истории); перевод — этим запросом, когда человек раскрыл шаги ответа. Перевод — вызов модели за счёт того же человека и с теми же лимитами, что ход (402/429 — как у POST …/chat); переведённый блок запоминается в разговоре — повторный запрос бесплатен (cached: true). Блок идущего хода в разговор ещё не записан — 404, повторить после ответа; перевод не получился — 503, повторить позже. Только свой разговор, как GET …/chat/{id}.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+            tid: id блока размышления не по-русски (16 hex): тот же в событии thinking и в истории
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request(
+            RequestSpec(
+                method="POST",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/{path_segment('id', id)}/thinking/{path_segment('tid', tid)}/translate",
+            ),
+            cast_to=ChatThinkingTranslation,
+            options=request_options,
+        )
+
 
 class AsyncChatResource:
     """Диалоги с ИИ-бухгалтером: вопросы, потоковый чат (SSE), подсчёт токенов и история"""
@@ -807,6 +994,7 @@ class AsyncChatResource:
         capabilities: Sequence[str] | Omit = omit,
         dialog_id: str | None | Omit = omit,
         effort: params.ChatMessageRequestEffort | None | Omit = omit,
+        memory: bool | Omit = omit,
         mentions: Sequence[params.ChatMention] | Omit = omit,
         message: str | Omit = omit,
         mode: params.ChatMessageRequestMode | Omit = omit,
@@ -827,10 +1015,11 @@ class AsyncChatResource:
 
         Args:
             co: id компании, co_… — из GET /v1/companies
-            attachments: Файлы к вопросу. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .docx, .xlsx, .xls, .csv, .txt. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
+            attachments: Файлы к вопросу. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .svg, .docx, .doc, .xlsx, .xls, .csv, .txt, .zip, .rar, .7z. Архив (.zip, .rar, .7z) — 1 на сообщение, до 100 МБ: больше 10 МБ — только загрузкой по частям (POST …/chat/uploads) и ссылкой upload_id; файлы внутри проходят те же проверки, модель видит опись архива. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
             capabilities: Что умеет клиент: ["choice"] — показывать уточняющие вопросы с вариантами (событие choice). Без него ИИ спрашивает обычным текстом
             dialog_id: Продолжить разговор с этим id. Без него — новый разговор, его id придёт в заголовке X-Dialog-Id
             effort: Усилие ИИ на этот вопрос: low < medium < high < xhigh < max — глубже думает, дольше и дороже (больше расход лимита). Не прислано или null — усилие выбирает Tungo. Только на тарифе с выбором усилия (max_effort тарифа в GET /v1/plans не null): иначе 402 effort_not_in_plan. Выше max_effort тарифа — опускается до него. Ответ на уточняющий вопрос продолжает ход с прежним усилием. Ключу API тариф не нужен: усилие — как прислано
+            memory: false — разговор «без памяти»: ИИ не видит, что запомнил раньше, ничего не запоминает и не ищет по прошлым разговорам, а сам разговор не попадает в поиск. Действует только в первом сообщении нового разговора и не меняется до его конца; по умолчанию true
             mentions: Упоминания через «@» в этом вопросе, до 10: ИИ получит их вместе с вопросом. Каждое проверяется на доступ: нет объекта в этой компании или нет права его видеть — 404 (error.code = mention_not_found, error.index — номер в списке), ход не начинается. Неверная форма — 400 (error.code = mentions_invalid)
             message: Вопрос человека, до 4000 знаков; можно не писать, если приложены файлы
             mode: Режим хода: auto (по умолчанию) — ИИ сам решает, ответить или подготовить документ; ask — только ответ и разбор, без документов; document — подготовить документ
@@ -849,6 +1038,7 @@ class AsyncChatResource:
                         "capabilities": capabilities,
                         "dialog_id": dialog_id,
                         "effort": effort,
+                        "memory": memory,
                         "mentions": mentions,
                         "message": message,
                         "mode": mode,
@@ -873,6 +1063,7 @@ class AsyncChatResource:
         capabilities: Sequence[str] | Omit = omit,
         dialog_id: str | None | Omit = omit,
         effort: params.ChatMessageRequestEffort | None | Omit = omit,
+        memory: bool | Omit = omit,
         mentions: Sequence[params.ChatMention] | Omit = omit,
         message: str | Omit = omit,
         mode: params.ChatMessageRequestMode | Omit = omit,
@@ -895,10 +1086,11 @@ class AsyncChatResource:
 
         Args:
             co: id компании, co_… — из GET /v1/companies
-            attachments: Файлы к вопросу. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .docx, .xlsx, .xls, .csv, .txt. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
+            attachments: Файлы к вопросу. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .svg, .docx, .doc, .xlsx, .xls, .csv, .txt, .zip, .rar, .7z. Архив (.zip, .rar, .7z) — 1 на сообщение, до 100 МБ: больше 10 МБ — только загрузкой по частям (POST …/chat/uploads) и ссылкой upload_id; файлы внутри проходят те же проверки, модель видит опись архива. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
             capabilities: Что умеет клиент: ["choice"] — показывать уточняющие вопросы с вариантами (событие choice). Без него ИИ спрашивает обычным текстом
             dialog_id: Продолжить разговор с этим id. Без него — новый разговор, его id придёт в заголовке X-Dialog-Id
             effort: Усилие ИИ на этот вопрос: low < medium < high < xhigh < max — глубже думает, дольше и дороже (больше расход лимита). Не прислано или null — усилие выбирает Tungo. Только на тарифе с выбором усилия (max_effort тарифа в GET /v1/plans не null): иначе 402 effort_not_in_plan. Выше max_effort тарифа — опускается до него. Ответ на уточняющий вопрос продолжает ход с прежним усилием. Ключу API тариф не нужен: усилие — как прислано
+            memory: false — разговор «без памяти»: ИИ не видит, что запомнил раньше, ничего не запоминает и не ищет по прошлым разговорам, а сам разговор не попадает в поиск. Действует только в первом сообщении нового разговора и не меняется до его конца; по умолчанию true
             mentions: Упоминания через «@» в этом вопросе, до 10: ИИ получит их вместе с вопросом. Каждое проверяется на доступ: нет объекта в этой компании или нет права его видеть — 404 (error.code = mention_not_found, error.index — номер в списке), ход не начинается. Неверная форма — 400 (error.code = mentions_invalid)
             message: Вопрос человека, до 4000 знаков; можно не писать, если приложены файлы
             mode: Режим хода: auto (по умолчанию) — ИИ сам решает, ответить или подготовить документ; ask — только ответ и разбор, без документов; document — подготовить документ
@@ -917,6 +1109,7 @@ class AsyncChatResource:
                         "capabilities": capabilities,
                         "dialog_id": dialog_id,
                         "effort": effort,
+                        "memory": memory,
                         "mentions": mentions,
                         "message": message,
                         "mode": mode,
@@ -951,7 +1144,7 @@ class AsyncChatResource:
 
         Args:
             co: id компании, co_… — из GET /v1/companies
-            attachments: Файлы, как в POST …/chat. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .docx, .xlsx, .xls, .csv, .txt. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
+            attachments: Файлы, как в POST …/chat. До 5 файлов, каждый до 10 МБ, все вместе до 14 МБ (до кодирования в base64). Картинка — до 5 МБ, PDF — до 100 страниц. Форматы (по расширению имени): .pdf, .jpg, .jpeg, .png, .webp, .svg, .docx, .doc, .xlsx, .xls, .csv, .txt, .zip, .rar, .7z. Архив (.zip, .rar, .7z) — 1 на сообщение, до 100 МБ: больше 10 МБ — только загрузкой по частям (POST …/chat/uploads) и ссылкой upload_id; файлы внутри проходят те же проверки, модель видит опись архива. Содержимое должно совпадать с расширением; иначе, как и при превышении пределов, — 400 с текстом причины
             dialog_id: Разговор, чья история считается; нет — новый разговор
             message: Текст вопроса; без него нужны файлы
             mode: Режим хода, как в POST …/chat: от него зависят инструменты
@@ -971,6 +1164,53 @@ class AsyncChatResource:
                 ),
             ),
             cast_to=ChatTokenCount,
+            options=request_options,
+        )
+
+    async def list_files(
+        self,
+        co: str,
+        *,
+        cursor: str | Omit = omit,
+        dialog_id: str | Omit = omit,
+        format: params.ListCompanyChatFilesFormat | Omit = omit,
+        limit: int | Omit = omit,
+        q: str | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> AsyncCursorPage[ChatFileItem, ChatFileList]:
+        """Файлы от ИИ в своих разговорах, новые сверху
+
+        Excel, Word, PDF и CSV, которые ИИ собрал в разговорах компании (событие file). Видно то же, что можно скачать: только файлы своих разговоров — чужие не видны никому, даже владельцу; по ключу API — разговоры самого ключа. Разговор стёрт или истёк срок хранения — его файлов нет. Файл разговора, у которого ещё идёт первый ход, появится, когда ход запишется. Страницы курсором.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            cursor: next_cursor прошлой страницы; без него — самые новые файлы. Фильтры — те же, что у первой страницы
+            dialog_id: Только из этого разговора
+            format: Только этого формата: xlsx, docx, pdf или csv
+            limit: Сколько на странице: 1–200, по умолчанию 50
+            q: Подстрока имени файла, без учёта регистра
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request_page(
+            RequestSpec(
+                method="GET",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/files",
+                query=query_params(
+                    {
+                        "cursor": cursor,
+                        "dialog_id": dialog_id,
+                        "format": format,
+                        "limit": limit,
+                        "q": q,
+                    }
+                ),
+            ),
+            body_type=ChatFileList,
+            item_type=ChatFileItem,
             options=request_options,
         )
 
@@ -1079,6 +1319,103 @@ class AsyncChatResource:
                 ),
             ),
             cast_to=ChatSuggestions,
+            options=request_options,
+        )
+
+    async def create_upload(
+        self,
+        co: str,
+        *,
+        name: str,
+        size: int,
+        request_options: RequestOptions | None = None,
+    ) -> ChatUpload:
+        """Начать загрузку архива к сообщению
+
+        Архив (.zip, .rar, .7z) до 100 МБ одним телом не проходит (предел тела у прокси), поэтому — по частям: начать здесь, прислать части PUT …/parts/{n}, затем отправить сообщение с attachments: [{ "upload_id": "…" }]. Ход, принявший архив, удаляет загрузку; брошенная удаляется по сроку. Видит загрузку только тот, кто её начал (человек или ключ), в этой компании; одновременно — до 3 загрузок. Лимит тарифа проверяется сразу (402/429, как у сообщения). error.code: upload_part_invalid (имя не архива, размер), file_too_large, too_many_uploads (429), uploads_unavailable (503).
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            name: Имя архива с расширением .zip, .rar или .7z
+            size: Размер файла в байтах, до 104857600
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request(
+            RequestSpec(
+                method="POST",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/uploads",
+                body=json_body(
+                    {
+                        "name": name,
+                        "size": size,
+                    }
+                ),
+            ),
+            cast_to=ChatUpload,
+            options=request_options,
+        )
+
+    async def delete_upload(
+        self,
+        co: str,
+        upload: str,
+        *,
+        request_options: RequestOptions | None = None,
+    ) -> None:
+        """Отменить загрузку архива
+
+        Части удаляются сразу. Нет такой загрузки (устарела, уже отправлена, чужая) — 404 с error.code = upload_not_found.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            upload: id загрузки (upl_…)
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request(
+            RequestSpec(
+                method="DELETE",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/uploads/{path_segment('upload', upload)}",
+            ),
+            cast_to=NoneType,
+            options=request_options,
+        )
+
+    async def put_upload_part(
+        self,
+        co: str,
+        upload: str,
+        n: str,
+        *,
+        request_options: RequestOptions | None = None,
+    ) -> ChatUploadPart:
+        """Часть архива
+
+        Тело — сырые байты части (Content-Type: application/octet-stream), ровно part_bytes (8388608), у последней — остаток. Части — в любом порядке и параллельно; повтор той же части заменяет её. error.code: upload_part_invalid (номер или размер), payload_too_large, upload_not_found (404: устарела, отменена, чужая).
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            upload: id загрузки (upl_…)
+            n: Номер части с 0
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request(
+            RequestSpec(
+                method="PUT",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/uploads/{path_segment('upload', upload)}/parts/{path_segment('n', n)}",
+            ),
+            cast_to=ChatUploadPart,
             options=request_options,
         )
 
@@ -1465,6 +1802,37 @@ class AsyncChatResource:
             options=request_options,
         )
 
+    async def translate_thinking(
+        self,
+        co: str,
+        id: str,
+        tid: str,
+        *,
+        request_options: RequestOptions | None = None,
+    ) -> ChatThinkingTranslation:
+        """Перевести размышление на русский
+
+        Модель часто рассуждает по-английски. Блок не по-русски приходит оригиналом с translate_id (событие thinking и thinking_parts истории); перевод — этим запросом, когда человек раскрыл шаги ответа. Перевод — вызов модели за счёт того же человека и с теми же лимитами, что ход (402/429 — как у POST …/chat); переведённый блок запоминается в разговоре — повторный запрос бесплатен (cached: true). Блок идущего хода в разговор ещё не записан — 404, повторить после ответа; перевод не получился — 503, повторить позже. Только свой разговор, как GET …/chat/{id}.
+
+        Доступ: chat.use.
+
+        Доступно по ключу API.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: id разговора: dialog_id из ответа (заголовок X-Dialog-Id, поле id в списке разговоров). Обычно UUID; клиент мог задать свой (до 64 знаков A–Z, a–z, 0–9, _ и -)
+            tid: id блока размышления не по-русски (16 hex): тот же в событии thinking и в истории
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request(
+            RequestSpec(
+                method="POST",
+                path=f"/v1/companies/{path_segment('co', co)}/chat/{path_segment('id', id)}/thinking/{path_segment('tid', tid)}/translate",
+            ),
+            cast_to=ChatThinkingTranslation,
+            options=request_options,
+        )
+
 
 class ChatResourceWithRawResponse:
     """Methods of ChatResource that return the raw response next to the decoded body."""
@@ -1473,9 +1841,13 @@ class ChatResourceWithRawResponse:
         self.list = to_raw_response(resource.list)
         self.create = to_raw_response(resource.create)
         self.count_tokens = to_raw_response(resource.count_tokens)
+        self.list_files = to_raw_response(resource.list_files)
         self.list_mentions = to_raw_response(resource.list_mentions)
         self.get_rating_options = to_raw_response(resource.get_rating_options)
         self.list_suggestions = to_raw_response(resource.list_suggestions)
+        self.create_upload = to_raw_response(resource.create_upload)
+        self.delete_upload = to_raw_response(resource.delete_upload)
+        self.put_upload_part = to_raw_response(resource.put_upload_part)
         self.get = to_raw_response(resource.get)
         self.update = to_raw_response(resource.update)
         self.delete = to_raw_response(resource.delete)
@@ -1485,6 +1857,7 @@ class ChatResourceWithRawResponse:
         self.rate = to_raw_response(resource.rate)
         self.dismiss_rating = to_raw_response(resource.dismiss_rating)
         self.stop = to_raw_response(resource.stop)
+        self.translate_thinking = to_raw_response(resource.translate_thinking)
 
 
 class AsyncChatResourceWithRawResponse:
@@ -1494,9 +1867,13 @@ class AsyncChatResourceWithRawResponse:
         self.list = async_to_raw_response(resource.list)
         self.create = async_to_raw_response(resource.create)
         self.count_tokens = async_to_raw_response(resource.count_tokens)
+        self.list_files = async_to_raw_response(resource.list_files)
         self.list_mentions = async_to_raw_response(resource.list_mentions)
         self.get_rating_options = async_to_raw_response(resource.get_rating_options)
         self.list_suggestions = async_to_raw_response(resource.list_suggestions)
+        self.create_upload = async_to_raw_response(resource.create_upload)
+        self.delete_upload = async_to_raw_response(resource.delete_upload)
+        self.put_upload_part = async_to_raw_response(resource.put_upload_part)
         self.get = async_to_raw_response(resource.get)
         self.update = async_to_raw_response(resource.update)
         self.delete = async_to_raw_response(resource.delete)
@@ -1506,3 +1883,4 @@ class AsyncChatResourceWithRawResponse:
         self.rate = async_to_raw_response(resource.rate)
         self.dismiss_rating = async_to_raw_response(resource.dismiss_rating)
         self.stop = async_to_raw_response(resource.stop)
+        self.translate_thinking = async_to_raw_response(resource.translate_thinking)
