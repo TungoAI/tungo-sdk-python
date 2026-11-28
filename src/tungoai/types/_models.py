@@ -6,7 +6,6 @@ Field descriptions come from the API contract and are in its language.
 
 from __future__ import annotations
 
-import builtins
 from typing import Annotated, Literal, TypeAlias
 
 from pydantic import Field, Tag
@@ -25,22 +24,10 @@ __all__ = [
     "ApiKeySelfWorkspace",
     "ApiKeySelfWorkspaceKind",
     "ApiKeyStatus",
-    "ApiKeyUsage",
-    "ApiKeyUsageByCompanyItem",
-    "ApiKeyUsageByDayItem",
-    "ApiKeyUsageByModelItem",
-    "ApiKeyUsageTotals",
     "ApproveBatchCompanyProposalsResponse",
     "ApproveError",
     "ApproveErrorError",
     "ApproveRequest",
-    "AuditEntry",
-    "AuditEntryAction",
-    "AuditEntryActor",
-    "AuditEntryActorType",
-    "AuditEntryObject",
-    "AuditEntryObjectPurpose",
-    "AuditEntryTarget",
     "AutomationAutoApprove",
     "AutomationAutoApproveKindItem",
     "AutomationDeleted",
@@ -175,11 +162,7 @@ __all__ = [
     "ChatDialogClosed",
     "ChatDialogDeleted",
     "ChatDialogList",
-    "ChatDialogPatch",
-    "ChatDialogRated",
     "ChatDialogRating",
-    "ChatDialogRatingBody",
-    "ChatDialogRenamed",
     "ChatDialogSummary",
     "ChatEvent",
     "ChatEventBatch",
@@ -228,18 +211,9 @@ __all__ = [
     "ChatHistoryTool",
     "ChatHistoryToolStatus",
     "ChatMention",
-    "ChatMentionItem",
-    "ChatMentionItemType",
-    "ChatMentionSearch",
     "ChatMentionType",
-    "ChatMentionUnavailable",
-    "ChatMentionUnavailableReason",
-    "ChatMentionUnavailableType",
     "ChatMessage",
-    "ChatMessageRated",
     "ChatMessageRating",
-    "ChatMessageRatingBody",
-    "ChatMessageRatingBodyVote",
     "ChatMessageRatingVote",
     "ChatMessageRequest",
     "ChatMessageRequestEffort",
@@ -250,18 +224,8 @@ __all__ = [
     "ChatOnecObject",
     "ChatPendingQuestion",
     "ChatQuestion",
-    "ChatRatingDismissed",
-    "ChatRatingOptions",
-    "ChatRatingOptionsDialogScores",
-    "ChatRatingOptionsReasonItem",
     "ChatStopResult",
-    "ChatSuggestion",
-    "ChatSuggestionAction",
-    "ChatSuggestionGroup",
-    "ChatSuggestions",
-    "ChatSuggestionsLocale",
     "ChatThinkingPart",
-    "ChatThinkingTranslation",
     "ChatTitleSource",
     "ChatTokenCount",
     "ChatTokenCountRequest",
@@ -283,18 +247,6 @@ __all__ = [
     "CompanyAutonomy",
     "CompanyAutonomyCustom",
     "CompanyAutonomyDefaults",
-    "CompanyAutonomyInput",
-    "CompanyAutonomyInputLevels",
-    "CompanyAutonomyInputLevelsAdvanceReport",
-    "CompanyAutonomyInputLevelsBankPayment",
-    "CompanyAutonomyInputLevelsBankReceipt",
-    "CompanyAutonomyInputLevelsCashOrderIn",
-    "CompanyAutonomyInputLevelsCashOrderOut",
-    "CompanyAutonomyInputLevelsContract",
-    "CompanyAutonomyInputLevelsCounterparty",
-    "CompanyAutonomyInputLevelsInventoryWriteoff",
-    "CompanyAutonomyInputLevelsPurchase",
-    "CompanyAutonomyInputLevelsSale",
     "CompanyAutonomyLevels",
     "CompanyAutonomyLevelsAdvanceReport",
     "CompanyAutonomyLevelsBankPayment",
@@ -318,13 +270,6 @@ __all__ = [
     "DataGaps",
     "DataGapsSummary",
     "DirectBankPollResult",
-    "DownloadConnector",
-    "DownloadConnectorFile",
-    "DownloadConnectorFileArch",
-    "DownloadConnectorFileOs",
-    "DownloadFile",
-    "DownloadOnecExtension",
-    "Downloads",
     "Error",
     "ErrorDetail",
     "ErrorDetailAllowedMethodItem",
@@ -362,8 +307,8 @@ __all__ = [
     "FormMissingAction",
     "FormMissingData",
     "FormOnecObject",
-    "GetWorkspacePlatformAuditResponse",
-    "GetWorkspacePlatformLedgerResponse",
+    "GetCompanyBatchExportFormat",
+    "GetCompanyProposalExportFormat",
     "IsnaFile",
     "IsnaResponse",
     "IsnaSummary",
@@ -376,11 +321,7 @@ __all__ = [
     "ListCompanyAutomationsRunsResponse",
     "ListCompanyAutomationsScenariosResponse",
     "ListCompanyChatFilesFormat",
-    "ListCompanyChatRatingOptionsLang",
-    "ListCompanyChatSuggestionsLang",
     "ListCompanyProposalsApprovalRequested",
-    "ListUsageRatesResponse",
-    "ListWorkspacePlatformRequestsResponse",
     "ListWorkspaceWebhooksEndpointAttemptsResponse",
     "ListWorkspaceWebhooksEndpointAttemptsStatus",
     "ListWorkspaceWebhooksEndpointsResponse",
@@ -398,27 +339,7 @@ __all__ = [
     "OneCStatus",
     "OneCStatusLastCheck",
     "OneCStatusLastCheckVerdict",
-    "PlatformAccount",
-    "PlatformAccountBlockedReason",
-    "PlatformAccountPurchaseLimits",
-    "PlatformAutoReload",
-    "PlatformLedgerEntry",
-    "PlatformLedgerEntryDocuments",
-    "PlatformLedgerEntryDocumentsReceiptStatus",
-    "PlatformLedgerEntryKind",
-    "PlatformLimits",
-    "PlatformLimitsConcurrentTurns",
-    "PlatformLimitsFiles",
-    "PlatformLimitsRate",
-    "PlatformLimitsRateKey",
-    "PlatformLimitsRateWorkspace",
-    "PlatformRequest",
-    "PlatformUsage",
-    "PlatformUsageByCompanyItem",
-    "PlatformUsageByDayItem",
-    "PlatformUsageByKeyItem",
-    "PlatformUsageByModelItem",
-    "PlatformUsageTotals",
+    "PlatformBalance",
     "ProposalAccount",
     "ProposalAction",
     "ProposalActionAction",
@@ -488,8 +409,6 @@ __all__ = [
     "TaxFormsYear",
     "TaxPeriodKind",
     "TaxPeriodRef",
-    "UsageRate",
-    "UsageRateLongContext",
     "VerifyCheck",
     "VerifyCheckInput",
     "VerifyKey",
@@ -546,10 +465,6 @@ __all__ = [
     "WebhookEventOnecConnectionChangedData",
     "WebhookEventOnecConnectionChangedDataReason",
     "WebhookEventOnecConnectionChangedDataState",
-    "WebhookEventPaymentFailed",
-    "WebhookEventPaymentFailedData",
-    "WebhookEventPaymentSucceeded",
-    "WebhookEventPaymentSucceededData",
     "WebhookEventPing",
     "WebhookEventPingData",
     "WebhookEventPlatformBalanceExhausted",
@@ -571,7 +486,6 @@ __all__ = [
     "WebhookResend",
     "WebhookSecret",
     "WebhookSecretRotated",
-    "WebhookUsage",
     "WorkspacePlan",
 ]
 
@@ -646,250 +560,6 @@ ApiKeyStatus: TypeAlias = (
         "disabled",
         "expired",
         "revoked",
-    ]
-    | str
-)
-
-# Код действия вида «объект.действие». Текст для человека собирайте сами на его языке: по этому коду и параметрам из data (ниже — что значит каждый код). Значения: - `company.created` — Компания заведена - `company.updated` — Карточка компании изменена - `company.archived` — Компания убрана в архив - `company.unarchived` — Компания возвращена из архива - `company.member_added` — Сотруднику дан доступ к компании - `company.member_role_changed` — Роль сотрудника в компании изменена - `company.member_removed` — Доступ сотрудника к компании снят - `company.onboarding_waived` — Подключение компании без оплаты - `company.onboarding_unwaived` — Подключение без оплаты отменено - `company.onec_connected` — Подключена 1С - `company.onec_updated` — Подключение 1С изменено - `company.onec_copy_uploaded` — Загружена копия базы 1С - `company.onec_copy_held` — Копия базы 1С собрана, но не подключена: пока она собиралась, подключили другое - `company.onec_connector_code_created` — Выдан код привязки программы в офисе - `company.onec_connector_paired` — Программа в офисе привязана - `company.onec_connector_rotated` — Ключ программы в офисе заменён - `company.onec_connector_rotate_refused` — Отказ в повторе смены ключа программы в офисе: прежний ключ без метки той смены - `company.onec_connector_revoked` — Программа в офисе отвязана - `company.onec_connector_unpaired` — Программа в офисе отключена на самом компьютере - `company.onec_connector_replaced` — Программа в офисе заменена новой привязкой: прежний компьютер отключён - `company.onec_connector_link_approved` — Привязка программы в офисе одобрена в кабинете - `connector.link_created` — Программа в офисе запросила привязку через браузер - `connector.link_denied` — Привязка программы в офисе отклонена - `company.onec_link_approved` — Вход в Tungo из 1С подтверждён - `company.onec_link_revoked` — Вход в Tungo из 1С отозван - `onec_link.wrong_match` — Вход в Tungo из 1С отменён: на сайте нажато не то число сверки - `onec_link.limit_refused` — Вход в Tungo из 1С не подтверждён: у аккаунта слишком много действующих входов из 1С - `company.profile_rebuild` — Справка о компании пересобрана - `workspace.member_joined` — Сотрудник вступил в организацию - `workspace.member_role_changed` — Роль сотрудника в организации изменена - `workspace.member_removed` — Сотрудник удалён из организации - `workspace.member_access_revoked` — Доступы сотрудника к компаниям сняты - `workspace.invitation_created` — Отправлено приглашение - `workspace.invitation_cancelled` — Приглашение отменено - `workspace.policies_updated` — Политики организации изменены - `workspace.scim_token_created` — Выпущен токен SCIM - `workspace.scim_token_revoked` — Токен SCIM отозван - `workspace.scim_user_provisioned` — SCIM: сотрудник заведён - `workspace.scim_user_deprovisioned` — SCIM: сотрудник отключён - `workspace.scim_user_deleted` — SCIM: сотрудник удалён - `workspace.updated` — Название или настройки организации изменены - `workspace.sso_provider_updated` — SSO: настройки сервера входа изменены - `workspace.sso_provider_deleted` — SSO: сервер входа отключён - `workspace.sso_domain_verification_requested` — SSO: запрошено подтверждение домена - `workspace.sso_domain_verified` — SSO: домен подтверждён - `workspace.ownership_transferred` — Владение организацией передано - `workspace.deleted` — Организация удалена - `workspace.created` — Создана команда - `team.checkout_abandoned` — Оформление Team не завершено: черновик команды убран - `enterprise.request_created` — Отправлена заявка на Enterprise - `workspace.converted_to_team` — Личная организация стала командой - `workspace.deletion_scheduled` — Владелец запланировал удаление организации - `workspace.deletion_cancelled` — Удаление организации отменено - `workspace.invitation_resent` — Приглашение отправлено ещё раз - `team.seats_purchased` — Докуплены места - `team.seats_reduced` — Сокращено число мест с продления - `admin.workspace.kind_changed` — Администратор платформы сменил вид организации - `admin.workspace.contract_seats` — Администратор платформы задал места по договору - `admin.plan_grant.created` — Платформа выдала организации тариф бесплатно до даты - `admin.plan_grant.extended` — Платформа продлила выданный тариф - `admin.plan_grant.revoked` — Платформа отозвала выданный тариф досрочно - `admin.plan_grant.ended` — Срок выданного тарифа закончился - `admin.platform_discount.created` — Платформа дала скидку на расход платформы разработчиков - `admin.platform_discount.revoked` — Платформа отозвала скидку на расход платформы разработчиков - `admin.subscription.cancelled` — Администратор платформы отменил продление подписки - `admin.subscription.resumed` — Администратор платформы вернул продление подписки - `admin.money.exported` — Администратор платформы выгрузил список в CSV - `admin.payment_search.pd_viewed` — Поддержка открыла реквизиты плательщиков в поиске платежей - `workspace.sso_provider_created` — SSO: подключён сервер входа - `workspace.group_created` — Группа создана - `workspace.group_updated` — Группа изменена - `workspace.group_deleted` — Группа удалена - `workspace.group_member_added` — Сотрудник добавлен в группу - `workspace.group_member_removed` — Сотрудник убран из группы - `workspace.group_roles_changed` — Роли группы изменены - `workspace.custom_role_created` — Своя роль создана - `workspace.custom_role_updated` — Своя роль изменена - `workspace.custom_role_deleted` — Своя роль удалена - `workspace.role_ceiling_updated` — Потолок прав своих ролей изменён - `workspace.model_policy_updated` — Разрешённые модели изменены - `workspace.retention_updated` — Срок хранения чатов изменён - `workspace.training_consent` — Согласие на обучение изменено (владелец) - `workspace.audit_exported` — Журнал организации выгружен - `workspace.compliance_updated` — Выгрузка для проверок включена или выключена - `workspace.card_payments_updated` — Оплата счетов Enterprise картой включена или выключена - `workspace.compliance_read` — Прочитаны разговоры через выгрузку для проверок - `api_key.created` — Выпущен ключ API - `api_key.updated` — Ключ API изменён - `api_key.rolled` — Секрет ключа API заменён - `api_key.revoked` — Ключ API отозван - `api_key.transferred` — Ключ API передан другому владельцу - `api_key.disabled` — Ключ API выключен - `api_key.enabled` — Ключ API включён - `webhook.endpoint_created` — Добавлен адрес вебхука - `webhook.endpoint_updated` — Адрес вебхука изменён - `webhook.endpoint_deleted` — Адрес вебхука удалён - `webhook.secret_rotated` — Секрет подписи вебхука заменён - `webhook.secret_read` — Секрет подписи вебхука прочитан - `webhook.message_resent` — Событие вебхука отправлено повторно - `company.autonomy.changed` — Уровни самостоятельности и потолки компании изменены - `automation.paused` — Автоматизации компании поставлены на паузу - `automation.resumed` — Автоматизации компании сняты с паузы - `automation.run.cancel` — Запуск автоматизации отменён - `billing.profile.updated` — Реквизиты для счетов изменены - `billing.payment_method.disabled` — Карта отключена - `billing.refund.succeeded` — Деньги возвращены - `billing.manual_charge` — Админ платформы списал деньги с карты вручную - `subscription.created` — Подписка оформлена - `subscription.changed` — Тариф изменён - `subscription.cancel_scheduled` — Подписка отменена с конца периода - `subscription.resumed` — Отмена подписки снята - `subscription.terminated` — Подписка закрыта сразу (одобрен возврат по заявке) - `billing.refund_request.submitted` — Подана заявка на возврат - `billing.refund_request.approved` — Заявка на возврат одобрена - `billing.refund_request.rejected` — Заявка на возврат отклонена - `extra_usage.configured` — Настройки доп. использования изменены - `extra_usage.adjusted` — Баланс доп. использования скорректирован - `platform.configured` — Настройки платформы изменены - `platform.adjusted` — Баланс платформы скорректирован - `extra_usage.member_cap_set` — Личный потолок доп. использования изменён - `extra_usage.alert_thresholds_set` — Пороги оповещений о потолке организации изменены - `company.spend_cap_set` — Месячный потолок компании изменён - `team.analytics_exported` — Аналитика команды выгружена в CSV - `team.spend_exported` — Расходы по людям выгружены в CSV - `ai_budget.member_set` — Лимит ИИ сотрудника задан - `ai_budget.member_reset` — Лимит ИИ сотрудника сброшен - `spend.cap_threshold_reached` — Расход дошёл до порога потолка - `spend.company_cap_reached` — Компания упёрлась в месячный потолок - `plan.created` — Тариф заведён (платформа) - `plan.updated` — Тариф изменён (платформа) - `usage_rate.added` — Цена расхода добавлена (платформа) - `user.terms.accepted` — Приняты условия - `account.deletion_code_sent` — Запрошен код удаления аккаунта - `account.deletion_scheduled` — Аккаунт помечен к удалению - `account.deletion_cancelled` — Удаление аккаунта отменено - `account.deleted` — Аккаунт удалён и обезличен - `langfuse.traces_purged` — Трассы ИИ удалены из Langfuse: по сроку хранения, с аккаунтом или после отзыва согласия - `admin.dialog.langfuse_dataset` — Ход разговора отправлен в набор Langfuse (платформа) - `admin.dialog.langfuse_annotation` — Ход разговора отправлен в очередь разметки Langfuse (платформа) - `account.email_code_sent` — Запрошен код подтверждения почты (аккаунт Telegram) - `account.email_bound` — Почта привязана к аккаунту Telegram - `account.telegram_merged` — Telegram привязан к аккаунту с подтверждённой почтой, аккаунт Telegram закрыт - `account.google_linked` — Вход через Google привязал Google к аккаунту с той же почтой (sessions_closed — почта не была подтверждена: прежние сессии закрыты) - `account.telegram_merge_refused` — Склейка аккаунта Telegram с аккаунтом почты отклонена (данные, другой Telegram или почта закрыта) - `admin.ads.conversions_released` — Удержанные рекламные конверсии отправлены вручную - `admin.ads.conversions_rejected` — Рекламные конверсии отклонены - `admin.ads.signups_exported` — Выгрузка рекламных регистраций с IP и User-Agent (CSV) - `admin.access.signed_in` — Вход в админку по пропуску Cloudflare Access - `admin.access.refused` — Вход в админку по пропуску Cloudflare Access отклонён - `admin.two_factor.verified` — Администратор платформы подтвердил вход вторым фактором - `admin.two_factor.enable_requested` — Сотрудник платформы начал включать второй фактор (с кодом из почты) - `admin.two_factor.enabled` — Сотрудник платформы включил второй фактор - `admin.two_factor.disabled` — Сотрудник платформы отключил второй фактор (с кодом из почты) - `admin.session.signed_in` — Вход в админку по сессии со вторым фактором - `admin.user.banned` — Вход пользователю закрыт платформой - `admin.user.unbanned` — Вход пользователю открыт платформой - `admin.workspace.blocked` — Организация заблокирована платформой - `admin.workspace.unblocked` — Организация разблокирована платформой - `admin.workspace.training_consent` — Согласие на обучение изменено (платформа) - `admin.user.platform_roles_changed` — Роли платформы изменены - `admin.user.free_eligibility_changed` — Бесплатный лимит пользователя выдан или снят вручную (платформа) - `admin.user.limit_resets_granted` — Человеку выданы сбросы лимита (платформа) - `admin.user.limit_resets_revoked` — Выданные сбросы лимита отозваны (платформа) - `usage.limit_reset_applied` — Применён сброс лимита - `referral.claimed` — Регистрация по приглашению друга - `referral.rewarded` — За приглашённого друга выдан сброс лимита - `referral.reward_revoked` — Сброс лимита за оплату приглашённого друга отозван: оплата возвращена - `admin.enterprise_request.status_changed` — Статус заявки Enterprise изменён (платформа) - `admin.training.exported` — Выгрузка для обучения (платформа) - `admin.setting.changed` — Настройка платформы изменена - `admin.logs.purged` — Журнал запросов и итогов ходов ИИ убран вручную (платформа) - `admin.dialog.pd_viewed` — Поддержка открыла разговор с персональными данными - `admin.dialog.viewed_without_consent` — Поддержка открыла разговор без согласия клиента (экстренный доступ) - `admin.dialog.rating_comments_viewed` — Поддержка открыла комментарии человека к оценкам разговора - `admin.dialog.label_set` — Оценка ответа для обучения поставлена или заменена (платформа) - `admin.dialog.label_removed` — Оценка ответа для обучения удалена (платформа) - `admin.journal.pd_viewed` — Поддержка открыла журнал ИИ-бухгалтера с персональными данными - `admin.company.pd_viewed` — Поддержка открыла карточку компании-ИП с ИИН - `admin.company.pd_searched` — Поддержка нашла компанию-ИП поиском по ИИН - `admin.payment.pd_viewed` — Поддержка открыла платёж с реквизитами плательщика и обменом с банком - `site.post_published` — Статья блога опубликована на сайте (платформа) - `site.post_unpublished` — Статья блога снята с сайта (платформа) - `site.post_deleted` — Черновик статьи блога удалён (платформа) - `site.legal_published` — Опубликована новая редакция документа сайта (платформа) - `site.trackers_saved` — Изменены счётчики и коды подтверждения сайта (платформа) - `help.section_created` — Центр помощи: раздел заведён (платформа) - `help.section_updated` — Центр помощи: раздел изменён (платформа) - `help.section_deleted` — Центр помощи: раздел удалён (платформа) - `help.article_created` — Центр помощи: статья заведена (платформа) - `help.article_updated` — Центр помощи: статья изменена, опубликована или скрыта (платформа) - `help.article_deleted` — Центр помощи: статья удалена (платформа) - `help.reordered` — Центр помощи: порядок разделов или статей изменён (платформа) - `support.ticket_created` — Создано обращение в поддержку - `admin.support.replied` — Поддержка ответила на обращение - `admin.support.note_added` — Поддержка добавила внутреннюю заметку к обращению - `admin.support.ticket_updated` — Поддержка изменила обращение: состояние, категорию, приоритет или исполнителя - `admin.support.attachment_viewed` — Поддержка скачала вложение обращения - `admin.staff_access.granted` — Доступы: сотруднику открыты служебные службы (Cloudflare Access, учётки внутри) (платформа) - `admin.staff_access.revoked` — Доступы: у сотрудника забраны служебные службы, сессии Access отозваны (платформа) - `admin.staff_access.retried` — Доступы: повторены несделанные шаги выдачи или отзыва (платформа) - `admin.staff_access.mail_resent` — Доступы: письмо сотруднику отправлено ещё раз (платформа) - `canary.triggered` — Сработала приманка: украденный ключ или почта «сотрудника» (платформа) - `billing.payment.new` — Платёж: создан - `billing.payment.pending` — Платёж: отправлен в банк - `billing.payment.requires_action` — Платёж: ждёт 3-D Secure - `billing.payment.authorized` — Платёж: одобрен банком - `billing.payment.succeeded` — Платёж: оплачен - `billing.payment.verified` — Платёж: карта проверена - `billing.payment.failed` — Платёж: не прошёл - `billing.payment.cancelled` — Платёж: отменён - `billing.payment.partially_refunded` — Платёж: возвращён частично - `billing.payment.refunded` — Платёж: возвращён
-AuditEntryAction: TypeAlias = (
-    Literal[
-        "company.created",
-        "company.updated",
-        "company.archived",
-        "company.unarchived",
-        "company.member_added",
-        "company.member_role_changed",
-        "company.member_removed",
-        "company.onboarding_waived",
-        "company.onboarding_unwaived",
-        "company.onec_connected",
-        "company.onec_updated",
-        "company.onec_copy_uploaded",
-        "company.onec_copy_held",
-        "company.onec_connector_code_created",
-        "company.onec_connector_paired",
-        "company.onec_connector_rotated",
-        "company.onec_connector_rotate_refused",
-        "company.onec_connector_revoked",
-        "company.onec_connector_unpaired",
-        "company.onec_connector_replaced",
-        "company.onec_connector_link_approved",
-        "connector.link_created",
-        "connector.link_denied",
-        "company.onec_link_approved",
-        "company.onec_link_revoked",
-        "onec_link.wrong_match",
-        "onec_link.limit_refused",
-        "company.profile_rebuild",
-        "workspace.member_joined",
-        "workspace.member_role_changed",
-        "workspace.member_removed",
-        "workspace.member_access_revoked",
-        "workspace.invitation_created",
-        "workspace.invitation_cancelled",
-        "workspace.policies_updated",
-        "workspace.scim_token_created",
-        "workspace.scim_token_revoked",
-        "workspace.scim_user_provisioned",
-        "workspace.scim_user_deprovisioned",
-        "workspace.scim_user_deleted",
-        "workspace.updated",
-        "workspace.sso_provider_updated",
-        "workspace.sso_provider_deleted",
-        "workspace.sso_domain_verification_requested",
-        "workspace.sso_domain_verified",
-        "workspace.ownership_transferred",
-        "workspace.deleted",
-        "workspace.created",
-        "team.checkout_abandoned",
-        "enterprise.request_created",
-        "workspace.converted_to_team",
-        "workspace.deletion_scheduled",
-        "workspace.deletion_cancelled",
-        "workspace.invitation_resent",
-        "team.seats_purchased",
-        "team.seats_reduced",
-        "admin.workspace.kind_changed",
-        "admin.workspace.contract_seats",
-        "admin.plan_grant.created",
-        "admin.plan_grant.extended",
-        "admin.plan_grant.revoked",
-        "admin.plan_grant.ended",
-        "admin.platform_discount.created",
-        "admin.platform_discount.revoked",
-        "admin.subscription.cancelled",
-        "admin.subscription.resumed",
-        "admin.money.exported",
-        "admin.payment_search.pd_viewed",
-        "workspace.sso_provider_created",
-        "workspace.group_created",
-        "workspace.group_updated",
-        "workspace.group_deleted",
-        "workspace.group_member_added",
-        "workspace.group_member_removed",
-        "workspace.group_roles_changed",
-        "workspace.custom_role_created",
-        "workspace.custom_role_updated",
-        "workspace.custom_role_deleted",
-        "workspace.role_ceiling_updated",
-        "workspace.model_policy_updated",
-        "workspace.retention_updated",
-        "workspace.training_consent",
-        "workspace.audit_exported",
-        "workspace.compliance_updated",
-        "workspace.card_payments_updated",
-        "workspace.compliance_read",
-        "api_key.created",
-        "api_key.updated",
-        "api_key.rolled",
-        "api_key.revoked",
-        "api_key.transferred",
-        "api_key.disabled",
-        "api_key.enabled",
-        "webhook.endpoint_created",
-        "webhook.endpoint_updated",
-        "webhook.endpoint_deleted",
-        "webhook.secret_rotated",
-        "webhook.secret_read",
-        "webhook.message_resent",
-        "company.autonomy.changed",
-        "automation.paused",
-        "automation.resumed",
-        "automation.run.cancel",
-        "billing.profile.updated",
-        "billing.payment_method.disabled",
-        "billing.refund.succeeded",
-        "billing.manual_charge",
-        "subscription.created",
-        "subscription.changed",
-        "subscription.cancel_scheduled",
-        "subscription.resumed",
-        "subscription.terminated",
-        "billing.refund_request.submitted",
-        "billing.refund_request.approved",
-        "billing.refund_request.rejected",
-        "extra_usage.configured",
-        "extra_usage.adjusted",
-        "platform.configured",
-        "platform.adjusted",
-        "extra_usage.member_cap_set",
-        "extra_usage.alert_thresholds_set",
-        "company.spend_cap_set",
-        "team.analytics_exported",
-        "team.spend_exported",
-        "ai_budget.member_set",
-        "ai_budget.member_reset",
-        "spend.cap_threshold_reached",
-        "spend.company_cap_reached",
-        "plan.created",
-        "plan.updated",
-        "usage_rate.added",
-        "user.terms.accepted",
-        "account.deletion_code_sent",
-        "account.deletion_scheduled",
-        "account.deletion_cancelled",
-        "account.deleted",
-        "langfuse.traces_purged",
-        "admin.dialog.langfuse_dataset",
-        "admin.dialog.langfuse_annotation",
-        "account.email_code_sent",
-        "account.email_bound",
-        "account.telegram_merged",
-        "account.google_linked",
-        "account.telegram_merge_refused",
-        "admin.ads.conversions_released",
-        "admin.ads.conversions_rejected",
-        "admin.ads.signups_exported",
-        "admin.access.signed_in",
-        "admin.access.refused",
-        "admin.two_factor.verified",
-        "admin.two_factor.enable_requested",
-        "admin.two_factor.enabled",
-        "admin.two_factor.disabled",
-        "admin.session.signed_in",
-        "admin.user.banned",
-        "admin.user.unbanned",
-        "admin.workspace.blocked",
-        "admin.workspace.unblocked",
-        "admin.workspace.training_consent",
-        "admin.user.platform_roles_changed",
-        "admin.user.free_eligibility_changed",
-        "admin.user.limit_resets_granted",
-        "admin.user.limit_resets_revoked",
-        "usage.limit_reset_applied",
-        "referral.claimed",
-        "referral.rewarded",
-        "referral.reward_revoked",
-        "admin.enterprise_request.status_changed",
-        "admin.training.exported",
-        "admin.setting.changed",
-        "admin.logs.purged",
-        "admin.dialog.pd_viewed",
-        "admin.dialog.viewed_without_consent",
-        "admin.dialog.rating_comments_viewed",
-        "admin.dialog.label_set",
-        "admin.dialog.label_removed",
-        "admin.journal.pd_viewed",
-        "admin.company.pd_viewed",
-        "admin.company.pd_searched",
-        "admin.payment.pd_viewed",
-        "site.post_published",
-        "site.post_unpublished",
-        "site.post_deleted",
-        "site.legal_published",
-        "site.trackers_saved",
-        "help.section_created",
-        "help.section_updated",
-        "help.section_deleted",
-        "help.article_created",
-        "help.article_updated",
-        "help.article_deleted",
-        "help.reordered",
-        "support.ticket_created",
-        "admin.support.replied",
-        "admin.support.note_added",
-        "admin.support.ticket_updated",
-        "admin.support.attachment_viewed",
-        "admin.staff_access.granted",
-        "admin.staff_access.revoked",
-        "admin.staff_access.retried",
-        "admin.staff_access.mail_resent",
-        "canary.triggered",
-        "billing.payment.new",
-        "billing.payment.pending",
-        "billing.payment.requires_action",
-        "billing.payment.authorized",
-        "billing.payment.succeeded",
-        "billing.payment.verified",
-        "billing.payment.failed",
-        "billing.payment.cancelled",
-        "billing.payment.partially_refunded",
-        "billing.payment.refunded",
-    ]
-    | str
-)
-
-# Кто сделал: user — человек, api_key — интеграция по ключу API, system — сама платформа
-AuditEntryActorType: TypeAlias = (
-    Literal[
-        "user",
-        "api_key",
-        "system",
-    ]
-    | str
-)
-
-# Только у платежа: назначение — subscription (подписка), seats (места), extra_usage (доп. использование), platform_topup (пополнение платформы), onboarding (подключение компании), card_verification (проверка карты), one_off и manual (разовый и ручной); у остальных — null
-AuditEntryObjectPurpose: TypeAlias = (
-    Literal[
-        "subscription",
-        "one_off",
-        "onboarding",
-        "extra_usage",
-        "platform_topup",
-        "seats",
-        "manual",
-        "card_verification",
     ]
     | str
 )
@@ -1539,50 +1209,11 @@ ChatHistoryToolStatus: TypeAlias = (
 )
 
 # Что упомянуто: `proposal` — предложение (документ для 1С), id — его номер P-000123; `counterparty` — контрагент из 1С компании, id — его ссылка из поиска; `batch` — задание пачки (разбор выписки, входящие ЭСФ), id — bat_…
-ChatMentionItemType: TypeAlias = (
-    Literal[
-        "proposal",
-        "counterparty",
-        "batch",
-    ]
-    | str
-)
-
-# Что упомянуто: `proposal` — предложение (документ для 1С), id — его номер P-000123; `counterparty` — контрагент из 1С компании, id — его ссылка из поиска; `batch` — задание пачки (разбор выписки, входящие ЭСФ), id — bat_…
 ChatMentionType: TypeAlias = (
     Literal[
         "proposal",
         "counterparty",
         "batch",
-    ]
-    | str
-)
-
-# `no_access` — нет права видеть документы компании; `onec_not_linked` — 1С не подключена; `onec_unavailable` — 1С сейчас не ответила
-ChatMentionUnavailableReason: TypeAlias = (
-    Literal[
-        "no_access",
-        "onec_not_linked",
-        "onec_unavailable",
-    ]
-    | str
-)
-
-# Что упомянуто: `proposal` — предложение (документ для 1С), id — его номер P-000123; `counterparty` — контрагент из 1С компании, id — его ссылка из поиска; `batch` — задание пачки (разбор выписки, входящие ЭСФ), id — bat_…
-ChatMentionUnavailableType: TypeAlias = (
-    Literal[
-        "proposal",
-        "counterparty",
-        "batch",
-    ]
-    | str
-)
-
-# up — ответ хороший, down — плохой. Повторная оценка того же ответа заменяет прежнюю
-ChatMessageRatingBodyVote: TypeAlias = (
-    Literal[
-        "up",
-        "down",
     ]
     | str
 )
@@ -1625,24 +1256,6 @@ ChatNextActionCode: TypeAlias = (
         "run_check",
         "build_tax_form",
         "check_counterparty",
-    ]
-    | str
-)
-
-# `ask` — подставить `prompt` в поле ввода; `connect_onec` — открыть подключение 1С
-ChatSuggestionAction: TypeAlias = (
-    Literal[
-        "ask",
-        "connect_onec",
-    ]
-    | str
-)
-
-# Язык текстов в ответе
-ChatSuggestionsLocale: TypeAlias = (
-    Literal[
-        "ru",
-        "kk",
     ]
     | str
 )
@@ -1710,106 +1323,6 @@ ChatTurnFileFormat: TypeAlias = (
         "docx",
         "pdf",
         "csv",
-    ]
-    | str
-)
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsAdvanceReport: TypeAlias = (
-    Literal[
-        "L1",
-        "L2",
-        "L3",
-    ]
-    | str
-)
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsBankPayment: TypeAlias = (
-    Literal[
-        "L1",
-        "L2",
-        "L3",
-    ]
-    | str
-)
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsBankReceipt: TypeAlias = (
-    Literal[
-        "L1",
-        "L2",
-        "L3",
-    ]
-    | str
-)
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsCashOrderIn: TypeAlias = (
-    Literal[
-        "L1",
-        "L2",
-        "L3",
-    ]
-    | str
-)
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsCashOrderOut: TypeAlias = (
-    Literal[
-        "L1",
-        "L2",
-        "L3",
-    ]
-    | str
-)
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsContract: TypeAlias = (
-    Literal[
-        "L1",
-        "L2",
-        "L3",
-    ]
-    | str
-)
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsCounterparty: TypeAlias = (
-    Literal[
-        "L1",
-        "L2",
-        "L3",
-    ]
-    | str
-)
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsInventoryWriteoff: TypeAlias = (
-    Literal[
-        "L1",
-        "L2",
-        "L3",
-    ]
-    | str
-)
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsPurchase: TypeAlias = (
-    Literal[
-        "L1",
-        "L2",
-        "L3",
-    ]
-    | str
-)
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsSale: TypeAlias = (
-    Literal[
-        "L1",
-        "L2",
-        "L3",
     ]
     | str
 )
@@ -1947,25 +1460,6 @@ CompanyStatus: TypeAlias = (
         "active",
         "suspended",
         "archived",
-    ]
-    | str
-)
-
-# Архитектура
-DownloadConnectorFileArch: TypeAlias = (
-    Literal[
-        "amd64",
-        "arm64",
-    ]
-    | str
-)
-
-# Система
-DownloadConnectorFileOs: TypeAlias = (
-    Literal[
-        "windows",
-        "darwin",
-        "linux",
     ]
     | str
 )
@@ -2110,6 +1604,26 @@ FormMissingAction: TypeAlias = (
     | str
 )
 
+# Формат файла: xlsx — Excel (все листы); csv — первый лист (UTF-8 с BOM, разделитель — точка с запятой); pdf — все листы разделами на A4 (application/pdf, шрифт вложен: кириллица и казахские буквы). По умолчанию xlsx
+GetCompanyBatchExportFormat: TypeAlias = (
+    Literal[
+        "xlsx",
+        "csv",
+        "pdf",
+    ]
+    | str
+)
+
+# Формат файла: xlsx — Excel (все листы); csv — первый лист (UTF-8 с BOM, разделитель — точка с запятой); pdf — все листы разделами на A4 (application/pdf, шрифт вложен: кириллица и казахские буквы). По умолчанию xlsx
+GetCompanyProposalExportFormat: TypeAlias = (
+    Literal[
+        "xlsx",
+        "csv",
+        "pdf",
+    ]
+    | str
+)
+
 # Только этого формата: xlsx, docx, pdf или csv
 ListCompanyChatFilesFormat: TypeAlias = (
     Literal[
@@ -2117,24 +1631,6 @@ ListCompanyChatFilesFormat: TypeAlias = (
         "docx",
         "pdf",
         "csv",
-    ]
-    | str
-)
-
-# Язык названий причин; по умолчанию ru
-ListCompanyChatRatingOptionsLang: TypeAlias = (
-    Literal[
-        "ru",
-        "kk",
-    ]
-    | str
-)
-
-# Язык текстов — язык интерфейса кабинета. Не передан — язык ответов ИИ из профиля (`kk` — по-казахски, иначе по-русски)
-ListCompanyChatSuggestionsLang: TypeAlias = (
-    Literal[
-        "ru",
-        "kk",
     ]
     | str
 )
@@ -2214,38 +1710,6 @@ OneCStatusLastCheckVerdict: TypeAlias = (
         "ok",
         "warn",
         "fail",
-    ]
-    | str
-)
-
-# Почему вызовы сейчас не пройдут: disabled — платформа выключена, cap — достигнут месячный потолок, balance — баланс закончился; null — всё в порядке. Нет у ключа на часть компаний
-PlatformAccountBlockedReason: TypeAlias = (
-    Literal[
-        "disabled",
-        "cap",
-        "balance",
-    ]
-    | str
-)
-
-# Чек ККМ: not_required — не нужен; pending — выпускается; issued — выпущен (ссылка в receipt_url); failed — не выпустился, мы разбираемся; null — платёж ещё не прошёл
-PlatformLedgerEntryDocumentsReceiptStatus: TypeAlias = (
-    Literal[
-        "not_required",
-        "pending",
-        "issued",
-        "failed",
-    ]
-    | str
-)
-
-# Вид: `purchase` — пополнение с карты; `usage` — списание за вызов модели; `refund` — возврат на карту (баланс уменьшается); `adjustment` — корректировка поддержкой или возврат удержанной суммы
-PlatformLedgerEntryKind: TypeAlias = (
-    Literal[
-        "purchase",
-        "usage",
-        "refund",
-        "adjustment",
     ]
     | str
 )
@@ -2654,11 +2118,11 @@ class ApiKey(BaseModel):
     workspace_id: str = MISSING
     """Организация ключа (ws_…)"""
     write_kinds: list[str] | None = MISSING
-    """Предел записи в 1С по ключу: какие виды документов ключ может одобрять (как kinds правила автоодобрения: sale, purchase, bank_receipt, bank_payment, counterparty, contract, inventory_writeoff, cash_order_in, cash_order_out, advance_report, revert). null — любые. Без всех трёх пределов ключ с proposals.approve пишет в 1С без ограничений — тогда в ответе предупреждение write_unlimited"""
+    """Предел записи в 1С по ключу: какие виды документов ключ может одобрять (как kinds правила автоодобрения: sale, purchase, bank_receipt, bank_payment, counterparty, contract, inventory_writeoff, cash_order_in, cash_order_out, advance_report, revert). null — любые"""
     write_max_amount_per_day_tiyn: int | None = MISSING
-    """Предел записи в 1С по ключу: сумма всех документов, одобренных ключом за день по Алматы, в тиынах. Документ с неизвестным исходом записи (1С не ответила) тоже считается. null — без предела"""
+    """Предел записи в 1С по ключу: сумма всех документов, одобренных ключом за день по Алматы, в тиынах. Документ с неизвестным исходом записи (1С не ответила) тоже считается. Обязателен для ключа с proposals.approve (иначе 400, error.code write_limits_required); null — только у ключа без этого права"""
     write_max_amount_per_document_tiyn: int | None = MISSING
-    """Предел записи в 1С по ключу: потолок суммы одного документа, который ключ одобряет (approve, approve-batch), в тиынах (1 ₸ = 100 тиын). Документ дороже или без известной суммы ключ не запишет (403, error.code key_write_limit) — его запишет человек. null — без предела"""
+    """Предел записи в 1С по ключу: потолок суммы одного документа, который ключ одобряет (approve, approve-batch), в тиынах (1 ₸ = 100 тиын). Документ дороже или без известной суммы ключ не запишет (403, error.code key_write_limit) — его запишет человек. Обязателен для ключа с proposals.approve (иначе 400, error.code write_limits_required); null — только у ключа без этого права"""
 
 
 class ApiKeyMonth(BaseModel):
@@ -2721,11 +2185,11 @@ class ApiKeySelf(BaseModel):
     workspace_id: str = MISSING
     """Организация ключа (ws_…)"""
     write_kinds: list[str] | None = MISSING
-    """Предел записи в 1С по ключу: какие виды документов ключ может одобрять (как kinds правила автоодобрения: sale, purchase, bank_receipt, bank_payment, counterparty, contract, inventory_writeoff, cash_order_in, cash_order_out, advance_report, revert). null — любые. Без всех трёх пределов ключ с proposals.approve пишет в 1С без ограничений — тогда в ответе предупреждение write_unlimited"""
+    """Предел записи в 1С по ключу: какие виды документов ключ может одобрять (как kinds правила автоодобрения: sale, purchase, bank_receipt, bank_payment, counterparty, contract, inventory_writeoff, cash_order_in, cash_order_out, advance_report, revert). null — любые"""
     write_max_amount_per_day_tiyn: int | None = MISSING
-    """Предел записи в 1С по ключу: сумма всех документов, одобренных ключом за день по Алматы, в тиынах. Документ с неизвестным исходом записи (1С не ответила) тоже считается. null — без предела"""
+    """Предел записи в 1С по ключу: сумма всех документов, одобренных ключом за день по Алматы, в тиынах. Документ с неизвестным исходом записи (1С не ответила) тоже считается. Обязателен для ключа с proposals.approve (иначе 400, error.code write_limits_required); null — только у ключа без этого права"""
     write_max_amount_per_document_tiyn: int | None = MISSING
-    """Предел записи в 1С по ключу: потолок суммы одного документа, который ключ одобряет (approve, approve-batch), в тиынах (1 ₸ = 100 тиын). Документ дороже или без известной суммы ключ не запишет (403, error.code key_write_limit) — его запишет человек. null — без предела"""
+    """Предел записи в 1С по ключу: потолок суммы одного документа, который ключ одобряет (approve, approve-batch), в тиынах (1 ₸ = 100 тиын). Документ дороже или без известной суммы ключ не запишет (403, error.code key_write_limit) — его запишет человек. Обязателен для ключа с proposals.approve (иначе 400, error.code write_limits_required); null — только у ключа без этого права"""
 
 
 class ApiKeySelfRateLimit(BaseModel):
@@ -2748,76 +2212,6 @@ class ApiKeySelfWorkspace(BaseModel):
     """Вид организации: `personal` — личная, `team` — команда, `enterprise` — по договору"""
     name: str = MISSING
     """Название организации"""
-
-
-class ApiKeyUsage(BaseModel):
-    """Расход ключа на ИИ за период: итоги, по дням, моделям и компаниям; суммы — в тиынах."""
-
-    by_company: list[ApiKeyUsageByCompanyItem] = MISSING
-    """По компаниям"""
-    by_day: list[ApiKeyUsageByDayItem] = MISSING
-    """По дням (только дни с вызовами), по возрастанию даты — для графика"""
-    by_model: list[ApiKeyUsageByModelItem] = MISSING
-    """По моделям ИИ, по алфавиту"""
-    from_: str = Field(default=MISSING, alias="from")
-    """Начало периода, ISO 8601 UTC (включительно)"""
-    key_id: str = MISSING
-    """Ключ (key_…)"""
-    month: ApiKeyMonth = MISSING
-    to: str = MISSING
-    """Конец периода, ISO 8601 UTC (не включительно)"""
-    totals: ApiKeyUsageTotals = MISSING
-    """Итоги за период"""
-
-
-class ApiKeyUsageByCompanyItem(BaseModel):
-    """ApiKeyUsageByCompanyItem."""
-
-    company_id: str | None = MISSING
-    """Компания (co_…); null — вызовы не по компании"""
-    cost_tiyn: int = MISSING
-    """Стоимость в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    requests: int = MISSING
-    """Сколько вызовов ИИ"""
-
-
-class ApiKeyUsageByDayItem(BaseModel):
-    """ApiKeyUsageByDayItem."""
-
-    cost_tiyn: int = MISSING
-    """Стоимость в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    day: str = MISSING
-    """День по Алматы, ГГГГ-ММ-ДД (календарная дата, без пояса — не переводить)"""
-    requests: int = MISSING
-    """Сколько вызовов ИИ"""
-
-
-class ApiKeyUsageByModelItem(BaseModel):
-    """ApiKeyUsageByModelItem."""
-
-    cost_tiyn: int = MISSING
-    """Стоимость в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    model: str = MISSING
-    """Модель ИИ: tungo-1-flash, tungo-1, tungo-1-deep (tungo-search, tungo-legacy)"""
-    requests: int = MISSING
-    """Сколько вызовов ИИ"""
-
-
-class ApiKeyUsageTotals(BaseModel):
-    """Итоги за период"""
-
-    cache_read_tokens: int = MISSING
-    """Токены, прочитанные из кэша модели (намного дешевле обычных входных)"""
-    cache_write_tokens: int = MISSING
-    """Токены, записанные в кэш модели (дороже обычных входных, зато следующие вызовы дешевле)"""
-    cost_tiyn: int = MISSING
-    """Стоимость всех вызовов в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    input_tokens: int = MISSING
-    """Токены, отправленные модели (вопрос и контекст). Токен — кусочек текста, по ним считается цена"""
-    output_tokens: int = MISSING
-    """Токены ответа модели"""
-    requests: int = MISSING
-    """Сколько вызовов ИИ за период"""
 
 
 class ApproveError(BaseModel):
@@ -2875,68 +2269,6 @@ class ApproveRequest(BaseModel):
     """Комментарий к решению — в журнал (до 1000 знаков)"""
     post: bool | None = None
     """true (по умолчанию) — записать и провести; false — записать черновиком без проведения. Только true/false: другое — 400"""
-
-
-class AuditEntry(BaseModel):
-    """Запись журнала организации: кто, когда и что сделал."""
-
-    action: AuditEntryAction = MISSING
-    """Код действия вида «объект.действие». Текст для человека собирайте сами на его языке: по этому коду и параметрам из data (ниже — что значит каждый код). Значения: - `company.created` — Компания заведена - `company.updated` — Карточка компании изменена - `company.archived` — Компания убрана в архив - `company.unarchived` — Компания возвращена из архива - `company.member_added` — Сотруднику дан доступ к компании - `company.member_role_changed` — Роль сотрудника в компании изменена - `company.member_removed` — Доступ сотрудника к компании снят - `company.onboarding_waived` — Подключение компании без оплаты - `company.onboarding_unwaived` — Подключение без оплаты отменено - `company.onec_connected` — Подключена 1С - `company.onec_updated` — Подключение 1С изменено - `company.onec_copy_uploaded` — Загружена копия базы 1С - `company.onec_copy_held` — Копия базы 1С собрана, но не подключена: пока она собиралась, подключили другое - `company.onec_connector_code_created` — Выдан код привязки программы в офисе - `company.onec_connector_paired` — Программа в офисе привязана - `company.onec_connector_rotated` — Ключ программы в офисе заменён - `company.onec_connector_rotate_refused` — Отказ в повторе смены ключа программы в офисе: прежний ключ без метки той смены - `company.onec_connector_revoked` — Программа в офисе отвязана - `company.onec_connector_unpaired` — Программа в офисе отключена на самом компьютере - `company.onec_connector_replaced` — Программа в офисе заменена новой привязкой: прежний компьютер отключён - `company.onec_connector_link_approved` — Привязка программы в офисе одобрена в кабинете - `connector.link_created` — Программа в офисе запросила привязку через браузер - `connector.link_denied` — Привязка программы в офисе отклонена - `company.onec_link_approved` — Вход в Tungo из 1С подтверждён - `company.onec_link_revoked` — Вход в Tungo из 1С отозван - `onec_link.wrong_match` — Вход в Tungo из 1С отменён: на сайте нажато не то число сверки - `onec_link.limit_refused` — Вход в Tungo из 1С не подтверждён: у аккаунта слишком много действующих входов из 1С - `company.profile_rebuild` — Справка о компании пересобрана - `workspace.member_joined` — Сотрудник вступил в организацию - `workspace.member_role_changed` — Роль сотрудника в организации изменена - `workspace.member_removed` — Сотрудник удалён из организации - `workspace.member_access_revoked` — Доступы сотрудника к компаниям сняты - `workspace.invitation_created` — Отправлено приглашение - `workspace.invitation_cancelled` — Приглашение отменено - `workspace.policies_updated` — Политики организации изменены - `workspace.scim_token_created` — Выпущен токен SCIM - `workspace.scim_token_revoked` — Токен SCIM отозван - `workspace.scim_user_provisioned` — SCIM: сотрудник заведён - `workspace.scim_user_deprovisioned` — SCIM: сотрудник отключён - `workspace.scim_user_deleted` — SCIM: сотрудник удалён - `workspace.updated` — Название или настройки организации изменены - `workspace.sso_provider_updated` — SSO: настройки сервера входа изменены - `workspace.sso_provider_deleted` — SSO: сервер входа отключён - `workspace.sso_domain_verification_requested` — SSO: запрошено подтверждение домена - `workspace.sso_domain_verified` — SSO: домен подтверждён - `workspace.ownership_transferred` — Владение организацией передано - `workspace.deleted` — Организация удалена - `workspace.created` — Создана команда - `team.checkout_abandoned` — Оформление Team не завершено: черновик команды убран - `enterprise.request_created` — Отправлена заявка на Enterprise - `workspace.converted_to_team` — Личная организация стала командой - `workspace.deletion_scheduled` — Владелец запланировал удаление организации - `workspace.deletion_cancelled` — Удаление организации отменено - `workspace.invitation_resent` — Приглашение отправлено ещё раз - `team.seats_purchased` — Докуплены места - `team.seats_reduced` — Сокращено число мест с продления - `admin.workspace.kind_changed` — Администратор платформы сменил вид организации - `admin.workspace.contract_seats` — Администратор платформы задал места по договору - `admin.plan_grant.created` — Платформа выдала организации тариф бесплатно до даты - `admin.plan_grant.extended` — Платформа продлила выданный тариф - `admin.plan_grant.revoked` — Платформа отозвала выданный тариф досрочно - `admin.plan_grant.ended` — Срок выданного тарифа закончился - `admin.platform_discount.created` — Платформа дала скидку на расход платформы разработчиков - `admin.platform_discount.revoked` — Платформа отозвала скидку на расход платформы разработчиков - `admin.subscription.cancelled` — Администратор платформы отменил продление подписки - `admin.subscription.resumed` — Администратор платформы вернул продление подписки - `admin.money.exported` — Администратор платформы выгрузил список в CSV - `admin.payment_search.pd_viewed` — Поддержка открыла реквизиты плательщиков в поиске платежей - `workspace.sso_provider_created` — SSO: подключён сервер входа - `workspace.group_created` — Группа создана - `workspace.group_updated` — Группа изменена - `workspace.group_deleted` — Группа удалена - `workspace.group_member_added` — Сотрудник добавлен в группу - `workspace.group_member_removed` — Сотрудник убран из группы - `workspace.group_roles_changed` — Роли группы изменены - `workspace.custom_role_created` — Своя роль создана - `workspace.custom_role_updated` — Своя роль изменена - `workspace.custom_role_deleted` — Своя роль удалена - `workspace.role_ceiling_updated` — Потолок прав своих ролей изменён - `workspace.model_policy_updated` — Разрешённые модели изменены - `workspace.retention_updated` — Срок хранения чатов изменён - `workspace.training_consent` — Согласие на обучение изменено (владелец) - `workspace.audit_exported` — Журнал организации выгружен - `workspace.compliance_updated` — Выгрузка для проверок включена или выключена - `workspace.card_payments_updated` — Оплата счетов Enterprise картой включена или выключена - `workspace.compliance_read` — Прочитаны разговоры через выгрузку для проверок - `api_key.created` — Выпущен ключ API - `api_key.updated` — Ключ API изменён - `api_key.rolled` — Секрет ключа API заменён - `api_key.revoked` — Ключ API отозван - `api_key.transferred` — Ключ API передан другому владельцу - `api_key.disabled` — Ключ API выключен - `api_key.enabled` — Ключ API включён - `webhook.endpoint_created` — Добавлен адрес вебхука - `webhook.endpoint_updated` — Адрес вебхука изменён - `webhook.endpoint_deleted` — Адрес вебхука удалён - `webhook.secret_rotated` — Секрет подписи вебхука заменён - `webhook.secret_read` — Секрет подписи вебхука прочитан - `webhook.message_resent` — Событие вебхука отправлено повторно - `company.autonomy.changed` — Уровни самостоятельности и потолки компании изменены - `automation.paused` — Автоматизации компании поставлены на паузу - `automation.resumed` — Автоматизации компании сняты с паузы - `automation.run.cancel` — Запуск автоматизации отменён - `billing.profile.updated` — Реквизиты для счетов изменены - `billing.payment_method.disabled` — Карта отключена - `billing.refund.succeeded` — Деньги возвращены - `billing.manual_charge` — Админ платформы списал деньги с карты вручную - `subscription.created` — Подписка оформлена - `subscription.changed` — Тариф изменён - `subscription.cancel_scheduled` — Подписка отменена с конца периода - `subscription.resumed` — Отмена подписки снята - `subscription.terminated` — Подписка закрыта сразу (одобрен возврат по заявке) - `billing.refund_request.submitted` — Подана заявка на возврат - `billing.refund_request.approved` — Заявка на возврат одобрена - `billing.refund_request.rejected` — Заявка на возврат отклонена - `extra_usage.configured` — Настройки доп. использования изменены - `extra_usage.adjusted` — Баланс доп. использования скорректирован - `platform.configured` — Настройки платформы изменены - `platform.adjusted` — Баланс платформы скорректирован - `extra_usage.member_cap_set` — Личный потолок доп. использования изменён - `extra_usage.alert_thresholds_set` — Пороги оповещений о потолке организации изменены - `company.spend_cap_set` — Месячный потолок компании изменён - `team.analytics_exported` — Аналитика команды выгружена в CSV - `team.spend_exported` — Расходы по людям выгружены в CSV - `ai_budget.member_set` — Лимит ИИ сотрудника задан - `ai_budget.member_reset` — Лимит ИИ сотрудника сброшен - `spend.cap_threshold_reached` — Расход дошёл до порога потолка - `spend.company_cap_reached` — Компания упёрлась в месячный потолок - `plan.created` — Тариф заведён (платформа) - `plan.updated` — Тариф изменён (платформа) - `usage_rate.added` — Цена расхода добавлена (платформа) - `user.terms.accepted` — Приняты условия - `account.deletion_code_sent` — Запрошен код удаления аккаунта - `account.deletion_scheduled` — Аккаунт помечен к удалению - `account.deletion_cancelled` — Удаление аккаунта отменено - `account.deleted` — Аккаунт удалён и обезличен - `langfuse.traces_purged` — Трассы ИИ удалены из Langfuse: по сроку хранения, с аккаунтом или после отзыва согласия - `admin.dialog.langfuse_dataset` — Ход разговора отправлен в набор Langfuse (платформа) - `admin.dialog.langfuse_annotation` — Ход разговора отправлен в очередь разметки Langfuse (платформа) - `account.email_code_sent` — Запрошен код подтверждения почты (аккаунт Telegram) - `account.email_bound` — Почта привязана к аккаунту Telegram - `account.telegram_merged` — Telegram привязан к аккаунту с подтверждённой почтой, аккаунт Telegram закрыт - `account.google_linked` — Вход через Google привязал Google к аккаунту с той же почтой (sessions_closed — почта не была подтверждена: прежние сессии закрыты) - `account.telegram_merge_refused` — Склейка аккаунта Telegram с аккаунтом почты отклонена (данные, другой Telegram или почта закрыта) - `admin.ads.conversions_released` — Удержанные рекламные конверсии отправлены вручную - `admin.ads.conversions_rejected` — Рекламные конверсии отклонены - `admin.ads.signups_exported` — Выгрузка рекламных регистраций с IP и User-Agent (CSV) - `admin.access.signed_in` — Вход в админку по пропуску Cloudflare Access - `admin.access.refused` — Вход в админку по пропуску Cloudflare Access отклонён - `admin.two_factor.verified` — Администратор платформы подтвердил вход вторым фактором - `admin.two_factor.enable_requested` — Сотрудник платформы начал включать второй фактор (с кодом из почты) - `admin.two_factor.enabled` — Сотрудник платформы включил второй фактор - `admin.two_factor.disabled` — Сотрудник платформы отключил второй фактор (с кодом из почты) - `admin.session.signed_in` — Вход в админку по сессии со вторым фактором - `admin.user.banned` — Вход пользователю закрыт платформой - `admin.user.unbanned` — Вход пользователю открыт платформой - `admin.workspace.blocked` — Организация заблокирована платформой - `admin.workspace.unblocked` — Организация разблокирована платформой - `admin.workspace.training_consent` — Согласие на обучение изменено (платформа) - `admin.user.platform_roles_changed` — Роли платформы изменены - `admin.user.free_eligibility_changed` — Бесплатный лимит пользователя выдан или снят вручную (платформа) - `admin.user.limit_resets_granted` — Человеку выданы сбросы лимита (платформа) - `admin.user.limit_resets_revoked` — Выданные сбросы лимита отозваны (платформа) - `usage.limit_reset_applied` — Применён сброс лимита - `referral.claimed` — Регистрация по приглашению друга - `referral.rewarded` — За приглашённого друга выдан сброс лимита - `referral.reward_revoked` — Сброс лимита за оплату приглашённого друга отозван: оплата возвращена - `admin.enterprise_request.status_changed` — Статус заявки Enterprise изменён (платформа) - `admin.training.exported` — Выгрузка для обучения (платформа) - `admin.setting.changed` — Настройка платформы изменена - `admin.logs.purged` — Журнал запросов и итогов ходов ИИ убран вручную (платформа) - `admin.dialog.pd_viewed` — Поддержка открыла разговор с персональными данными - `admin.dialog.viewed_without_consent` — Поддержка открыла разговор без согласия клиента (экстренный доступ) - `admin.dialog.rating_comments_viewed` — Поддержка открыла комментарии человека к оценкам разговора - `admin.dialog.label_set` — Оценка ответа для обучения поставлена или заменена (платформа) - `admin.dialog.label_removed` — Оценка ответа для обучения удалена (платформа) - `admin.journal.pd_viewed` — Поддержка открыла журнал ИИ-бухгалтера с персональными данными - `admin.company.pd_viewed` — Поддержка открыла карточку компании-ИП с ИИН - `admin.company.pd_searched` — Поддержка нашла компанию-ИП поиском по ИИН - `admin.payment.pd_viewed` — Поддержка открыла платёж с реквизитами плательщика и обменом с банком - `site.post_published` — Статья блога опубликована на сайте (платформа) - `site.post_unpublished` — Статья блога снята с сайта (платформа) - `site.post_deleted` — Черновик статьи блога удалён (платформа) - `site.legal_published` — Опубликована новая редакция документа сайта (платформа) - `site.trackers_saved` — Изменены счётчики и коды подтверждения сайта (платформа) - `help.section_created` — Центр помощи: раздел заведён (платформа) - `help.section_updated` — Центр помощи: раздел изменён (платформа) - `help.section_deleted` — Центр помощи: раздел удалён (платформа) - `help.article_created` — Центр помощи: статья заведена (платформа) - `help.article_updated` — Центр помощи: статья изменена, опубликована или скрыта (платформа) - `help.article_deleted` — Центр помощи: статья удалена (платформа) - `help.reordered` — Центр помощи: порядок разделов или статей изменён (платформа) - `support.ticket_created` — Создано обращение в поддержку - `admin.support.replied` — Поддержка ответила на обращение - `admin.support.note_added` — Поддержка добавила внутреннюю заметку к обращению - `admin.support.ticket_updated` — Поддержка изменила обращение: состояние, категорию, приоритет или исполнителя - `admin.support.attachment_viewed` — Поддержка скачала вложение обращения - `admin.staff_access.granted` — Доступы: сотруднику открыты служебные службы (Cloudflare Access, учётки внутри) (платформа) - `admin.staff_access.revoked` — Доступы: у сотрудника забраны служебные службы, сессии Access отозваны (платформа) - `admin.staff_access.retried` — Доступы: повторены несделанные шаги выдачи или отзыва (платформа) - `admin.staff_access.mail_resent` — Доступы: письмо сотруднику отправлено ещё раз (платформа) - `canary.triggered` — Сработала приманка: украденный ключ или почта «сотрудника» (платформа) - `billing.payment.new` — Платёж: создан - `billing.payment.pending` — Платёж: отправлен в банк - `billing.payment.requires_action` — Платёж: ждёт 3-D Secure - `billing.payment.authorized` — Платёж: одобрен банком - `billing.payment.succeeded` — Платёж: оплачен - `billing.payment.verified` — Платёж: карта проверена - `billing.payment.failed` — Платёж: не прошёл - `billing.payment.cancelled` — Платёж: отменён - `billing.payment.partially_refunded` — Платёж: возвращён частично - `billing.payment.refunded` — Платёж: возвращён"""
-    action_title: str = MISSING
-    """Deprecated. Что сделано, готовой фразой по-русски. Оставлено для совместимости: фраза всегда русская, поэтому для показа берите код action и параметры data и подставляйте текст на языке человека"""
-    actor: AuditEntryActor = MISSING
-    """Кто сделал"""
-    at: str | None = MISSING
-    """Когда случилось. ISO 8601 в UTC (…Z); показывать по времени Казахстана — Asia/Almaty (UTC+5), а не по поясу браузера"""
-    company_id: str | None = MISSING
-    """Компания, к которой относится запись (co_…); null — запись об организации в целом"""
-    data: builtins.object | None = None
-    """Параметры действия (JSON, ключи snake_case) — для подстановки в текст и для подробностей: например { role } у смены роли, { from, amount_tiyn, kind } у платежа, { before, after } у изменений. Набор зависит от action"""
-    id: str = MISSING
-    """id записи (aud_…)"""
-    ip: str | None = MISSING
-    """IP, с которого пришёл запрос; null — фоновое действие"""
-    object: AuditEntryObject | None = MISSING
-    """Над чем сделано — с названием, чтобы не показывать безликое «Организация»: в отличие от target, у действий с вебхуком это сам адрес вебхука, у платежа есть сумма и назначение. null — без отдельного объекта. По ключу API названия, суммы и назначения нет (null): они только по сессии"""
-    request_id: str | None = MISSING
-    """Номер запроса (req_…) — по нему поддержка найдёт запрос; null — фоновое действие"""
-    target: AuditEntryTarget | None = MISSING
-    """Над чем сделано; null — без отдельного объекта"""
-
-
-class AuditEntryActor(BaseModel):
-    """Кто сделал"""
-
-    id: str | None = MISSING
-    """usr_… у человека, key_… у ключа; null у system"""
-    name: str | None = MISSING
-    """Имя для показа: имя человека, название ключа API, «Tungo» у system; null — не найдено (ключ удалён, имя не задано) — показать id"""
-    type: AuditEntryActorType = MISSING
-    """Кто сделал: user — человек, api_key — интеграция по ключу API, system — сама платформа"""
-
-
-class AuditEntryObject(BaseModel):
-    """Над чем сделано — с названием, чтобы не показывать безликое «Организация»: в отличие от target, у действий с вебхуком это сам адрес вебхука, у платежа есть сумма и назначение. null — без отдельного объекта. По ключу API названия, суммы и назначения нет (null): они только по сессии"""
-
-    amount_tiyn: int | None = MISSING
-    """Только у платежа: сумма в тиынах; у остальных — null"""
-    id: str | None = MISSING
-    """id объекта: публичный с меткой (pay_…, key_…, co_…), если у вида она есть; у вебхука — id адреса (ep_…)"""
-    name: str | None = MISSING
-    """Название для показа: у вебхука — описание, а без него адрес; у ключа, компании, группы и своей роли — название; у человека — имя. null — названия нет (платёж показывайте суммой и назначением, организацию — своим словом) или объект удалён"""
-    purpose: AuditEntryObjectPurpose | None = MISSING
-    """Только у платежа: назначение — subscription (подписка), seats (места), extra_usage (доп. использование), platform_topup (пополнение платформы), onboarding (подключение компании), card_verification (проверка карты), one_off и manual (разовый и ручной); у остальных — null"""
-    type: str = MISSING
-    """Вид объекта: webhook — адрес вебхука, payment — платёж, api_key, company, user, group, custom_role, invitation, workspace и другие виды из target.type"""
-
-
-class AuditEntryTarget(BaseModel):
-    """Над чем сделано; null — без отдельного объекта"""
-
-    id: str | None = MISSING
-    """id объекта — публичный с меткой (usr_…, co_…), если у вида она есть; иначе как есть"""
-    type: str = MISSING
-    """Вид объекта: user, company, api_key, invitation, payment…"""
 
 
 class AutomationAutoApprove(BaseModel):
@@ -4350,23 +3682,6 @@ class ChatDialogList(BaseModel):
     """Курсор следующей страницы. Чтобы получить её — тот же запрос (с теми же фильтрами) и `?cursor=<это значение>`. null — страниц больше нет (кнопку «Ещё» спрятать). Курсор непрозрачный: не разбирать и не собирать самому, хранить только до следующего запроса. Пустой data с не-null курсором не бывает."""
 
 
-class ChatDialogPatch(BaseModel):
-    """Новое название разговора"""
-
-    title: str = MISSING
-    """Новое название, до 64 символов; пустая строка — вернуть автоматическое название (от ИИ, а пока его нет — первый вопрос)"""
-
-
-class ChatDialogRated(BaseModel):
-    """Оценка разговора после изменения"""
-
-    id: str = MISSING
-    """id разговора (обычно UUID): по нему продолжают разговор (dialog_id), открывают его GET …/chat/{id} и стирают"""
-    rating: ChatDialogRating = MISSING
-    rating_prompt: bool = MISSING
-    """Всегда false: предлагать больше не нужно"""
-
-
 class ChatDialogRating(BaseModel):
     """Оценка разговора человеком"""
 
@@ -4376,25 +3691,6 @@ class ChatDialogRating(BaseModel):
     """Комментарий человека; null — без комментария"""
     score: int = MISSING
     """Оценка разговора: от 1 (плохо) до 5 (отлично)"""
-
-
-class ChatDialogRatingBody(BaseModel):
-    """Оценка разговора"""
-
-    comment: str | None = None
-    """Комментарий человека, необязательный; предел длины — comment_chars из GET …/chat/rating-options"""
-    score: int = MISSING
-    """Оценка разговора: от 1 (плохо) до 5 (отлично). Повторная оценка заменяет прежнюю"""
-
-
-class ChatDialogRenamed(BaseModel):
-    """Разговор с новым названием"""
-
-    id: str = MISSING
-    """id разговора (обычно UUID): по нему продолжают разговор (dialog_id), открывают его GET …/chat/{id} и стирают"""
-    title: str = MISSING
-    """Название разговора теперь"""
-    title_source: ChatTitleSource = MISSING
 
 
 class ChatDialogSummary(BaseModel):
@@ -4810,50 +4106,6 @@ class ChatMention(BaseModel):
     """Что упомянуто: `proposal` — предложение (документ для 1С), id — его номер P-000123; `counterparty` — контрагент из 1С компании, id — его ссылка из поиска; `batch` — задание пачки (разбор выписки, входящие ЭСФ), id — bat_…"""
 
 
-class ChatMentionItem(BaseModel):
-    """То, что можно упомянуть через «@»"""
-
-    hint: str | None = MISSING
-    """Вторая строка: сумма документа, БИН контрагента, дата задания; null — нечего добавить"""
-    id: str = MISSING
-    """id для поля mentions вопроса"""
-    title: str = MISSING
-    """Как показать в списке и в поле ввода: название документа с номером, имя контрагента, название задания (данные компании)"""
-    type: ChatMentionItemType = MISSING
-    """Что упомянуто: `proposal` — предложение (документ для 1С), id — его номер P-000123; `counterparty` — контрагент из 1С компании, id — его ссылка из поиска; `batch` — задание пачки (разбор выписки, входящие ЭСФ), id — bat_…"""
-
-
-class ChatMentionSearch(BaseModel):
-    """Что можно упомянуть через «@»"""
-
-    data: list[ChatMentionItem] = MISSING
-    """Найденное, по видам в порядке запроса; внутри вида — свежие сверху"""
-    unavailable: list[ChatMentionUnavailable] = MISSING
-    """Виды, по которым поиск сейчас невозможен, и почему: кабинет прячет раздел или показывает причину"""
-
-
-class ChatMentionUnavailable(BaseModel):
-    """Вид упоминаний, который сейчас не найти"""
-
-    reason: ChatMentionUnavailableReason = MISSING
-    """`no_access` — нет права видеть документы компании; `onec_not_linked` — 1С не подключена; `onec_unavailable` — 1С сейчас не ответила"""
-    type: ChatMentionUnavailableType = MISSING
-    """Что упомянуто: `proposal` — предложение (документ для 1С), id — его номер P-000123; `counterparty` — контрагент из 1С компании, id — его ссылка из поиска; `batch` — задание пачки (разбор выписки, входящие ЭСФ), id — bat_…"""
-
-
-class ChatMessageRated(BaseModel):
-    """Оценка ответа после изменения"""
-
-    dialog_id: str = MISSING
-    """id разговора (обычно UUID): по нему продолжают разговор (dialog_id), открывают его GET …/chat/{id} и стирают"""
-    message_id: str = MISSING
-    """id сообщения в истории"""
-    rating: ChatMessageRating | None = MISSING
-    """Оценка теперь; null — снята"""
-    turn_no: int = MISSING
-    """Номер ответа"""
-
-
 class ChatMessageRating(BaseModel):
     """Оценка ответа ИИ человеком"""
 
@@ -4865,17 +4117,6 @@ class ChatMessageRating(BaseModel):
     """Причина оценки down — ключ из GET …/chat/rating-options; null — не указана или оценка up"""
     vote: ChatMessageRatingVote = MISSING
     """up — палец вверх, down — палец вниз"""
-
-
-class ChatMessageRatingBody(BaseModel):
-    """Оценка ответа"""
-
-    comment: str | None = None
-    """Комментарий человека, необязательный; предел длины — comment_chars из GET …/chat/rating-options"""
-    reason: str | None = None
-    """Причина оценки down — ключ из GET …/chat/rating-options; можно прислать позже повторным PUT. У оценки up причины нет"""
-    vote: ChatMessageRatingBodyVote = MISSING
-    """up — ответ хороший, down — плохой. Повторная оценка того же ответа заменяет прежнюю"""
 
 
 class ChatMessageRequest(BaseModel):
@@ -4947,44 +4188,6 @@ class ChatQuestion(BaseModel):
     """Вопрос ИИ к человеку"""
 
 
-class ChatRatingDismissed(BaseModel):
-    """Предложение оценить закрыто"""
-
-    id: str = MISSING
-    """id разговора (обычно UUID): по нему продолжают разговор (dialog_id), открывают его GET …/chat/{id} и стирают"""
-    rating_prompt: bool = MISSING
-    """Всегда false"""
-
-
-class ChatRatingOptions(BaseModel):
-    """Настройки формы оценки"""
-
-    comment_chars: int = MISSING
-    """Предел длины комментария в знаках; 0 — поле комментария не показывать"""
-    dialog_scores: ChatRatingOptionsDialogScores = MISSING
-    """Шкала оценки разговора"""
-    reasons: list[ChatRatingOptionsReasonItem] = MISSING
-    """Причины оценки «вниз», по порядку показа"""
-
-
-class ChatRatingOptionsDialogScores(BaseModel):
-    """Шкала оценки разговора"""
-
-    max: int = MISSING
-    """Высшая оценка разговора"""
-    min: int = MISSING
-    """Низшая оценка разговора"""
-
-
-class ChatRatingOptionsReasonItem(BaseModel):
-    """ChatRatingOptionsReasonItem."""
-
-    key: str = MISSING
-    """Ключ причины — его слать в reason"""
-    title: str = MISSING
-    """Название для показа"""
-
-
 class ChatStopResult(BaseModel):
     """Итог «Стоп»"""
 
@@ -4996,45 +4199,6 @@ class ChatStopResult(BaseModel):
     """true — ход шёл и остановлен; false — ход уже не шёл"""
 
 
-class ChatSuggestion(BaseModel):
-    """Подсказка пустого чата"""
-
-    action: ChatSuggestionAction = MISSING
-    """`ask` — подставить `prompt` в поле ввода; `connect_onec` — открыть подключение 1С"""
-    code: str = MISSING
-    """Код подсказки — постоянное имя карточки в настройке (для значка и аналитики); текст по нему подбирать не нужно"""
-    hint: str = MISSING
-    """Пояснение под заголовком"""
-    prompt: str = MISSING
-    """Текст вопроса для поля ввода при нажатии (у `connect_onec` не нужен — совпадает с заголовком)"""
-    seasonal: bool = MISSING
-    """Карточка сезонная: показана, потому что сегодня её окно показа; такие стоят в разделе первыми"""
-    title: str = MISSING
-    """Заголовок карточки на языке ответа, даты уже подставлены"""
-
-
-class ChatSuggestionGroup(BaseModel):
-    """Раздел подсказок"""
-
-    code: str = MISSING
-    """Код раздела — постоянное имя (для значка вкладки)"""
-    suggestions: list[ChatSuggestion] = MISSING
-    """Подсказки раздела по порядку показа: сезонные первыми; только подходящие компании сейчас и доступные человеку по правам; не больше настройки chat.suggestions_per_group"""
-    title: str = MISSING
-    """Название раздела на языке ответа"""
-
-
-class ChatSuggestions(BaseModel):
-    """Подсказки пустого чата с текстами — по состоянию компании, правам человека и календарю"""
-
-    data: list[ChatSuggestionGroup] = MISSING
-    """Разделы по порядку показа; пустых разделов нет"""
-    locale: ChatSuggestionsLocale = MISSING
-    """Язык текстов в ответе"""
-    onec_linked: bool = MISSING
-    """Подключена ли 1С компании: от этого зависит набор подсказок"""
-
-
 class ChatThinkingPart(BaseModel):
     """Кусок размышлений ответа по порядку блоков"""
 
@@ -5042,17 +4206,6 @@ class ChatThinkingPart(BaseModel):
     """Текст: по-русски (или уже переведённый); у блока с translate_id — оригинал модели (обычно по-английски)"""
     translate_id: str | None = None
     """Есть — блок не по-русски и ещё не переведён: перевод — POST …/chat/{id}/thinking/{translate_id}/translate, когда человек раскрыл шаги"""
-
-
-class ChatThinkingTranslation(BaseModel):
-    """Блок размышления по-русски"""
-
-    cached: bool = MISSING
-    """true — перевод уже был, модель не звали"""
-    id: str = MISSING
-    """id блока размышления не по-русски (16 hex): тот же в событии thinking и в истории"""
-    text: str = MISSING
-    """Блок по-русски"""
 
 
 class ChatTokenCount(BaseModel):
@@ -5296,42 +4449,6 @@ class CompanyAutonomyDefaults(BaseModel):
     """Потолок на документ по умолчанию платформы, тиыны"""
 
 
-class CompanyAutonomyInput(BaseModel):
-    """Уровни доверия и потолки компании целиком (не переданный вид — L1, null — умолчание платформы)."""
-
-    levels: CompanyAutonomyInputLevels = MISSING
-    """Уровень доверия по видам документов (ключ — вид, как в kinds правила автоодобрения). Не указанный вид — L1. Отмены документа (revert) в списке нет: её всегда решает человек, подпись ЭСФ и закрытие месяца не поднимаются никогда."""
-    max_amount_per_day_tiyn: int | None = MISSING
-    """Потолок суммы всех записей компании без человека за день по Алматы (все сценарии и выписка DirectBank вместе), в тиынах. null — по умолчанию платформы"""
-    max_amount_per_document_tiyn: int | None = MISSING
-    """Потолок одного документа, записанного без человека, в тиынах (1 ₸ = 100 тиын). null — по умолчанию платформы (настройка automations.money)"""
-
-
-class CompanyAutonomyInputLevels(BaseModel):
-    """Уровень доверия по видам документов (ключ — вид, как в kinds правила автоодобрения). Не указанный вид — L1. Отмены документа (revert) в списке нет: её всегда решает человек, подпись ЭСФ и закрытие месяца не поднимаются никогда."""
-
-    advance_report: CompanyAutonomyInputLevelsAdvanceReport | None = None
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    bank_payment: CompanyAutonomyInputLevelsBankPayment | None = None
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    bank_receipt: CompanyAutonomyInputLevelsBankReceipt | None = None
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    cash_order_in: CompanyAutonomyInputLevelsCashOrderIn | None = None
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    cash_order_out: CompanyAutonomyInputLevelsCashOrderOut | None = None
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    contract: CompanyAutonomyInputLevelsContract | None = None
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    counterparty: CompanyAutonomyInputLevelsCounterparty | None = None
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    inventory_writeoff: CompanyAutonomyInputLevelsInventoryWriteoff | None = None
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    purchase: CompanyAutonomyInputLevelsPurchase | None = None
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    sale: CompanyAutonomyInputLevelsSale | None = None
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-
-
 class CompanyAutonomyLevels(BaseModel):
     """Уровень доверия ИИ по каждому виду документов (все виды, кроме отмены документа: её всегда решает человек)"""
 
@@ -5506,68 +4623,6 @@ class DirectBankPollResult(BaseModel):
     """id задания выписки дня (bat_…); null — новых документов в банке нет"""
 
 
-class DownloadConnector(BaseModel):
-    """Tungo Connector — программа в офисе; null — ещё не выпущен"""
-
-    files: list[DownloadConnectorFile] = MISSING
-    """По файлу на систему и архитектуру"""
-    notes: str = MISSING
-    """Что нового — для человека (Markdown)"""
-    published_at: str = MISSING
-    """Когда выпущен. ISO 8601 в UTC (…Z); показывать по времени Казахстана — Asia/Almaty (UTC+5), а не по поясу браузера"""
-    version: str = MISSING
-    """Версия"""
-
-
-class DownloadConnectorFile(BaseModel):
-    """Установщик Tungo Connector для системы: windows — .exe, darwin — .pkg"""
-
-    arch: DownloadConnectorFileArch = MISSING
-    """Архитектура"""
-    name: str = MISSING
-    """Имя файла"""
-    os: DownloadConnectorFileOs = MISSING
-    """Система"""
-    sha256: str = MISSING
-    """SHA-256 файла, 64 шестнадцатеричных знака"""
-    size: int = MISSING
-    """Размер, байт"""
-    url: str = MISSING
-    """https-адрес файла в выпуске TungoAI/tungo-releases на GitHub"""
-
-
-class DownloadFile(BaseModel):
-    """Файл выпуска"""
-
-    name: str = MISSING
-    """Имя файла"""
-    sha256: str = MISSING
-    """SHA-256 файла, 64 шестнадцатеричных знака"""
-    size: int = MISSING
-    """Размер, байт"""
-    url: str = MISSING
-    """https-адрес файла в выпуске TungoAI/tungo-releases на GitHub"""
-
-
-class DownloadOnecExtension(BaseModel):
-    """Расширение Tungo для 1С (Tungo.cfe); null — ещё не выпущено"""
-
-    file: DownloadFile = MISSING
-    notes: str = MISSING
-    """Что нового — для человека (Markdown)"""
-    published_at: str = MISSING
-    """Когда выпущен. ISO 8601 в UTC (…Z); показывать по времени Казахстана — Asia/Almaty (UTC+5), а не по поясу браузера"""
-    version: str = MISSING
-    """Версия"""
-
-
-class Downloads(BaseModel):
-    """Последние выпуски Tungo для скачивания"""
-
-    connector: DownloadConnector | None = MISSING
-    onec_extension: DownloadOnecExtension | None = MISSING
-
-
 class Error(BaseModel):
     """Тело любой ошибки API (статусы 4xx и 5xx): `{"type":"error","error":{"type":"…","code":"…","message":"…"},"request_id":"…"}`. Интерфейс ветвится по error.type и error.code, человеку показывает error.message и request_id."""
 
@@ -5586,7 +4641,7 @@ class ErrorDetail(BaseModel):
     amount_tiyn: int | None = None
     """При code = subscription_unpaid_debt — сколько оплатить, в тиынах: сумма всех неоплаченных счетов подписки."""
     code: str | None = None
-    """Уточнение вида: по нему выбирается действие интерфейса (кнопка «Пополнить», «Войти иначе»…). Нет поля — хватает type и message. Известные коды: - `cannot_ban_self` (409) — админка: закрыть вход самому себе нельзя - `user_not_banned` (409) — админка: вход этому пользователю не закрыт — открывать нечего - `sso_domain_taken` (409) — домен SSO уже подтверждён другой организацией - `sso_last_verified_domain` (409) — включён обязательный вход, а это последний подтверждённый домен — сначала выключить обязательный вход - `sso_login_required` (400) — включить обязательный вход можно только из сессии, открытой через SSO этой организации - `login_methods_lockout` (400) — новый список способов входа — или удаление и смена доменов подключения SSO при sso в этом списке — запер бы автора правки или админов организации: показать message и предложить добавить в список способ, которым они входят - `domain_verification_failed` (400) — запись DNS для домена не найдена или не совпала — проверить и повторить - `oidc_openid_scope_required` (400) — в scopes сервера входа OIDC нет openid — добавить её: без неё вход через SSO не пройдёт - `enterprise_only` (403) — возможность есть только на тарифе Enterprise - `team_only` (403) — раздел команды (сотрудники, приглашения, роли, политики, журнал и расходы организации, покупка мест, подключения SSO) запрошен для личной организации — он есть только у Team и Enterprise; кабинету показать «это есть в тарифе Team» - `team_checkout_required` (403) — команду нельзя завести без оплаты: она появляется вместе с тарифом Team — POST /v1/team-checkouts; кабинету вести на «Оформить Team» - `team_plan_required` (403) — подключить SSO и включить обязательный вход может только организация с оплаченным тарифом Team (или Enterprise): команда заведена, но тариф не оформлен или не оплачен — показать оформление тарифа - `groups_limit` (429) — достигнут предел групп в организации - `custom_roles_limit` (429) — достигнут предел своих ролей в организации - `group_managed_by_directory` (409) — группа из каталога: название и состав меняются только там - `group_member_not_in_workspace` (400) — в группу можно добавить только сотрудника этой организации - `role_above_ceiling` (400) — роль даёт права выше потолка организации - `unknown_model` (400) — такой модели нет — список в available_models - `invalid_report` (400) — панель 1С: отчёт расширения о себе не по формату — расширение старое или повреждено, обновить его - `price_required` (400) — админка, тариф целиком: у платного тарифа нужна цена (price) - `adjustment_amount_zero` (400) — админка, корректировка баланса: сумма — ноль; указать, сколько начислить (плюс) или списать (минус) - `adjustment_over_limit` (400) — админка, корректировка баланса: сумма за раз больше потолка из настройки billing.adjustment — разбить на части или поднять потолок (суперадминистратор) - `adjustment_note_required` (400) — админка, корректировка баланса: пояснение из одних пробелов — написать причину от 3 знаков - `adjustment_key_invalid` (400) — админка, корректировка баланса: ключ повтора не 8–200 знаков (по HTTP обычно раньше ловится как validation_failed) - `adjustment_key_reused` (409) — админка, корректировка баланса: этот idempotency_key уже применён с другой суммой или пояснением — для новой корректировки нужен новый ключ (новое нажатие «Применить») - `adjustment_exceeds_balance` (409) — админка, корректировка баланса: списание больше свободного остатка (баланс минус брони идущих вызовов; сколько можно — в message) — уменьшить сумму - `site_post_not_found` (404) — админка, сайт: статьи нет - `staff_access_requires_superadmin` (403) — админка, доступы: выдавать и забирать служебные службы может только суперадминистратор - `staff_access_not_configured` (503) — админка, доступы: нет ключа Cloudflare (CLOUDFLARE_STAFF_ACCESS_TOKEN) или групп служб — экран только показывает - `staff_access_nothing_to_mail` (409) — админка, доступы: у человека нет открытых служб — письмо слать не о чем - `unknown_service` (400) — админка, доступы: такой службы нет в списке services сводки - `site_slug_taken` (409) — админка, сайт: статья с таким адресом уже есть - `site_slug_locked` (409) — админка, сайт: адрес опубликованной статьи не меняется - `site_post_incomplete` (409) — админка, сайт: статью нельзя опубликовать — нет одной из языковых версий, поля, в тексте HTML, чужая картинка или ссылка на неопубликованную статью/документ; фразы — в error.blockers - `site_post_not_published` (409) — админка, сайт: статья не опубликована — снимать нечего - `site_post_linked` (409) — админка, сайт: статью не снять — на неё ссылаются другие опубликованные статьи или документы; их перечень — в error.blockers - `site_post_published` (409) — админка, сайт: опубликованную статью не удалить — сначала снять с сайта - `site_legal_not_found` (404) — админка, сайт: такого документа в наборе нет - `site_legal_revision_not_found` (404) — админка, сайт: у документа нет редакции с таким номером - `site_draft_changed` (409) — админка, сайт: черновик статьи или документа изменился после чтения (draft_version не совпал) — перечитать, проверить и публиковать заново - `site_legal_no_draft` (409) — админка, сайт: у документа нет черновика — публиковать нечего - `site_legal_unchanged` (409) — админка, сайт: черновик совпадает с действующей редакцией - `site_legal_unsafe` (409) — админка, сайт: в тексте документа HTML, опасная ссылка, чужая картинка или ссылка на неопубликованную статью/документ; фразы — в error.blockers - `site_legal_publish_requires_superadmin` (403) — админка, сайт: редакцию документа публикует только суперадминистратор; черновик готовит любой администратор - `site_legal_date_before_previous` (400) — админка, сайт: дата редакции раньше прежней редакции - `site_trackers_requires_superadmin` (403) — админка, сайт: счётчики сайта меняет только суперадминистратор - `site_trackers_changed` (409) — админка, сайт: счётчики изменили после чтения (version не совпал) — перечитать и проверить заново - `site_rebuild_not_configured` (409) — админка, сайт: запуск пересборки сайта не настроен на сервере - `lago_rejected` (409) — админка, тариф целиком: Lago отказал по существу (4xx, текст Lago в message) — правила не изменены, повтор без правки не поможет - `price_mismatch` (400) — админка, тариф целиком: цена не сходится с правилами (место без per_seat, per_seat без цены места, цена у бесплатного) - `pricing_requires_superadmin` (403) — цены моделей (POST /admin/v1/usage-rates) и тарифы (PUT /admin/v1/plans/{code}, …/full) меняет только суперадминистратор - `price_change_too_large` (400) — цена модели или тарифа меняется за раз сильнее, чем разрешает настройка billing.price_change (max_factor) — проверить нули или сначала поднять предел - `price_zero_needs_flag` (400) — цена модели или плата за период тарифа обнуляется — только с явным allow_zero: true - `help_article_not_found` (404) — центр помощи: статьи нет или она скрыта - `help_section_not_found` (404) — админка, центр помощи: раздела нет - `help_slug_taken` (409) — админка, центр помощи: раздел или статья с таким адресом уже есть - `help_article_incomplete` (409) — админка, центр помощи: статью нельзя опубликовать — нет одной из языковых версий или в тексте HTML; фразы — в error.blockers - `help_section_not_empty` (409) — админка, центр помощи: в разделе есть статьи — удалить нельзя - `help_order_invalid` (400) — админка, центр помощи: в списке порядка повтор, несуществующий id или статьи разных разделов - `support_ticket_not_found` (404) — поддержка: обращения нет или оно чужое - `support_ticket_closed` (409) — поддержка: обращение закрыто — человеку создать новое; сотруднику сначала вернуть в работу - `support_ticket_not_resolved` (409) — поддержка: оценить можно только решённое или закрытое обращение - `support_ticket_rate` (429) — поддержка: слишком много новых обращений подряд (настройка support.limits) — Retry-After - `support_message_rate` (429) — поддержка: слишком много сообщений подряд (настройка support.limits) — Retry-After - `support_too_many_open` (409) — поддержка: у человека уже много незакрытых обращений — дописать в существующее - `support_empty_message` (400) — поддержка: нет ни текста, ни файла (или пустая тема) - `support_unknown_category` (400) — поддержка: такой категории нет в настройке support.categories - `support_unknown_company` (400) — поддержка: компания не найдена или у человека нет к ней доступа - `support_unknown_dialog` (400) — поддержка: такого своего разговора в этой компании нет (или dialog_id без company_id) - `dialog_no_consent` (403) — админка, разговор: нет согласия клиента — обращения в поддержку с разрешением посмотреть разговор (согласие на обучение не в счёт): открыть может только сотрудник с правом admin_pd и с причиной reason, открытие пишется в журнал (admin.dialog.viewed_without_consent); в Langfuse такой ход не отправляется - `support_no_dialog` (409) — поддержка: к обращению не приложен разговор — согласие давать не на что - `support_attachment_rejected` (400) — поддержка: файл не принят — тип, размер или число файлов (текст причины в message) - `support_attachments_off` (503) — поддержка: на сервере нет ключа шифрования — файлы к обращениям не принимаются - `support_attachment_not_found` (404) — поддержка: файла нет или он больше недоступен - `support_assignee_not_admin` (400) — админка, поддержка: исполнителем можно назначить только администратора платформы - `money_requires_superadmin` (403) — админка: возврат, корректировка баланса, смена вида организации и мест по договору, выдача тарифа, скидка платформы, возврат отменённой подписки — только суперадминистратор - `admin_daily_limit` (403) — админка: суточный предел действий с деньгами на одного суперадминистратора (настройки admin.money_actions, admin.plan_grants, platform.discount) — продолжить завтра или поднять предел - `plan_grant_bad_dates` (400) — админка, выдача тарифа: срок должен кончаться в будущем, позже начала и (при продлении) позже прежней даты - `plan_grant_too_long` (400) — админка, выдача тарифа: срок за одну выдачу или продление длиннее настройки admin.plan_grants.max_days - `plan_grant_plan_unsuitable` (400) — админка, выдача тарифа: выдать можно только платный тариф; Enterprise — по договору - `plan_grant_seats_unexpected` (400) — админка, выдача тарифа: места задаются только у тарифа с оплатой за место - `plan_grant_seats_required` (400) — админка, выдача тарифа: у тарифа с оплатой за место нужно число мест - `plan_grant_seats_too_few` (400) — админка, выдача тарифа: мест меньше минимума тарифа или числа участников - `plan_grant_kind_mismatch` (409) — админка, выдача тарифа: тариф для другого вида организации - `plan_grant_exists` (409) — админка, выдача тарифа: у организации уже есть неоконченная выдача — продлить её или сначала отозвать - `plan_grant_not_better` (409) — админка, выдача тарифа: выдача сейчас не подействовала бы — у организации оплачена подписка на тариф другого вида или не хуже выдаваемого (недельный лимит и места не меньше) - `search_criteria_required` (400) — админка, поиск платежа: нет ни одного непустого признака (order_id, payment_id, invoice, date, email) — все платежи поиск не отдаёт - `plan_grant_ended` (409) — админка, выдача тарифа: выдача уже закончилась или отозвана - `plan_grant_not_found` (404) — админка, выдача тарифа: выдачи с таким id нет - `workspace_not_found` (404) — админка, выдача тарифа и скидка платформы: организации с таким id нет - `platform_discount_bad_percent` (400) — админка, скидка платформы: процент — целое число от 1 - `platform_discount_over_cap` (400) — админка, скидка платформы: процент выше потолка настройки platform.discount.max_percent - `platform_discount_bad_dates` (400) — админка, скидка платформы: срок должен кончаться в будущем - `platform_discount_exists` (409) — админка, скидка платформы: у организации уже есть действующая скидка — сначала отозвать - `platform_discount_ended` (409) — админка, скидка платформы: скидка уже закончилась или отозвана - `platform_discount_not_found` (404) — админка, скидка платформы: скидки с таким id нет - `refund_request_open` (409) — оформление, смена тарифа или возврат отменённой подписки: заявка на возврат на рассмотрении, продление выключено ею — дождаться решения (отказ вернёт продление сам); в админке — сначала рассмотреть заявку - `onboarding_payment_pending` (409) — админка, подключить компанию без оплаты: оплата подключения ещё идёт в банке — дождаться её итога (прошла — подключать без оплаты не нужно, не прошла — повторить) - `subscription_not_cancelled` (409) — админка, подписка: отменённой подписки нет — возвращать нечего - `documents_unavailable` (503) — документы Tungo (акты, счета, подтверждения): служба документов не подключена или не отвечает — повторить позже - `document_not_found` (404) — документа Tungo с таким id нет в этой организации - `document_not_disputable` (409) — возражение не принимается: документ не акт, уже принят, заменён или аннулирован - `dispute_deadline_passed` (409) — срок возражений по акту (dispute_deadline) прошёл — акт считается принятым - `signature_not_found` (404) — у документа нет подписи этой стороны - `card_not_found` (404) — карточки подписи у документа пока нет — он ещё не подписан - `verify_not_found` (404) — открытая проверка подписи: документа с таким кодом нет (код из QR или ссылки /v/{code}) - `verify_unavailable` (503) — открытая проверка подписи: служба документов, партнёров или карточек не подключена или не отвечает — повторить позже - `release_not_found` (404) — скачать Tungo (/v1/public/downloads/…): этот выпуск (расширение 1С или Tungo Connector для этой системы) ещё не выпущен или не прочитан из tungo-releases - `payment_not_found` (404) — служебный адрес службы документов: платежа с таким id нет - `upload_part_invalid` (400) — загрузка архива к чату: имя не .zip/.rar/.7z, неверный размер, номер или длина части — part_bytes и parts из POST …/chat/uploads - `file_too_large` (400) — загрузка архива к чату: архив больше archive_bytes (GET /v1/me, attachments) - `upload_not_found` (404) — загрузка архива к чату: нет такой — устарела, отменена, уже отправлена или начата другим человеком (ключом) - `too_many_uploads` (429) — загрузка архива к чату: уже идут три незаконченные загрузки — дождаться их или отменить (DELETE …/chat/uploads/{id}) - `uploads_unavailable` (503) — загрузка архива к чату по частям на этом сервере не настроена (нет ключа шифрования) — архив до attachment_bytes можно прислать base64 - `speech_disabled` (404) — голосовой ввод на сервере не включён — кнопку микрофона спрятать (speech.enabled в GET /v1/me) - `speech_bad_lang` (400) — голосовой ввод: lang не указан или не из speech.languages - `speech_too_large` (413) — голосовой ввод: запись больше предела (настройка speech.limits) — записать короче - `speech_bad_format` (415) — голосовой ввод: тип записи не принимается, запись пуста или повреждена — записать заново - `speech_too_long` (422) — голосовой ввод: запись длиннее speech.max_seconds — записать короче или по частям - `speech_rate_limited` (429) — голосовой ввод: слишком часто или исчерпан суточный потолок человека — показать error.message, повторить после Retry-After - `speech_unavailable` (503) — голосовой ввод: распознавание сейчас недоступно — повторить позже или набрать вопрос с клавиатуры - `no_session` (401) — служебная проверка сессии (служба партнёрки): cookie сессии нет, она закончилась или вход закрыт - `model_not_allowed` (403) — политика организации не разрешает эту модель, а подходящей разрешённой нет — админу дополнить список - `retention_too_short` (400) — срок хранения меньше наименьшего - `audit_export_range` (400) — неверный период выгрузки журнала: конец раньше начала или период слишком длинный - `compliance_disabled` (403) — адрес для проверок выключен — владелец включает его в настройке - `missing_credentials` (401) — нет ни cookie сессии, ни ключа API — войти или передать x-api-key - `link_revoked` (401) — вход в Tungo из 1С больше не действует (вышли, отключили на сайте, вошли в той же базе заново, компания или человек заблокированы) — 1С просит войти заново - `login_denied` (403) — вход из 1С отклонён на сайте Tungo — 1С показывает отказ - `code_expired` (410) — код входа из 1С устарел или уже использован — 1С просит новый код - `code_gone` (410) — код входа из 1С уже подтверждён, отклонён или устарел — на сайте подтверждать нечего - `link_expired` (401) — вход в Tungo из 1С устарел: вышел срок ключа от входа или 1С долго не обращалась (onec.connector.link_key_ttl_days, link_idle_days) — 1С просит войти заново - `extension_outdated` (400) — расширение Tungo для 1С старой версии: не шлёт protocol ≥ 2 и не умеет показывать число сверки — обновить расширение - `match_required` (400) — подтверждение входа из 1С без числа сверки: человек нажимает на странице число, показанное в окне его 1С - `onec_link_wrong_match` (409) — на странице нажато не то число сверки: код входа из 1С погашен, человек час не может подтверждать входы из 1С - `onec_link_locked` (429) — недавно было нажато не то число сверки — подтверждать входы из 1С можно снова через час (Retry-After) - `onec_other_base` (409) — вход из 1С: к компании уже подключена другая 1С (OData, коннектор или выгрузка), а БИН организаций этой базы не совпадает с БИН компании — выбрать компанию этой базы или создать её по БИН; у прежнего входа — войти заново - `onec_user_taken` (409) — этим аккаунтом Tungo в базе 1С уже входит другой пользователь 1С (поле onec_user) — каждый сотрудник входит своим аккаунтом; сменить пользователя — подтверждение с replace: true - `onec_links_limit` (409) — у аккаунта слишком много действующих входов из 1С (onec.connector.max_links_per_user) — отключить ненужные в «Подключённых 1С» - `no_seats` (403) — вход из 1С: человека нет среди сотрудников компании или организации (место в команде) — владелец добавляет его, потом вход заново - `odata_request_not_found` (404) — мост 1С: нет такого запроса у этого входа из 1С — ответ выбросить - `odata_request_answered` (409) — мост 1С: на запрос уже ответили — повтор ответа выбросить - `panel_not_found` (404) — страницы панели 1С под эту версию сообщений на сервере нет — расширение показывает свою вшитую - `odata_request_gone` (410) — мост 1С: Tungo больше не ждёт ответа (срок вышел или ход отменён) — ответ выбросить, запрос не повторять - `odata_check_failed` (422) — подключение OData из 1С сохранено, но проверка не прошла (422): адрес, пользователь, права или состав OData — показать error.message, в нём что исправить - `org_mismatch` (403) — база 1С — другой организации: БИН базы (поле bins) не совпадает с БИН компании в Tungo — войти из базы своей организации или выбрать другую компанию - `connector_link_org_mismatch` (409) — привязка программы в офисе: у выбранной компании БИН, которого нет среди организаций базы 1С, — выбрать компанию этой организации (ссылка ждёт дальше) - `connector_not_paired` (409) — подключение из 1С через программу в офисе (transport = connector): компания ещё не подключена через программу Tungo Connector — сначала привязать программу, потом передать пользователя REST - `invalid_api_key` (401) — ключ API неверен (опечатка или удалён) - `key_revoked` (401) — ключ API отозван (при правке ключа — 409 с тем же code: отозванный ключ не меняется) - `key_expired` (401) — срок ключа API истёк — сменить секрет (POST …/api-keys/{id}/roll: срок начнётся заново) или выпустить новый (при правке срока — 409 с тем же code: PATCH истёкший ключ не оживляет) - `key_disabled` (401) — ключ API выключен — включить может автор ключа или владелец организации (POST …/api-keys/{id}/enable) - `key_creator_lost_access` (401) — тот, кто выпустил ключ, больше не владелец/админ организации — ключ недействителен - `user_banned` (401) — вход в аккаунт закрыт администратором Tungo — только поддержка Tungo - `onboarding_unpaid` (402) — подключение компании к ИИ-бухгалтеру не оплачено (разовый платёж): владельцу/админу организации — «Оплатить» в настройках компании; остальным — сообщить им - `onboarding_pending` (402) — оплата подключения компании ещё проходит в банке — ИИ заработает после подтверждения; опрашивать состояние подключения - `no_active_plan` (402) — нет действующей подписки (не оформлена, закончилась, первая оплата не прошла или ждёт 3-D Secure). Владельцу/админу — кнопка в настройки оплаты; остальным — «обратитесь к владельцу организации». Что именно случилось — в message - `balance_exhausted` (402) — баланс доп. использования кончился. Владельцу/админу — «Пополнить баланс» или включить автопополнение; остальным — сообщить им - `workspace_cap_reached` (402) — достигнут месячный потолок доп. использования организации. resets_at — 1-е число следующего месяца, 00:00 по Алматы; раньше — если админ поднимет потолок - `report_busy` (429) — сейчас собирается много отчётов команды: повторить через время из Retry-After - `access_keys_unavailable` (503) — админ-API: ключи команды Cloudflare Access не получены — пропуск проверить нечем, повторить через минуту - `report_timeout` (503) — отчёт команды не успел собраться: сократить период или выбрать разбивку по месяцам - `company_cap_reached` (402) — достигнут месячный потолок доп. использования компании. Письмо владельцу и админам уже отправлено. resets_at — 1-е число; раньше — если админ поднимет потолок (PUT /v1/workspaces/{ws}/team/company-caps/{co}) - `member_cap_reached` (402) — достигнут личный месячный потолок доп. использования сотрудника. resets_at — 1-е число; раньше — если админ поднимет его потолок - `key_cap_reached` (402) — достигнут месячный потолок расхода ключа API (или остаток меньше оценки одного вызова). resets_at — 1-е число - `platform_balance_exhausted` (402) — баланс платформы пуст: вызов по ключу или автоматизация не сделаны. Пополнить — POST /v1/workspaces/{ws}/platform/purchases или автопополнением - `platform_cap_reached` (402) — достигнут месячный потолок трат платформы. resets_at — 1-е число следующего месяца, 00:00 по Алматы; раньше — поднять потолок в PUT /v1/workspaces/{ws}/platform/account - `platform_disabled` (402) — платформа выключена в организации: вызовы по ключам и автоматизации остановлены. Включить — PUT /v1/workspaces/{ws}/platform/account - `free_plan_chat_only` (402) — бесплатный тариф: пачки из кабинета только на платных тарифах. Ключам API и автоматизациям тариф не нужен - `free_limit_unavailable` (402) — бесплатный лимит этой учётной записи не положен; почему — error.free_blocked_reason, готовый текст с причиной и тем, что делать, — message (ru или kk по языку ответов ИИ из профиля) - `plan_company_limit` (402) — в организации уже столько компаний не в архиве, сколько разрешает тариф (max_companies в GET /v1/plans; limit и plan_code — в ответе): новую не завести и из архива не вернуть. Убрать лишнюю в архив или перейти на тариф больше - `effort_not_in_plan` (402) — поле effort в чате на тарифе без выбора усилия (max_effort тарифа null, например бесплатный): ход не начат. Прислать вопрос без effort или оформить платный тариф - `model_not_in_plan` (402) — модель сильнее потолка тарифа (plans.model_ceiling): вызов не сделан; более сильные модели — на платных тарифах - `missing_permission` (403) — не хватает права в компании (или у ключа API); какого — в поле permission - `login_method_not_allowed` (403) — организация пускает к своим данным только после входа другим способом; какими — в allowed_methods. Предложить выйти и войти так - `ip_not_allowed` (403) — ключ API не принимает запросы с этого адреса — поправить allowed_ips ключа (PATCH …/api-keys/{id}) или вызывать с разрешённого адреса - `key_write_limit` (403) — запись в 1С по ключу API — сверх его пределов (сумма на документ или в день, виды документов) или правило автоодобрения шире пределов ключа; в сообщении — что и на сколько - `human_only` (403) — это решение принимает только человек в кабинете Tungo, не ключ API: например, отклонить «не знаем, записан ли» на снимке базы без проверки 1С (confirm_unknown_write) - `autonomy_raise_requires_session` (403) — поднять уровень доверия ИИ или потолки компании можно только владельцу или админу организации из кабинета; ключом API — только понизить - `id_path_required` (400) — для автоодобрения по хуку задайте хуку id_path — путь к номеру операции в теле события: без него повтор доставки нельзя отличить от новой операции - `directbank_rule_exists` (400) — у компании уже есть сценарий с правилом для выписки DirectBank — правило выписки одно на компанию - `event_not_found` (404) — события нет в этой компании или оно удалено по сроку хранения — для пробного прогона выберите событие посвежее - `event_body_unavailable` (409) — тело события зашифровано, а ключ шифрования на сервере сменился — прогнать сценарий на нём нельзя - `scenario_steps_required` (409) — у сценария цепочка шагов, а в замене (PUT) нет ни steps, ни output: передайте steps явно, иначе замена молча убрала бы цепочку - `scenario_output_required` (409) — у сценария форма итога, а в замене (PUT) нет ни steps, ни output: передайте output явно (null — снять форму) - `automation_queue_full` (429) — у компании слишком много запусков в очереди: повторите позже (событие хука отправитель повторит сам) - `restarting` (503) — сервис перезапускается: новый ход не начат — повторите через Retry-After - `team_checkout_forbidden` (403) — оформление Team: человек больше не владелец и не админ команды этого оформления — продолжить нельзя - `company_suspended` (403) — работа с компанией приостановлена (решение платформы или оплаты); карточка видна, работать, править и архивировать нельзя (архив — 409 с тем же code) - `company_archived` (403) — компания в архиве: карточка видна, работать с ней нельзя. Вернуть — POST /v1/companies/{company_id}/unarchive (владелец компании или владелец/админ организации) - `workspace_blocked` (403) — организация заблокирована администратором платформы — только поддержка Tungo - `untrusted_origin` (403) — запрос пришёл не со страницы Tungo (защита от подделки запросов) — открыть кабинет по обычному адресу; для /admin/* — только со страниц ADMIN_ORIGINS - `cors_not_supported` (403) — вызов API из чужого браузерного кода (CORS) не поддерживается: ключ API — секрет сервера - `api_keys_disabled_by_policy` (403) — политика организации запрещает ключи API - `owner_role_reserved` (403) — владельца компании назначает, меняет и снимает только владелец или админ организации - `own_role_reserved` (403) — свою роль в компании управляющий участниками не меняет — только владелец или админ организации - `role_above_yours` (403) — у выдаваемой (или снимаемой) роли есть права, которых нет у вас; роль — в поле role, лишние права — в permissions - `not_key_creator` (403) — менять компании, права, срок и секрет ключа, снимать и поднимать его пределы записи в 1С может только тот, кто его выпустил (ужесточить пределы может любой админ) - `transfer_wider_than_target` (403) — передать ключ нельзя: у нового владельца нет нужного права (или доступа) в одной из компаний ключа - `invalid_allowed_ips` (400) — в allowed_ips ключа — не IP-адрес и не подсеть CIDR; какая запись — в сообщении - `transfer_target_not_admin` (400) — передать ключ можно только владельцу или админу этой организации - `platform_model_not_allowed` (403) — модель сильнее потолка платформы (настройка platform.billing): вызов не сделан и ничего не списано - `managed_by_sso` (403) — удаление аккаунта: аккаунт ведёт организация (SSO или SCIM) — удаляет её администратор; организации — в workspaces - `fresh_session_required` (403) — удаление аккаунта без почты (Telegram): нужен свежий вход — выйти, войти снова и подтвердить - `api_key_not_allowed` (403) — действие только из кабинета (сессия), не по ключу API: удаление аккаунта - `not_own_key` (403) — по ключу API виден только расход самого этого ключа - `webhooks_not_in_plan` (403) — вебхуков нет в тарифе организации - `admin_2fa_required` (403) — админ-API: у администратора платформы нет второго фактора или эта сессия не подтверждена кодом приложения-аутентификатора (POST /v1/auth/two-factor/enable, затем verify-totp) - `access_pass_invalid` (401) — админ-API: пропуск Cloudflare Access не принят (подпись, издатель, приложение) — обновить страницу админки и войти в Access заново - `access_pass_expired` (401) — админ-API: срок пропуска Cloudflare Access вышел — обновить страницу админки - `access_pass_no_email` (403) — админ-API: пропуск Cloudflare Access без почты человека (сервисный токен) не принимается - `access_user_not_found` (403) — админ-API: в Tungo нет пользователя с почтой из пропуска Cloudflare Access - `access_email_unverified` (403) — админ-API: почта пользователя из пропуска Cloudflare Access в Tungo не подтверждена - `access_not_admin` (403) — админ-API: у пользователя из пропуска Cloudflare Access нет роли платформы - `manual_charge_over_cap` (403) — ручное списание с карты больше настройки billing.manual_charge (за раз или за сутки с организации) — только суперадминистратор - `setting_requires_superadmin` (403) — денежную, антифрод или защитную настройку платформы (у неё guarded=true в списке настроек) меняет только суперадминистратор - `setting_reason_required` (400) — смена денежной или защитной настройки платформы — только с причиной (reason, 3–500 символов) - `staff_ban_requires_superadmin` (403) — закрыть или открыть вход сотруднику платформы может только суперадминистратор - `two_factor_required` (403) — отключить второй фактор, показать его секрет или выпустить резервные коды — только после кода из приложения-аутентификатора в этой сессии - `two_factor_email_code_required` (403) — сотрудник платформы (admin, admin_pd, superadmin) включает и отключает второй фактор (POST /v1/auth/two-factor/enable, disable) только со свежим кодом из почты в поле email_code — запросить код: POST /v1/auth/two-factor/email-code - `two_factor_email_code_invalid` (400) — включение или отключение второго фактора сотрудником: неверный код из почты (email_code) — ввести ещё раз или запросить новый - `two_factor_email_code_expired` (400) — включение или отключение второго фактора сотрудником: код из почты устарел, уже использован или попытки кончились — запросить новый (POST /v1/auth/two-factor/email-code) - `two_factor_email_code_not_needed` (400) — POST /v1/auth/two-factor/email-code: код из почты нужен только сотрудникам платформы — остальные включают второй фактор без него - `target_two_factor_required` (409) — смена ролей платформы: новую роль (admin, admin_pd, superadmin) можно выдать только человеку с уже включённым и подтверждённым вторым фактором; снять роль можно и без него - `no_companies_permissions` (400) — ключу без доступа к компаниям (no_companies) нельзя дать права, действующие в компаниях: убрать их или выбрать компании - `webhooks_require_all_companies` (403) — вебхуки — только ключу на все компании организации (при выпуске ключа — 400 с тем же code) - `audit_requires_all_companies` (403) — журнал организации — только ключу на все компании организации - `policy_blocked` (403) — одобрение: организация не доверяет ИИ записывать такой документ этим способом (поле level — уровень доверия); одобрить по одному или поднять уровень - `onec_copy_disabled` (403) — загрузка копии базы 1С отключена на платформе: вариант «Загрузить копию базы» спрятать (onec.copy_upload в GET /v1/me), предложить 1С напрямую или Tungo Connector - `onec_read_only` (403) — одобрение: у пользователя 1С из подключения нет права записи — дать права в 1С - `validation_failed` (400) — тело или параметры запроса не прошли проверку: что не так с каждым полем — в fields (путь, код, текст по-русски). Подсветить поля формы; общий message — над формой - `invalid_json` (400) — тело запроса — не JSON-объект - `personal_workspace` (400) — в личной организации нет сотрудников, приглашений и политик — нужна организация Team или Enterprise - `api_key_required` (400) — адрес только для запроса по ключу API - `email_code_unavailable` (400) — удаление аккаунта: у аккаунта нет почты для кода (вход через Telegram) — подтверждать свежим входом, без кода - `deletion_code_invalid` (400) — удаление аккаунта: неверный код из письма; сколько попыток осталось — attempts_left - `deletion_code_expired` (400) — удаление аккаунта: код истёк, попытки кончились или код не запрашивался — запросить новый (POST /v1/me/deletion/code) - `email_required` (403) — вход через Telegram, а своей почты у аккаунта ещё нет: показать обязательный экран «Укажите почту» (POST /v1/me/email, затем POST /v1/me/email/verify); до привязки открыты только профиль, привязка, удаление аккаунта и выход - `email_already_set` (409) — привязка почты: у аккаунта уже есть своя почта — экран «Укажите почту» не нужен, перечитать GET /v1/me - `email_invalid` (400) — привязка почты: служебная почта Telegram (…@telegram.invalid) — попросить свою - `disposable_email` (403) — привязка почты: временная почта не принимается — попросить постоянную - `sso_required` (403) — привязка почты: для адреса вход только через SSO организации — код не шлём, попросить другую почту - `email_code_invalid` (400) — привязка почты: неверный код из письма; сколько попыток осталось — attempts_left - `email_code_expired` (400) — привязка почты: код истёк, попытки кончились или код не запрашивался — запросить новый (POST /v1/me/email) - `email_binding_stale` (409) — привязка почты: аккаунт или сессия изменились, пока шла проверка — запросить код заново - `telegram_account_has_data` (409) — привязка почты: у почты уже есть аккаунт Tungo, а в аккаунте Telegram уже есть данные — сами не объединяем: указать другую почту или написать в поддержку - `telegram_already_linked` (409) — привязка почты: к аккаунту этой почты уже привязан другой Telegram — войти по почте и отвязать его или указать другую почту - `email_unavailable` (409) — привязка почты: эту почту привязать нельзя — указать другую или написать в поддержку - `mentions_invalid` (400) — чат: поле mentions неверного вида — список { type, id } из поиска упоминаний - `mention_type_unknown` (400) — поиск упоминаний: неизвестный вид в types - `unsafe_url` (400) — адрес вебхука недопустим (внутренняя сеть, не HTTPS) - `idempotency_key_invalid` (400) — Idempotency-Key неверного вида - `payload_too_large` (413) — тело запроса (или события хука) больше допустимого; пределы — настройки платформы - `idempotency_key_reused` (422) — этот Idempotency-Key уже был у другого запроса — для нового действия нужен новый ключ - `has_blockers` (422) — одобрение: у предложения есть блокеры — сначала исправить их - `batch_too_large` (413) — одобрение пачкой: предложений больше предела (поля limit, requested) — разбить на части - `unknown_kind` (400) — настройки писем: такого вида уведомлений нет — взять список из GET /v1/me/notifications - `kind_locked` (400) — настройки писем: этот вид (безопасность и аккаунт) выключить нельзя — переключатель неактивен (locked) - `onec_rejected` (400) — одобрение: 1С отклонила документ (причина — в message): исправить в 1С или построить предложение заново - `proposal_not_found` (404) — предложения с таким id нет в компании - `export_link_expired` (404) — ссылка на архив выгрузки истекла или неверна — получить новую: GET /v1/me/export - `mention_not_found` (404) — чат: упомянутого объекта нет или к нему нет доступа (номер в списке mentions — поле index); ход не начат - `batch_not_found` (404) — одобрение пачкой: задания с таким batch_id нет (или в нём нет предложений) - `idempotency_in_progress` (409) — первый запрос с этим Idempotency-Key ещё выполняется — подождать и повторить, придёт тот же ответ - `idempotency_response_not_kept` (409) — запрос с этим Idempotency-Key уже выполнен, но копия ответа не хранится (в нём персональные данные): результат — по ссылке в ответе (dialog_url) или в списке; статус первого ответа — original_status - `idempotency_response_too_large` (409) — запрос с этим Idempotency-Key уже выполнен, но ответ слишком большой, чтобы повторить его целиком: результат — в списке; статус первого ответа — original_status - `sole_owner` (409) — удаление аккаунта: вы единственный владелец организации с другими участниками (workspaces) — передать владение (POST /v1/workspaces/{ws}/ownership) или удалить организацию - `account_deletion_in_progress` (409) — удаление аккаунта: фон уже стирает аккаунт — новый код и подтверждение не принимаются, отменить нельзя - `wrong_status` (409) — предложение уже не в том состоянии (поле status — нынешнее): обновить его - `wrong_state` (409) — запуск автоматизации уже не в том состоянии (поле state — нынешнее) - `dialog_closed` (409) — разговор закрыт (поле reason — почему): начать новый - `message_not_found` (404) — оценка ответа: ответа с таким номером в разговоре нет (или ход ещё идёт) - `dialog_not_ratable` (409) — оценка разговора: в разговоре ещё нет ни одного ответа - `rating_comment_too_long` (400) — оценка: комментарий длиннее предела (comment_chars из GET …/chat/rating-options) - `rating_reason_unknown` (400) — оценка ответа: такой причины нет в списке GET …/chat/rating-options - `rating_reason_not_allowed` (400) — оценка ответа: причина указывается только у оценки down - `memory_changed` (409) — запись памяти ИИ с тех пор изменили — отменить правку ИИ нельзя; поправить запись в настройках памяти - `memory_full` (409) — вернуть забытую запись памяти нельзя: память заполнена — сначала удалить ненужное - `ratings_unavailable` (503) — оценки сейчас не принимаются — повторить позже - `langfuse_off` (409) — админка: Langfuse на сервере не подключён - `langfuse_trace_unknown` (409) — админка: ход записан до появления связи с трассой Langfuse - `langfuse_content_off` (409) — админка: текст ходов в Langfuse выключен настройкой — в набор отправить нельзя - `langfuse_no_consent` (409) — админка: для разговора нет согласия на использование текста — в набор отправить нельзя - `langfuse_turn_empty` (409) — админка: у хода нет текста вопроса — в набор отправлять нечего - `langfuse_queue_unset` (409) — админка: очередь разметки Langfuse не задана ни настройкой, ни в запросе - `langfuse_rejected` (409) — админка: Langfuse отклонил запрос - `langfuse_not_found` (404) — админка: Langfuse не нашёл очередь или трассу - `langfuse_unavailable` (503) — админка: Langfuse не отвечает — повторить позже - `approval_not_needed` (409) — отправить на одобрение: у вас самого есть право одобрять — записать документ обычным одобрением - `dialog_id_taken` (409) — разговор с таким dialog_id уже есть — для нового прислать другой id или не присылать его - `turn_in_progress` (409) — в разговоре уже идёт ход ИИ (поле turn — его номер): дождаться его конца или остановить - `turn_superseded` (409) — читаемый ход уже закончился и идёт следующий (поле turn) — читать его с начала - `dialog_changed` (409) — разговор только что изменился в другом окне или на другом сервере Tungo — открыть его заново (GET …/chat/{id}) и повторить - `already_answered` (409) — на этот вопрос ИИ уже ответили (поле turn — ход с ответом) - `question_stale` (409) — вопрос ИИ устарел (в разговоре уже другой вопрос или его нет) — обновить разговор - `dismissed` (409) — вопрос ИИ закрыт без ответа — написать обычное сообщение - `job_running` (409) — задание (пачка) ещё идёт — дождаться отчёта; поле batch_id - `payload_changed` (409) — одобрение: документ изменился после превью — построить предложение заново - `onec_conflict` (409) — одобрение: 1С отказала из-за конфликта (объект занят или изменён) — повторить позже - `onec_not_found` (409) — одобрение: в 1С нет объекта, на который ссылается документ — построить предложение заново - `plan_limit_reached` (429) — лимит окна тарифа исчерпан; resets_at и Retry-After — когда обновится. Показать время; если в message предложено доп. использование — дать кнопку включить - `rate_limited` (429) — слишком часто (по ключу API, уведомления кассы с одного адреса, формы банка от одного человека, попытки кода второго фактора) — подождать Retry-After секунд - `concurrent_turns_limit` (429) — по ключу API уже идёт предельное число ходов ИИ одновременно — дождаться окончания - `parallel_turns_limit` (429) — у человека уже идёт предельное число ходов ИИ одновременно (тариф без доп. использования, настройка usage.parallel_turns) — дождаться ответа на предыдущие вопросы; Retry-After - `api_keys_limit` (429) — в организации предельное число действующих ключей API — отозвать ненужные - `webhook_endpoints_limit` (429) — предельное число адресов вебхуков — удалить ненужные - `enterprise_request_rate` (429) — слишком много заявок на Enterprise от одного человека за окно (настройка enterprise.request_rate): повторить после Retry-After - `unknown_workspace` (400) — workspace_id в заявке на Enterprise или в обращении в поддержку — не организация этого человека - `plan_not_for_team` (400) — оформление Team: тариф бесплатный или не для команды — выбрать тариф вида team из GET /v1/plans - `plan_not_found` (404) — оформление Team: тарифа с таким кодом нет или он выключен - `team_checkout_busy` (409) — оформление Team с этим ключом уже выполняется другим запросом — повторить через несколько секунд - `team_checkout_closed` (409) — оформление Team закрыто (status в ответе: cancelled или expired) — начать новое с новым idempotency_key - `team_checkout_completed` (409) — оформление Team уже оплачено — отменять нечего; подписку отменяют в оплате команды - `too_many_team_checkouts` (409) — у человека уже max_open незавершённых оформлений Team — завершить или отменить их (DELETE /v1/team-checkouts/{id}) - `export_too_soon` (429) — выгрузку данных можно запрашивать не чаще раза в сутки: next_request_at и Retry-After — когда можно снова - `hook_rate_limited` (429) — приём событий хука: больше automations.hook_events_per_minute в минуту — повторить через Retry-After секунд - `lago_unavailable` (503) — админка, тариф целиком: Lago не настроен или не ответил (сеть, 5xx) — правила не изменены, повторить позже - `model_price_missing` (503) — у модели ИИ не задана цена — сбой настройки платформы, ничего не списано; повторить позже - `data_export_disabled` (503) — выгрузка данных на сервере не настроена (поддержка Tungo) - `webhooks_disabled` (503) — вебхуки на сервере не настроены - `webhooks_unavailable` (503) — служба доставки вебхуков временно недоступна - `model_not_configured` (503) — сервис модели ИИ не настроен на сервере — повторить позже (Retry-After) - `write_unknown` (503) — одобрение: исход записи в 1С неизвестен (связь оборвалась) — проверить документ в 1С по метке (поле marker); повтор безопасен (retry_safe); слишком ранний повтор в 1С не пишет — подождать retry_after секунд (Retry-After) - `onec_unavailable` (503) — 1С сейчас не отвечает — повторить позже (Retry-After) - `onec_check_busy` (503) — проверка связи 1С: сервер сейчас проверяет слишком много подключений — повторить через Retry-After секунд - `onec_failed` (503) — записать документ в 1С не удалось по неизвестной причине — повторить позже - `journal_unavailable` (503) — журнал решений недоступен — пачка не одобрена, повторить позже - `hook_secret_unavailable` (503) — приём событий хука: секрет подписи сейчас не открыть — отправителю повторить доставку позже - `secret_box_missing` (503) — на сервере не задан ключ шифрования настроек — секрет подписи хука сохранить нельзя (поддержка Tungo) - `not_personal` (409) — перевод в команду: организация уже не личная — обновить экран - `subscription_blocks_conversion` (409) — перевод в команду: действует подписка для одного человека — сначала отменить её и дождаться конца периода - `subscription_kind_mismatch` (409) — админка: действующая подписка оформлена на другой вид организации — вид не меняется, пока она идёт - `enterprise_features_active` (409) — админка: у организации подключены SSO или SCIM — сначала отключить, потом снимать Enterprise - `too_many_members_for_personal` (409) — админка: в личной организации один человек — сначала убрать остальных участников - `open_debt` (409) — есть неоплаченный счёт — сначала оплатить; в плане удаления этот же код лежит в blockers; так же отказывает удаление аккаунта (workspaces — у каких пространств долг) - `active_work` (409) — в организации идут ходы ИИ или автоматизации — дождаться окончания и повторить; в плане удаления этот же код лежит в blockers - `deletion_guard_refused` (409) — внутреннее: условие вызывающего на удаление организации не выполнено (уборка черновика Team) — человеку не уходит - `deletion_already_scheduled` (409) — удаление организации уже запланировано — показать дату из плана - `deletion_purging` (409) — очистка организации уже идёт — отменить её нельзя - `workspace_deleting` (409) — админка: организация удаляется по просьбе владельца — блок удаления снимает только отмена удаления - `invitation_not_pending` (409) — приглашение принято, отозвано или истекло — письмо не отправить, пригласить заново - `last_owner` (409) — это последний владелец организации — сначала передать владение другому участнику - `seats_by_contract` (409) — места Enterprise — по договору, карта и докупка не работают: обратиться к менеджеру - `no_subscription` (409) — нет действующей подписки — сначала оформить тариф - `not_per_seat` (409) — этот тариф не считает оплату за место — докупка не нужна, предел мест показан в ответе GET …/seats - `subscription_ended` (409) — возобновление: период отменённой подписки уже закончился — ничего не списано, оформить тариф заново (повторный PUT — обычное оформление) - `subscription_busy` (409) — подписка уже меняется другим запросом (отмена или возобновление) — обновить экран через несколько секунд - `subscription_payment_in_progress` (409) — смена тарифа: по счёту за нынешний тариф идёт оплата — тариф прежний, дождаться её итога и повторить - `subscription_unpaid_debt` (409) — оформление или смена тарифа: есть неоплаченный счёт (и после отмены) — показать message и сумму amount_tiyn; кнопка «Оплатить» — POST …/billing/payments/{payment_id}/pay-form, payment_id null — к списку счетов - `refund_request_unavailable` (409) — заявку на возврат подать нельзя — причина в поле reason: not_consumer (не частное лицо), no_paid_period (нет оплаченного периода), open_request (заявка уже подана), nothing_to_refund (вернуть нечего) - `refund_request_decided` (409) — админка: заявка на возврат уже одобрена или отклонена - `refund_request_nothing` (409) — админка: по пересчёту вернуть нечего (меньше 10 ₸) — отклонить заявку с причиной - `refund_request_stale` (409) — админка: после подачи заявки сменился период или тариф — отклонить заявку с причиной; клиент может подать новую за нынешний период - `refund_request_payment_changed` (409) — админка: после подачи заявки по платежу уже вернули деньги мимо неё — проверить возвраты платежа и отклонить заявку с причиной - `refund_request_refund_pending` (409) — админка: возврат по заявке ещё в обработке у кассы — повторить одобрение после его итога (сверки) - `subscription_refund_sync` (409) — смена тарифа: по прошлому счёту за тариф был возврат, и биллинг его ещё не учёл — тариф прежний, ничего не списано; повторить позже - `subscription_ending` (409) — подписка отменена и закончится в конце периода — места не докупаются и не сокращаются - `seats_unpaid_debt` (409) — подписка просрочена — сначала оплатить счёт; участники остаются, новых приглашать нельзя - `idempotency_conflict` (409) — докупка: этот ключ уже использован с другим числом мест — для новой покупки нужен новый ключ - `seat_quote_changed` (409) — докупка: сумма изменилась (другой день или новая цена), деньги не списаны — показать новую сумму из поля и спросить снова - `no_paid_seats` (409) — оплаченных мест ещё нет — сокращать нечего - `first_seats_below_occupied` (409) — первая покупка мест включает тариф всей организации — мест не меньше required_seats (минимум тарифа или участники с приглашениями, occupied); деньги не списаны - `seats_below_occupied` (409) — занято больше мест, чем просите оставить — сначала убрать участников или отозвать приглашения - `not_enterprise` (409) — админка: места по договору есть только у Enterprise — сначала поставить вид - `per_seat_plan_change` (409) — смена тарифа с оплатой за место не делается сразу: Lago взял бы плату за места дважды. Отменить и оформить новый с конца периода - `confirm_name_mismatch` (400) — удаление организации: название введено неверно — ввести точно как в плане удаления - `below_min_seats` (400) — на этом тарифе мест меньше нельзя: минимум — min_seats тарифа - `seats_over_max` (400) — мест больше предела одной организации (team.limits.max_seats) — обратиться в поддержку - `seats_above_paid` (400) — PUT …/seats только сокращает; новые места — через POST …/seats с оплатой - `onec_check_running` (429) — проверка связи 1С уже идёт у этой компании, у вас (другая компания) или у двух других компаний организации — дождаться её итога и повторить (Retry-After) - `invitation_not_found` (404) — приглашение до входа: такого приглашения нет — проверить ссылку из письма - `invitation_expired` (410) — приглашение до входа: срок истёк — попросить новое - `invitation_revoked` (410) — приглашение до входа: отозвано — попросить новое - `invitation_accepted` (410) — приглашение до входа: уже принято — войти, организация уже в списке - `invitation_rejected` (410) — приглашение до входа: отклонено — попросить новое - `invitation_resend_too_soon` (429) — письмо с приглашением уже отправлено только что — подождать Retry-After секунд - `seats_exhausted` (429) — свободные места закончились: докупите места или освободите их, отозвав приглашение - `seat_price_unknown` (503) — цена места сейчас неизвестна (тариф не прочитан или настроен неверно), деньги не списаны — повторить позже - `otp_mail_failed` (503) — письмо с кодом входа не отправлено: попробуйте позже - `seat_period_unknown` (503) — не удалось сверить период подписки с биллингом: деньги не списаны, попробуйте позже - `no_cash_desk` (500) — нет действующей кассы для этой валюты (сейчас касса — ePay, тенге и доллары): деньги не списаны, оплата недоступна; currency — валюта - `card_rebind_required` (400) — карта привязана к отключённой кассе: списать с неё нельзя — привязать карту заново (POST …/billing/card-sessions) Незнакомый code — вести себя по type."""
+    """Уточнение вида: по нему выбирается действие интерфейса (кнопка «Пополнить», «Войти иначе»…). Нет поля — хватает type и message. Известные коды: - `cannot_ban_self` (409) — админка: закрыть вход самому себе нельзя - `user_not_banned` (409) — админка: вход этому пользователю не закрыт — открывать нечего - `sso_domain_taken` (409) — домен SSO уже подтверждён другой организацией - `sso_last_verified_domain` (409) — включён обязательный вход, а это последний подтверждённый домен — сначала выключить обязательный вход - `sso_login_required` (400) — включить обязательный вход можно только из сессии, открытой через SSO этой организации - `login_methods_lockout` (400) — новый список способов входа — или удаление и смена доменов подключения SSO при sso в этом списке — запер бы автора правки или админов организации: показать message и предложить добавить в список способ, которым они входят - `domain_verification_failed` (400) — запись DNS для домена не найдена или не совпала — проверить и повторить - `oidc_openid_scope_required` (400) — в scopes сервера входа OIDC нет openid — добавить её: без неё вход через SSO не пройдёт - `enterprise_only` (403) — возможность есть только на тарифе Enterprise - `team_only` (403) — раздел команды (сотрудники, приглашения, роли, политики, журнал и расходы организации, покупка мест, подключения SSO) запрошен для личной организации — он есть только у Team и Enterprise; кабинету показать «это есть в тарифе Team» - `team_checkout_required` (403) — команду нельзя завести без оплаты: она появляется вместе с тарифом Team — POST /v1/team-checkouts; кабинету вести на «Оформить Team» - `team_plan_required` (403) — подключить SSO и включить обязательный вход может только организация с оплаченным тарифом Team (или Enterprise): команда заведена, но тариф не оформлен или не оплачен — показать оформление тарифа - `groups_limit` (429) — достигнут предел групп в организации - `custom_roles_limit` (429) — достигнут предел своих ролей в организации - `group_managed_by_directory` (409) — группа из каталога: название и состав меняются только там - `group_member_not_in_workspace` (400) — в группу можно добавить только сотрудника этой организации - `role_above_ceiling` (400) — роль даёт права выше потолка организации - `unknown_model` (400) — такой модели нет — список в available_models - `invalid_report` (400) — панель 1С: отчёт расширения о себе не по формату — расширение старое или повреждено, обновить его - `price_required` (400) — админка, тариф целиком: у платного тарифа нужна цена (price) - `adjustment_amount_zero` (400) — админка, корректировка баланса: сумма — ноль; указать, сколько начислить (плюс) или списать (минус) - `adjustment_over_limit` (400) — админка, корректировка баланса: сумма за раз больше потолка из настройки billing.adjustment — разбить на части или поднять потолок (суперадминистратор) - `adjustment_note_required` (400) — админка, корректировка баланса: пояснение из одних пробелов — написать причину от 3 знаков - `adjustment_key_invalid` (400) — админка, корректировка баланса: ключ повтора не 8–200 знаков (по HTTP обычно раньше ловится как validation_failed) - `adjustment_key_reused` (409) — админка, корректировка баланса: этот idempotency_key уже применён с другой суммой или пояснением — для новой корректировки нужен новый ключ (новое нажатие «Применить») - `adjustment_exceeds_balance` (409) — админка, корректировка баланса: списание больше свободного остатка (баланс минус брони идущих вызовов; сколько можно — в message) — уменьшить сумму - `site_post_not_found` (404) — админка, сайт: статьи нет - `staff_access_requires_superadmin` (403) — админка, доступы: выдавать и забирать служебные службы может только суперадминистратор - `staff_access_not_configured` (503) — админка, доступы: нет ключа Cloudflare (CLOUDFLARE_STAFF_ACCESS_TOKEN) или групп служб — экран только показывает - `staff_access_nothing_to_mail` (409) — админка, доступы: у человека нет открытых служб — письмо слать не о чем - `unknown_service` (400) — админка, доступы: такой службы нет в списке services сводки - `unknown_role` (400) — админка, доступы: у службы нет такой роли — роли службы в roles сводки - `role_for_unknown_service` (400) — админка, доступы: роль задана для службы, которую в этом запросе не выдают - `staff_access_not_granted` (409) — админка, доступы: служба этому человеку не выдана — роль менять не у чего, сначала выдать - `staff_admin_not_configured` (503) — админка, доступы: вход в админку экран не ведёт — нет группы Access админки (STAFF_ADMIN_GROUP, выкат tungo-infra) - `staff_admin_not_granted` (409) — админка, доступы: админка человеку не выдана — приглашать не к чему - `staff_admin_nothing_to_invite` (409) — админка, доступы: учётка и второй фактор уже есть — приглашать не нужно, подтвердите выдачу - `staff_access_remove_incomplete` (409) — админка, доступы: удалить сотрудника нельзя — не всё забрано (сбой группы Access, учётки или сессий); «Повторить» и снова удалить - `staff_access_superadmin` (409) — админка, доступы: это суперадминистратор — он входит во все службы по выкату (SUPERADMIN_EMAILS), экран его доступ не меняет - `staff_role_change_unsupported` (409) — админка, доступы: служба роль на месте не меняет (role_change = false) — забрать и выдать с новой ролью - `site_slug_taken` (409) — админка, сайт: статья с таким адресом уже есть - `site_slug_locked` (409) — админка, сайт: адрес опубликованной статьи не меняется - `site_post_incomplete` (409) — админка, сайт: статью нельзя опубликовать — нет одной из языковых версий, поля, в тексте HTML, чужая картинка или ссылка на неопубликованную статью/документ; фразы — в error.blockers - `site_post_not_published` (409) — админка, сайт: статья не опубликована — снимать нечего - `site_post_linked` (409) — админка, сайт: статью не снять — на неё ссылаются другие опубликованные статьи или документы; их перечень — в error.blockers - `site_post_published` (409) — админка, сайт: опубликованную статью не удалить — сначала снять с сайта - `site_legal_not_found` (404) — админка, сайт: такого документа в наборе нет - `site_legal_revision_not_found` (404) — админка, сайт: у документа нет редакции с таким номером - `site_draft_changed` (409) — админка, сайт: черновик статьи или документа изменился после чтения (draft_version не совпал) — перечитать, проверить и публиковать заново - `site_legal_no_draft` (409) — админка, сайт: у документа нет черновика — публиковать нечего - `site_legal_unchanged` (409) — админка, сайт: черновик совпадает с действующей редакцией - `site_legal_unsafe` (409) — админка, сайт: в тексте документа HTML, опасная ссылка, чужая картинка или ссылка на неопубликованную статью/документ; фразы — в error.blockers - `site_legal_publish_requires_superadmin` (403) — админка, сайт: редакцию документа публикует только суперадминистратор; черновик готовит любой администратор - `site_legal_date_before_previous` (400) — админка, сайт: дата редакции раньше прежней редакции - `site_trackers_requires_superadmin` (403) — админка, сайт: счётчики сайта меняет только суперадминистратор - `site_trackers_changed` (409) — админка, сайт: счётчики изменили после чтения (version не совпал) — перечитать и проверить заново - `site_rebuild_not_configured` (409) — админка, сайт: запуск пересборки сайта не настроен на сервере - `lago_rejected` (409) — админка, тариф целиком: Lago отказал по существу (4xx, текст Lago в message) — правила не изменены, повтор без правки не поможет - `price_mismatch` (400) — админка, тариф целиком: цена не сходится с правилами (место без per_seat, per_seat без цены места, цена у бесплатного) - `pricing_requires_superadmin` (403) — цены моделей (POST /admin/v1/usage-rates) и тарифы (PUT /admin/v1/plans/{code}, …/full) меняет только суперадминистратор - `price_change_too_large` (400) — цена модели или тарифа меняется за раз сильнее, чем разрешает настройка billing.price_change (max_factor) — проверить нули или сначала поднять предел - `price_zero_needs_flag` (400) — цена модели или плата за период тарифа обнуляется — только с явным allow_zero: true - `help_article_not_found` (404) — центр помощи: статьи нет или она скрыта - `help_section_not_found` (404) — админка, центр помощи: раздела нет - `help_slug_taken` (409) — админка, центр помощи: раздел или статья с таким адресом уже есть - `help_article_incomplete` (409) — админка, центр помощи: статью нельзя опубликовать — нет одной из языковых версий или в тексте HTML; фразы — в error.blockers - `help_section_not_empty` (409) — админка, центр помощи: в разделе есть статьи — удалить нельзя - `help_order_invalid` (400) — админка, центр помощи: в списке порядка повтор, несуществующий id или статьи разных разделов - `support_ticket_not_found` (404) — поддержка: обращения нет или оно чужое - `support_ticket_closed` (409) — поддержка: обращение закрыто — человеку создать новое; сотруднику сначала вернуть в работу - `support_ticket_not_resolved` (409) — поддержка: оценить можно только решённое или закрытое обращение - `support_ticket_rate` (429) — поддержка: слишком много новых обращений подряд (настройка support.limits) — Retry-After - `support_message_rate` (429) — поддержка: слишком много сообщений подряд (настройка support.limits) — Retry-After - `support_too_many_open` (409) — поддержка: у человека уже много незакрытых обращений — дописать в существующее - `support_empty_message` (400) — поддержка: нет ни текста, ни файла (или пустая тема) - `support_unknown_category` (400) — поддержка: такой категории нет в настройке support.categories - `support_unknown_company` (400) — поддержка: компания не найдена или у человека нет к ней доступа - `support_unknown_dialog` (400) — поддержка: такого своего разговора в этой компании нет (или dialog_id без company_id) - `dialog_no_consent` (403) — админка, разговор: нет согласия клиента — обращения в поддержку с разрешением посмотреть разговор (согласие на обучение не в счёт): открыть может только сотрудник с правом admin_pd и с причиной reason, открытие пишется в журнал (admin.dialog.viewed_without_consent); в Langfuse такой ход не отправляется - `support_no_dialog` (409) — поддержка: к обращению не приложен разговор — согласие давать не на что - `support_attachment_rejected` (400) — поддержка: файл не принят — тип, размер или число файлов (текст причины в message) - `support_attachments_off` (503) — поддержка: на сервере нет ключа шифрования — файлы к обращениям не принимаются - `support_attachment_not_found` (404) — поддержка: файла нет или он больше недоступен - `support_assignee_not_admin` (400) — админка, поддержка: исполнителем можно назначить только администратора платформы - `money_requires_superadmin` (403) — админка: возврат, корректировка баланса, смена вида организации и мест по договору, выдача тарифа, скидка платформы, возврат отменённой подписки — только суперадминистратор - `admin_daily_limit` (403) — админка: суточный предел действий с деньгами на одного суперадминистратора (настройки admin.money_actions, admin.plan_grants, platform.discount) — продолжить завтра или поднять предел - `plan_grant_bad_dates` (400) — админка, выдача тарифа: срок должен кончаться в будущем, позже начала и (при продлении) позже прежней даты - `plan_grant_too_long` (400) — админка, выдача тарифа: срок за одну выдачу или продление длиннее настройки admin.plan_grants.max_days - `plan_grant_plan_unsuitable` (400) — админка, выдача тарифа: выдать можно только платный тариф; Enterprise — по договору - `plan_grant_seats_unexpected` (400) — админка, выдача тарифа: места задаются только у тарифа с оплатой за место - `plan_grant_seats_required` (400) — админка, выдача тарифа: у тарифа с оплатой за место нужно число мест - `plan_grant_seats_too_few` (400) — админка, выдача тарифа: мест меньше минимума тарифа или числа участников - `plan_grant_kind_mismatch` (409) — админка, выдача тарифа: тариф для другого вида организации - `plan_grant_exists` (409) — админка, выдача тарифа: у организации уже есть неоконченная выдача — продлить её или сначала отозвать - `plan_grant_not_better` (409) — админка, выдача тарифа: выдача сейчас не подействовала бы — у организации оплачена подписка на тариф другого вида или не хуже выдаваемого (недельный лимит и места не меньше) - `search_criteria_required` (400) — админка, поиск платежа: нет ни одного непустого признака (order_id, payment_id, invoice, date, email) — все платежи поиск не отдаёт - `plan_grant_ended` (409) — админка, выдача тарифа: выдача уже закончилась или отозвана - `plan_grant_not_found` (404) — админка, выдача тарифа: выдачи с таким id нет - `workspace_not_found` (404) — админка, выдача тарифа и скидка платформы: организации с таким id нет - `platform_discount_bad_percent` (400) — админка, скидка платформы: процент — целое число от 1 - `platform_discount_over_cap` (400) — админка, скидка платформы: процент выше потолка настройки platform.discount.max_percent - `platform_discount_bad_dates` (400) — админка, скидка платформы: срок должен кончаться в будущем - `platform_discount_exists` (409) — админка, скидка платформы: у организации уже есть действующая скидка — сначала отозвать - `platform_discount_ended` (409) — админка, скидка платформы: скидка уже закончилась или отозвана - `platform_discount_not_found` (404) — админка, скидка платформы: скидки с таким id нет - `refund_request_open` (409) — оформление, смена тарифа или возврат отменённой подписки: заявка на возврат на рассмотрении, продление выключено ею — дождаться решения (отказ вернёт продление сам); в админке — сначала рассмотреть заявку - `onboarding_payment_pending` (409) — админка, подключить компанию без оплаты: оплата подключения ещё идёт в банке — дождаться её итога (прошла — подключать без оплаты не нужно, не прошла — повторить) - `subscription_not_cancelled` (409) — админка, подписка: отменённой подписки нет — возвращать нечего - `documents_unavailable` (503) — документы Tungo (акты, счета, подтверждения): служба документов не подключена или не отвечает — повторить позже - `document_not_found` (404) — документа Tungo с таким id нет в этой организации - `document_not_disputable` (409) — возражение не принимается: документ не акт, уже принят, заменён или аннулирован - `dispute_deadline_passed` (409) — срок возражений по акту (dispute_deadline) прошёл — акт считается принятым - `signature_not_found` (404) — у документа нет подписи этой стороны - `card_not_found` (404) — карточки подписи у документа пока нет — он ещё не подписан - `verify_not_found` (404) — открытая проверка подписи: документа с таким кодом нет (код из QR или ссылки /v/{code}) - `verify_unavailable` (503) — открытая проверка подписи: служба документов, партнёров или карточек не подключена или не отвечает — повторить позже - `release_not_found` (404) — скачать Tungo (/v1/public/downloads/…): этот выпуск (расширение 1С или Tungo Connector для этой системы) ещё не выпущен или не прочитан из tungo-releases - `payment_not_found` (404) — служебный адрес службы документов: платежа с таким id нет - `upload_part_invalid` (400) — загрузка архива к чату: имя не .zip/.rar/.7z, неверный размер, номер или длина части — part_bytes и parts из POST …/chat/uploads - `file_too_large` (400) — загрузка архива к чату: архив больше archive_bytes (GET /v1/me, attachments) - `upload_not_found` (404) — загрузка архива к чату: нет такой — устарела, отменена, уже отправлена или начата другим человеком (ключом) - `too_many_uploads` (429) — загрузка архива к чату: уже идут три незаконченные загрузки — дождаться их или отменить (DELETE …/chat/uploads/{id}) - `uploads_unavailable` (503) — загрузка архива к чату по частям на этом сервере не настроена (нет ключа шифрования) — архив до attachment_bytes можно прислать base64 - `speech_disabled` (404) — голосовой ввод на сервере не включён — кнопку микрофона спрятать (speech.enabled в GET /v1/me) - `speech_bad_lang` (400) — голосовой ввод: lang не указан или не из speech.languages - `speech_too_large` (413) — голосовой ввод: запись больше предела (настройка speech.limits) — записать короче - `speech_bad_format` (415) — голосовой ввод: тип записи не принимается, запись пуста или повреждена — записать заново - `speech_too_long` (422) — голосовой ввод: запись длиннее speech.max_seconds — записать короче или по частям - `speech_rate_limited` (429) — голосовой ввод: слишком часто или исчерпан суточный потолок человека — показать error.message, повторить после Retry-After - `speech_unavailable` (503) — голосовой ввод: распознавание сейчас недоступно — повторить позже или набрать вопрос с клавиатуры - `no_session` (401) — служебная проверка сессии (служба партнёрки): cookie сессии нет, она закончилась или вход закрыт - `model_not_allowed` (403) — политика организации не разрешает эту модель, а подходящей разрешённой нет — админу дополнить список - `retention_too_short` (400) — срок хранения меньше наименьшего - `audit_export_range` (400) — неверный период выгрузки журнала: конец раньше начала или период слишком длинный - `compliance_disabled` (403) — адрес для проверок выключен — владелец включает его в настройке - `missing_credentials` (401) — нет ни cookie сессии, ни ключа API — войти или передать x-api-key - `link_revoked` (401) — вход в Tungo из 1С больше не действует (вышли, отключили на сайте, вошли в той же базе заново, компания или человек заблокированы) — 1С просит войти заново - `login_denied` (403) — вход из 1С отклонён на сайте Tungo — 1С показывает отказ - `code_expired` (410) — код входа из 1С устарел или уже использован — 1С просит новый код - `code_gone` (410) — код входа из 1С уже подтверждён, отклонён или устарел — на сайте подтверждать нечего - `link_expired` (401) — вход в Tungo из 1С устарел: вышел срок ключа от входа или 1С долго не обращалась (onec.connector.link_key_ttl_days, link_idle_days) — 1С просит войти заново - `extension_outdated` (400) — расширение Tungo для 1С старой версии: не шлёт protocol ≥ 2 и не умеет показывать число сверки — обновить расширение - `match_required` (400) — подтверждение входа из 1С без числа сверки: человек нажимает на странице число, показанное в окне его 1С - `onec_link_wrong_match` (409) — на странице нажато не то число сверки: код входа из 1С погашен, человек час не может подтверждать входы из 1С - `onec_link_locked` (429) — недавно было нажато не то число сверки — подтверждать входы из 1С можно снова через час (Retry-After) - `onec_other_base` (409) — вход из 1С: к компании уже подключена другая 1С (OData, коннектор или выгрузка), а БИН организаций этой базы не совпадает с БИН компании — выбрать компанию этой базы или создать её по БИН; у прежнего входа — войти заново - `onec_user_taken` (409) — этим аккаунтом Tungo в базе 1С уже входит другой пользователь 1С (поле onec_user) — каждый сотрудник входит своим аккаунтом; сменить пользователя — подтверждение с replace: true - `onec_links_limit` (409) — у аккаунта слишком много действующих входов из 1С (onec.connector.max_links_per_user) — отключить ненужные в «Подключённых 1С» - `no_seats` (403) — вход из 1С: человека нет среди сотрудников компании или организации (место в команде) — владелец добавляет его, потом вход заново - `odata_request_not_found` (404) — мост 1С: нет такого запроса у этого входа из 1С — ответ выбросить - `odata_request_answered` (409) — мост 1С: на запрос уже ответили — повтор ответа выбросить - `panel_not_found` (404) — страницы панели 1С под эту версию сообщений на сервере нет — расширение показывает свою вшитую - `odata_request_gone` (410) — мост 1С: Tungo больше не ждёт ответа (срок вышел или ход отменён) — ответ выбросить, запрос не повторять - `odata_check_failed` (422) — подключение OData из 1С сохранено, но проверка не прошла (422): адрес, пользователь, права или состав OData — показать error.message, в нём что исправить - `org_mismatch` (403) — база 1С — другой организации: БИН базы (поле bins) не совпадает с БИН компании в Tungo — войти из базы своей организации или выбрать другую компанию - `connector_link_org_mismatch` (409) — привязка программы в офисе: у выбранной компании БИН, которого нет среди организаций базы 1С, — выбрать компанию этой организации (ссылка ждёт дальше) - `connector_not_paired` (409) — подключение из 1С через программу в офисе (transport = connector): компания ещё не подключена через программу Tungo Connector — сначала привязать программу, потом передать пользователя REST - `invalid_api_key` (401) — ключ API неверен (опечатка или удалён) - `key_revoked` (401) — ключ API отозван (при правке ключа — 409 с тем же code: отозванный ключ не меняется) - `key_expired` (401) — срок ключа API истёк — сменить секрет (POST …/api-keys/{id}/roll: срок начнётся заново) или выпустить новый (при правке срока — 409 с тем же code: PATCH истёкший ключ не оживляет) - `key_disabled` (401) — ключ API выключен — включить может автор ключа или владелец организации (POST …/api-keys/{id}/enable) - `key_creator_lost_access` (401) — тот, кто выпустил ключ, больше не владелец/админ организации — ключ недействителен - `user_banned` (401) — вход в аккаунт закрыт администратором Tungo — только поддержка Tungo - `onboarding_unpaid` (402) — подключение компании к ИИ-бухгалтеру не оплачено (разовый платёж): владельцу/админу организации — «Оплатить» в настройках компании; остальным — сообщить им - `onboarding_pending` (402) — оплата подключения компании ещё проходит в банке — ИИ заработает после подтверждения; опрашивать состояние подключения - `no_active_plan` (402) — нет действующей подписки (не оформлена, закончилась, первая оплата не прошла или ждёт 3-D Secure). Владельцу/админу — кнопка в настройки оплаты; остальным — «обратитесь к владельцу организации». Что именно случилось — в message - `balance_exhausted` (402) — баланс доп. использования кончился. Владельцу/админу — «Пополнить баланс» или включить автопополнение; остальным — сообщить им - `workspace_cap_reached` (402) — достигнут месячный потолок доп. использования организации. resets_at — 1-е число следующего месяца, 00:00 по Алматы; раньше — если админ поднимет потолок - `report_busy` (429) — сейчас собирается много отчётов команды: повторить через время из Retry-After - `access_keys_unavailable` (503) — админ-API: ключи команды Cloudflare Access не получены — пропуск проверить нечем, повторить через минуту - `report_timeout` (503) — отчёт команды не успел собраться: сократить период или выбрать разбивку по месяцам - `company_cap_reached` (402) — достигнут месячный потолок доп. использования компании. Письмо владельцу и админам уже отправлено. resets_at — 1-е число; раньше — если админ поднимет потолок (PUT /v1/workspaces/{ws}/team/company-caps/{co}) - `member_cap_reached` (402) — достигнут личный месячный потолок доп. использования сотрудника. resets_at — 1-е число; раньше — если админ поднимет его потолок - `key_cap_reached` (402) — достигнут месячный потолок расхода ключа API (или остаток меньше оценки одного вызова). resets_at — 1-е число - `platform_balance_exhausted` (402) — баланс платформы пуст: вызов по ключу или автоматизация не сделаны. Пополняет владелец или админ организации в кабинете (раздел «Платформа») или автопополнение - `platform_cap_reached` (402) — достигнут месячный потолок трат платформы. resets_at — 1-е число следующего месяца, 00:00 по Алматы; раньше — поднять потолок в PUT /v1/workspaces/{ws}/platform/account - `platform_disabled` (402) — платформа выключена в организации: вызовы по ключам и автоматизации остановлены. Включить — PUT /v1/workspaces/{ws}/platform/account - `free_plan_chat_only` (402) — бесплатный тариф: пачки из кабинета только на платных тарифах. Ключам API и автоматизациям тариф не нужен - `free_limit_unavailable` (402) — бесплатный лимит этой учётной записи не положен; почему — error.free_blocked_reason, готовый текст с причиной и тем, что делать, — message (ru или kk по языку ответов ИИ из профиля) - `plan_company_limit` (402) — в организации уже столько компаний не в архиве, сколько разрешает тариф (max_companies в GET /v1/plans; limit и plan_code — в ответе): новую не завести и из архива не вернуть. Убрать лишнюю в архив или перейти на тариф больше - `effort_not_in_plan` (402) — поле effort в чате на тарифе без выбора усилия (max_effort тарифа null, например бесплатный): ход не начат. Прислать вопрос без effort или оформить платный тариф - `model_not_in_plan` (402) — модель сильнее потолка тарифа (plans.model_ceiling): вызов не сделан; более сильные модели — на платных тарифах - `missing_permission` (403) — не хватает права в компании (или у ключа API); какого — в поле permission - `login_method_not_allowed` (403) — организация пускает к своим данным только после входа другим способом; какими — в allowed_methods. Предложить выйти и войти так - `ip_not_allowed` (403) — ключ API не принимает запросы с этого адреса — поправить allowed_ips ключа (PATCH …/api-keys/{id}) или вызывать с разрешённого адреса - `write_limits_required` (400) — выпуск или правка ключа API с правом proposals.approve без обоих пределов суммы записи в 1С (write_max_amount_per_document_tiyn и write_max_amount_per_day_tiyn) - `key_write_limit` (403) — запись в 1С по ключу API — сверх его пределов (сумма на документ или в день, виды документов) или правило автоодобрения шире пределов ключа; в сообщении — что и на сколько - `human_only` (403) — это решение принимает только человек в кабинете Tungo, не ключ API: например, отклонить «не знаем, записан ли» на снимке базы без проверки 1С (confirm_unknown_write) - `autonomy_raise_requires_session` (403) — поднять уровень доверия ИИ или потолки компании можно только владельцу или админу организации из кабинета - `id_path_required` (400) — для автоодобрения по хуку задайте хуку id_path — путь к номеру операции в теле события: без него повтор доставки нельзя отличить от новой операции - `directbank_rule_exists` (400) — у компании уже есть сценарий с правилом для выписки DirectBank — правило выписки одно на компанию - `event_not_found` (404) — события нет в этой компании или оно удалено по сроку хранения — для пробного прогона выберите событие посвежее - `event_body_unavailable` (409) — тело события зашифровано, а ключ шифрования на сервере сменился — прогнать сценарий на нём нельзя - `scenario_steps_required` (409) — у сценария цепочка шагов, а в замене (PUT) нет ни steps, ни output: передайте steps явно, иначе замена молча убрала бы цепочку - `scenario_output_required` (409) — у сценария форма итога, а в замене (PUT) нет ни steps, ни output: передайте output явно (null — снять форму) - `automation_queue_full` (429) — у компании слишком много запусков в очереди: повторите позже (событие хука отправитель повторит сам) - `restarting` (503) — сервис перезапускается: новый ход не начат — повторите через Retry-After - `team_checkout_forbidden` (403) — оформление Team: человек больше не владелец и не админ команды этого оформления — продолжить нельзя - `company_suspended` (403) — работа с компанией приостановлена (решение платформы или оплаты); карточка видна, работать, править и архивировать нельзя (архив — 409 с тем же code) - `company_archived` (403) — компания в архиве: карточка видна, работать с ней нельзя. Вернуть — POST /v1/companies/{company_id}/unarchive (владелец компании или владелец/админ организации) - `workspace_blocked` (403) — организация заблокирована администратором платформы — только поддержка Tungo - `untrusted_origin` (403) — запрос пришёл не со страницы Tungo (защита от подделки запросов) — открыть кабинет по обычному адресу; для /admin/* — только со страниц ADMIN_ORIGINS - `cors_not_supported` (403) — вызов API из чужого браузерного кода (CORS) не поддерживается: ключ API — секрет сервера - `api_keys_disabled_by_policy` (403) — политика организации запрещает ключи API - `owner_role_reserved` (403) — владельца компании назначает, меняет и снимает только владелец или админ организации - `own_role_reserved` (403) — свою роль в компании управляющий участниками не меняет — только владелец или админ организации - `role_above_yours` (403) — у выдаваемой (или снимаемой) роли есть права, которых нет у вас; роль — в поле role, лишние права — в permissions - `not_key_creator` (403) — менять компании, права, срок и секрет ключа, снимать и поднимать его пределы записи в 1С может только тот, кто его выпустил (ужесточить пределы может любой админ) - `transfer_wider_than_target` (403) — передать ключ нельзя: у нового владельца нет нужного права (или доступа) в одной из компаний ключа - `invalid_allowed_ips` (400) — в allowed_ips ключа — не IP-адрес и не подсеть CIDR; какая запись — в сообщении - `transfer_target_not_admin` (400) — передать ключ можно только владельцу или админу этой организации - `platform_model_not_allowed` (403) — модель сильнее потолка платформы (настройка platform.billing): вызов не сделан и ничего не списано - `managed_by_sso` (403) — удаление аккаунта: аккаунт ведёт организация (SSO или SCIM) — удаляет её администратор; организации — в workspaces - `fresh_session_required` (403) — удаление аккаунта без почты (Telegram): нужен свежий вход — выйти, войти снова и подтвердить - `api_key_not_allowed` (403) — действие только из кабинета (сессия), не по ключу API: удаление аккаунта - `webhooks_not_in_plan` (403) — вебхуков нет в тарифе организации - `admin_2fa_required` (403) — админ-API: у администратора платформы нет второго фактора или эта сессия не подтверждена кодом приложения-аутентификатора (POST /v1/auth/two-factor/enable, затем verify-totp) - `access_pass_invalid` (401) — админ-API: пропуск Cloudflare Access не принят (подпись, издатель, приложение) — обновить страницу админки и войти в Access заново - `access_pass_expired` (401) — админ-API: срок пропуска Cloudflare Access вышел — обновить страницу админки - `access_pass_no_email` (403) — админ-API: пропуск Cloudflare Access без почты человека (сервисный токен) не принимается - `access_user_not_found` (403) — админ-API: в Tungo нет пользователя с почтой из пропуска Cloudflare Access - `access_email_unverified` (403) — админ-API: почта пользователя из пропуска Cloudflare Access в Tungo не подтверждена - `access_not_admin` (403) — админ-API: у пользователя из пропуска Cloudflare Access нет роли платформы - `manual_charge_over_cap` (403) — ручное списание с карты больше настройки billing.manual_charge (за раз или за сутки с организации) — только суперадминистратор - `setting_requires_superadmin` (403) — денежную, антифрод или защитную настройку платформы (у неё guarded=true в списке настроек) меняет только суперадминистратор - `setting_reason_required` (400) — смена денежной или защитной настройки платформы — только с причиной (reason, 3–500 символов) - `staff_ban_requires_superadmin` (403) — закрыть или открыть вход сотруднику платформы может только суперадминистратор - `two_factor_required` (403) — отключить второй фактор, показать его секрет или выпустить резервные коды — только после кода из приложения-аутентификатора в этой сессии - `two_factor_email_code_required` (403) — сотрудник платформы (admin, admin_pd, superadmin) включает и отключает второй фактор (POST /v1/auth/two-factor/enable, disable) только со свежим кодом из почты в поле email_code — запросить код: POST /v1/auth/two-factor/email-code - `two_factor_email_code_invalid` (400) — включение или отключение второго фактора сотрудником: неверный код из почты (email_code) — ввести ещё раз или запросить новый - `two_factor_email_code_expired` (400) — включение или отключение второго фактора сотрудником: код из почты устарел, уже использован или попытки кончились — запросить новый (POST /v1/auth/two-factor/email-code) - `two_factor_email_code_not_needed` (400) — POST /v1/auth/two-factor/email-code: код из почты нужен только сотрудникам платформы — остальные включают второй фактор без него - `target_two_factor_required` (409) — смена ролей платформы: новую роль (admin, admin_pd, superadmin) можно выдать только человеку с уже включённым и подтверждённым вторым фактором; снять роль можно и без него - `no_companies_permissions` (400) — ключу без доступа к компаниям (no_companies) нельзя дать права, действующие в компаниях: убрать их или выбрать компании - `webhooks_require_all_companies` (403) — вебхуки — только ключу на все компании организации (при выпуске ключа — 400 с тем же code) - `policy_blocked` (403) — одобрение: организация не доверяет ИИ записывать такой документ этим способом (поле level — уровень доверия); одобрить по одному или поднять уровень - `onec_copy_disabled` (403) — загрузка копии базы 1С отключена на платформе: вариант «Загрузить копию базы» спрятать (onec.copy_upload в GET /v1/me), предложить 1С напрямую или Tungo Connector - `onec_read_only` (403) — одобрение: у пользователя 1С из подключения нет права записи — дать права в 1С - `validation_failed` (400) — тело или параметры запроса не прошли проверку: что не так с каждым полем — в fields (путь, код, текст по-русски). Подсветить поля формы; общий message — над формой - `invalid_json` (400) — тело запроса — не JSON-объект - `personal_workspace` (400) — в личной организации нет сотрудников, приглашений и политик — нужна организация Team или Enterprise - `api_key_required` (400) — адрес только для запроса по ключу API - `email_code_unavailable` (400) — удаление аккаунта: у аккаунта нет почты для кода (вход через Telegram) — подтверждать свежим входом, без кода - `deletion_code_invalid` (400) — удаление аккаунта: неверный код из письма; сколько попыток осталось — attempts_left - `deletion_code_expired` (400) — удаление аккаунта: код истёк, попытки кончились или код не запрашивался — запросить новый (POST /v1/me/deletion/code) - `email_required` (403) — вход через Telegram, а своей почты у аккаунта ещё нет: показать обязательный экран «Укажите почту» (POST /v1/me/email, затем POST /v1/me/email/verify); до привязки открыты только профиль, привязка, удаление аккаунта и выход - `email_already_set` (409) — привязка почты: у аккаунта уже есть своя почта — экран «Укажите почту» не нужен, перечитать GET /v1/me - `email_invalid` (400) — привязка почты: служебная почта Telegram (…@telegram.invalid) — попросить свою - `disposable_email` (403) — привязка почты: временная почта не принимается — попросить постоянную - `sso_required` (403) — привязка почты: для адреса вход только через SSO организации — код не шлём, попросить другую почту - `email_code_invalid` (400) — привязка почты: неверный код из письма; сколько попыток осталось — attempts_left - `email_code_expired` (400) — привязка почты: код истёк, попытки кончились или код не запрашивался — запросить новый (POST /v1/me/email) - `email_binding_stale` (409) — привязка почты: аккаунт или сессия изменились, пока шла проверка — запросить код заново - `telegram_account_has_data` (409) — привязка почты: у почты уже есть аккаунт Tungo, а в аккаунте Telegram уже есть данные — сами не объединяем: указать другую почту или написать в поддержку - `telegram_already_linked` (409) — привязка почты: к аккаунту этой почты уже привязан другой Telegram — войти по почте и отвязать его или указать другую почту - `email_unavailable` (409) — привязка почты: эту почту привязать нельзя — указать другую или написать в поддержку - `mentions_invalid` (400) — чат: поле mentions неверного вида — список { type, id } из поиска упоминаний - `mention_type_unknown` (400) — поиск упоминаний: неизвестный вид в types - `unsafe_url` (400) — адрес вебхука недопустим (внутренняя сеть, не HTTPS) - `idempotency_key_invalid` (400) — Idempotency-Key неверного вида - `payload_too_large` (413) — тело запроса (или события хука) больше допустимого; пределы — настройки платформы - `idempotency_key_reused` (422) — этот Idempotency-Key уже был у другого запроса — для нового действия нужен новый ключ - `has_blockers` (422) — одобрение: у предложения есть блокеры — сначала исправить их - `batch_too_large` (413) — одобрение пачкой: предложений больше предела (поля limit, requested) — разбить на части - `unknown_kind` (400) — настройки писем: такого вида уведомлений нет — взять список из GET /v1/me/notifications - `kind_locked` (400) — настройки писем: этот вид (безопасность и аккаунт) выключить нельзя — переключатель неактивен (locked) - `onec_rejected` (400) — одобрение: 1С отклонила документ (причина — в message): исправить в 1С или построить предложение заново - `proposal_not_found` (404) — предложения с таким id нет в компании - `export_link_expired` (404) — ссылка на архив выгрузки истекла или неверна — получить новую: GET /v1/me/export - `mention_not_found` (404) — чат: упомянутого объекта нет или к нему нет доступа (номер в списке mentions — поле index); ход не начат - `batch_not_found` (404) — одобрение пачкой: задания с таким batch_id нет (или в нём нет предложений) - `idempotency_in_progress` (409) — первый запрос с этим Idempotency-Key ещё выполняется — подождать и повторить, придёт тот же ответ - `idempotency_response_not_kept` (409) — запрос с этим Idempotency-Key уже выполнен, но копия ответа не хранится (в нём персональные данные): результат — по ссылке в ответе (dialog_url) или в списке; статус первого ответа — original_status - `idempotency_response_too_large` (409) — запрос с этим Idempotency-Key уже выполнен, но ответ слишком большой, чтобы повторить его целиком: результат — в списке; статус первого ответа — original_status - `sole_owner` (409) — удаление аккаунта: вы единственный владелец организации с другими участниками (workspaces) — передать владение (POST /v1/workspaces/{ws}/ownership) или удалить организацию - `account_deletion_in_progress` (409) — удаление аккаунта: фон уже стирает аккаунт — новый код и подтверждение не принимаются, отменить нельзя - `wrong_status` (409) — предложение уже не в том состоянии (поле status — нынешнее): обновить его - `wrong_state` (409) — запуск автоматизации уже не в том состоянии (поле state — нынешнее) - `dialog_closed` (409) — разговор закрыт (поле reason — почему): начать новый - `message_not_found` (404) — оценка ответа: ответа с таким номером в разговоре нет (или ход ещё идёт) - `dialog_not_ratable` (409) — оценка разговора: в разговоре ещё нет ни одного ответа - `rating_comment_too_long` (400) — оценка: комментарий длиннее предела (comment_chars из GET …/chat/rating-options) - `rating_reason_unknown` (400) — оценка ответа: такой причины нет в списке GET …/chat/rating-options - `rating_reason_not_allowed` (400) — оценка ответа: причина указывается только у оценки down - `memory_changed` (409) — запись памяти ИИ с тех пор изменили — отменить правку ИИ нельзя; поправить запись в настройках памяти - `memory_full` (409) — вернуть забытую запись памяти нельзя: память заполнена — сначала удалить ненужное - `ratings_unavailable` (503) — оценки сейчас не принимаются — повторить позже - `langfuse_off` (409) — админка: Langfuse на сервере не подключён - `langfuse_trace_unknown` (409) — админка: ход записан до появления связи с трассой Langfuse - `langfuse_content_off` (409) — админка: текст ходов в Langfuse выключен настройкой — в набор отправить нельзя - `langfuse_no_consent` (409) — админка: для разговора нет согласия на использование текста — в набор отправить нельзя - `langfuse_turn_empty` (409) — админка: у хода нет текста вопроса — в набор отправлять нечего - `langfuse_queue_unset` (409) — админка: очередь разметки Langfuse не задана ни настройкой, ни в запросе - `langfuse_rejected` (409) — админка: Langfuse отклонил запрос - `langfuse_not_found` (404) — админка: Langfuse не нашёл очередь или трассу - `langfuse_unavailable` (503) — админка: Langfuse не отвечает — повторить позже - `approval_not_needed` (409) — отправить на одобрение: у вас самого есть право одобрять — записать документ обычным одобрением - `dialog_id_taken` (409) — разговор с таким dialog_id уже есть — для нового прислать другой id или не присылать его - `turn_in_progress` (409) — в разговоре уже идёт ход ИИ (поле turn — его номер): дождаться его конца или остановить - `turn_superseded` (409) — читаемый ход уже закончился и идёт следующий (поле turn) — читать его с начала - `dialog_changed` (409) — разговор только что изменился в другом окне или на другом сервере Tungo — открыть его заново (GET …/chat/{id}) и повторить - `already_answered` (409) — на этот вопрос ИИ уже ответили (поле turn — ход с ответом) - `question_stale` (409) — вопрос ИИ устарел (в разговоре уже другой вопрос или его нет) — обновить разговор - `dismissed` (409) — вопрос ИИ закрыт без ответа — написать обычное сообщение - `job_running` (409) — задание (пачка) ещё идёт — дождаться отчёта; поле batch_id - `payload_changed` (409) — одобрение: документ изменился после превью — построить предложение заново - `onec_conflict` (409) — одобрение: 1С отказала из-за конфликта (объект занят или изменён) — повторить позже - `onec_not_found` (409) — одобрение: в 1С нет объекта, на который ссылается документ — построить предложение заново - `plan_limit_reached` (429) — лимит окна тарифа исчерпан; resets_at и Retry-After — когда обновится. Показать время; если в message предложено доп. использование — дать кнопку включить - `rate_limited` (429) — слишком часто (по ключу API, уведомления кассы с одного адреса, формы банка от одного человека, попытки кода второго фактора) — подождать Retry-After секунд - `concurrent_turns_limit` (429) — по ключу API уже идёт предельное число ходов ИИ одновременно — дождаться окончания - `parallel_turns_limit` (429) — у человека уже идёт предельное число ходов ИИ одновременно (тариф без доп. использования, настройка usage.parallel_turns) — дождаться ответа на предыдущие вопросы; Retry-After - `api_keys_limit` (429) — в организации предельное число действующих ключей API — отозвать ненужные - `webhook_endpoints_limit` (429) — предельное число адресов вебхуков — удалить ненужные - `enterprise_request_rate` (429) — слишком много заявок на Enterprise от одного человека за окно (настройка enterprise.request_rate): повторить после Retry-After - `unknown_workspace` (400) — workspace_id в заявке на Enterprise или в обращении в поддержку — не организация этого человека - `plan_not_for_team` (400) — оформление Team: тариф бесплатный или не для команды — выбрать тариф вида team из GET /v1/plans - `plan_not_found` (404) — оформление Team: тарифа с таким кодом нет или он выключен - `team_checkout_busy` (409) — оформление Team с этим ключом уже выполняется другим запросом — повторить через несколько секунд - `team_checkout_closed` (409) — оформление Team закрыто (status в ответе: cancelled или expired) — начать новое с новым idempotency_key - `team_checkout_completed` (409) — оформление Team уже оплачено — отменять нечего; подписку отменяют в оплате команды - `too_many_team_checkouts` (409) — у человека уже max_open незавершённых оформлений Team — завершить или отменить их (DELETE /v1/team-checkouts/{id}) - `export_too_soon` (429) — выгрузку данных можно запрашивать не чаще раза в сутки: next_request_at и Retry-After — когда можно снова - `hook_rate_limited` (429) — приём событий хука: больше automations.hook_events_per_minute в минуту — повторить через Retry-After секунд - `lago_unavailable` (503) — админка, тариф целиком: Lago не настроен или не ответил (сеть, 5xx) — правила не изменены, повторить позже - `model_price_missing` (503) — у модели ИИ не задана цена — сбой настройки платформы, ничего не списано; повторить позже - `data_export_disabled` (503) — выгрузка данных на сервере не настроена (поддержка Tungo) - `webhooks_disabled` (503) — вебхуки на сервере не настроены - `webhooks_unavailable` (503) — служба доставки вебхуков временно недоступна - `model_not_configured` (503) — сервис модели ИИ не настроен на сервере — повторить позже (Retry-After) - `write_unknown` (503) — одобрение: исход записи в 1С неизвестен (связь оборвалась) — проверить документ в 1С по метке (поле marker); повтор безопасен (retry_safe); слишком ранний повтор в 1С не пишет — подождать retry_after секунд (Retry-After) - `onec_unavailable` (503) — 1С сейчас не отвечает — повторить позже (Retry-After) - `onec_check_busy` (503) — проверка связи 1С: сервер сейчас проверяет слишком много подключений — повторить через Retry-After секунд - `onec_failed` (503) — записать документ в 1С не удалось по неизвестной причине — повторить позже - `journal_unavailable` (503) — журнал решений недоступен — пачка не одобрена, повторить позже - `hook_secret_unavailable` (503) — приём событий хука: секрет подписи сейчас не открыть — отправителю повторить доставку позже - `secret_box_missing` (503) — на сервере не задан ключ шифрования настроек — секрет подписи хука сохранить нельзя (поддержка Tungo) - `not_personal` (409) — перевод в команду: организация уже не личная — обновить экран - `subscription_blocks_conversion` (409) — перевод в команду: действует подписка для одного человека — сначала отменить её и дождаться конца периода - `subscription_kind_mismatch` (409) — админка: действующая подписка оформлена на другой вид организации — вид не меняется, пока она идёт - `enterprise_features_active` (409) — админка: у организации подключены SSO или SCIM — сначала отключить, потом снимать Enterprise - `too_many_members_for_personal` (409) — админка: в личной организации один человек — сначала убрать остальных участников - `open_debt` (409) — есть неоплаченный счёт — сначала оплатить; в плане удаления этот же код лежит в blockers; так же отказывает удаление аккаунта (workspaces — у каких пространств долг) - `active_work` (409) — в организации идут ходы ИИ или автоматизации — дождаться окончания и повторить; в плане удаления этот же код лежит в blockers - `deletion_guard_refused` (409) — внутреннее: условие вызывающего на удаление организации не выполнено (уборка черновика Team) — человеку не уходит - `deletion_already_scheduled` (409) — удаление организации уже запланировано — показать дату из плана - `deletion_purging` (409) — очистка организации уже идёт — отменить её нельзя - `workspace_deleting` (409) — админка: организация удаляется по просьбе владельца — блок удаления снимает только отмена удаления - `invitation_not_pending` (409) — приглашение принято, отозвано или истекло — письмо не отправить, пригласить заново - `last_owner` (409) — это последний владелец организации — сначала передать владение другому участнику - `seats_by_contract` (409) — места Enterprise — по договору, карта и докупка не работают: обратиться к менеджеру - `no_subscription` (409) — нет действующей подписки — сначала оформить тариф - `not_per_seat` (409) — этот тариф не считает оплату за место — докупка не нужна, предел мест показан в ответе GET …/seats - `subscription_ended` (409) — возобновление: период отменённой подписки уже закончился — ничего не списано, оформить тариф заново (повторный PUT — обычное оформление) - `subscription_busy` (409) — подписка уже меняется другим запросом (отмена или возобновление) — обновить экран через несколько секунд - `subscription_payment_in_progress` (409) — смена тарифа: по счёту за нынешний тариф идёт оплата — тариф прежний, дождаться её итога и повторить - `subscription_unpaid_debt` (409) — оформление или смена тарифа: есть неоплаченный счёт (и после отмены) — показать message и сумму amount_tiyn; кнопка «Оплатить» — POST …/billing/payments/{payment_id}/pay-form, payment_id null — к списку счетов - `refund_request_unavailable` (409) — заявку на возврат подать нельзя — причина в поле reason: not_consumer (не частное лицо), no_paid_period (нет оплаченного периода), open_request (заявка уже подана), nothing_to_refund (вернуть нечего) - `refund_request_decided` (409) — админка: заявка на возврат уже одобрена или отклонена - `refund_request_nothing` (409) — админка: по пересчёту вернуть нечего (меньше 10 ₸) — отклонить заявку с причиной - `refund_request_stale` (409) — админка: после подачи заявки сменился период или тариф — отклонить заявку с причиной; клиент может подать новую за нынешний период - `refund_request_payment_changed` (409) — админка: после подачи заявки по платежу уже вернули деньги мимо неё — проверить возвраты платежа и отклонить заявку с причиной - `refund_request_refund_pending` (409) — админка: возврат по заявке ещё в обработке у кассы — повторить одобрение после его итога (сверки) - `subscription_refund_sync` (409) — смена тарифа: по прошлому счёту за тариф был возврат, и биллинг его ещё не учёл — тариф прежний, ничего не списано; повторить позже - `subscription_ending` (409) — подписка отменена и закончится в конце периода — места не докупаются и не сокращаются - `seats_unpaid_debt` (409) — подписка просрочена — сначала оплатить счёт; участники остаются, новых приглашать нельзя - `idempotency_conflict` (409) — докупка: этот ключ уже использован с другим числом мест — для новой покупки нужен новый ключ - `seat_quote_changed` (409) — докупка: сумма изменилась (другой день или новая цена), деньги не списаны — показать новую сумму из поля и спросить снова - `no_paid_seats` (409) — оплаченных мест ещё нет — сокращать нечего - `first_seats_below_occupied` (409) — первая покупка мест включает тариф всей организации — мест не меньше required_seats (минимум тарифа или участники с приглашениями, occupied); деньги не списаны - `seats_below_occupied` (409) — занято больше мест, чем просите оставить — сначала убрать участников или отозвать приглашения - `not_enterprise` (409) — админка: места по договору есть только у Enterprise — сначала поставить вид - `per_seat_plan_change` (409) — смена тарифа с оплатой за место не делается сразу: Lago взял бы плату за места дважды. Отменить и оформить новый с конца периода - `confirm_name_mismatch` (400) — удаление организации: название введено неверно — ввести точно как в плане удаления - `below_min_seats` (400) — на этом тарифе мест меньше нельзя: минимум — min_seats тарифа - `seats_over_max` (400) — мест больше предела одной организации (team.limits.max_seats) — обратиться в поддержку - `seats_above_paid` (400) — PUT …/seats только сокращает; новые места — через POST …/seats с оплатой - `onec_check_running` (429) — проверка связи 1С уже идёт у этой компании, у вас (другая компания) или у двух других компаний организации — дождаться её итога и повторить (Retry-After) - `invitation_not_found` (404) — приглашение до входа: такого приглашения нет — проверить ссылку из письма - `invitation_expired` (410) — приглашение до входа: срок истёк — попросить новое - `invitation_revoked` (410) — приглашение до входа: отозвано — попросить новое - `invitation_accepted` (410) — приглашение до входа: уже принято — войти, организация уже в списке - `invitation_rejected` (410) — приглашение до входа: отклонено — попросить новое - `invitation_resend_too_soon` (429) — письмо с приглашением уже отправлено только что — подождать Retry-After секунд - `seats_exhausted` (429) — свободные места закончились: докупите места или освободите их, отозвав приглашение - `seat_price_unknown` (503) — цена места сейчас неизвестна (тариф не прочитан или настроен неверно), деньги не списаны — повторить позже - `otp_mail_failed` (503) — письмо с кодом входа не отправлено: попробуйте позже - `seat_period_unknown` (503) — не удалось сверить период подписки с биллингом: деньги не списаны, попробуйте позже - `no_cash_desk` (500) — нет действующей кассы для этой валюты (сейчас касса — ePay, тенге и доллары): деньги не списаны, оплата недоступна; currency — валюта - `card_rebind_required` (400) — карта привязана к отключённой кассе: списать с неё нельзя — привязать карту заново (POST …/billing/card-sessions) Незнакомый code — вести себя по type."""
     fields: list[FieldError] | None = None
     """При code = validation_failed — ошибки по полям, в порядке проверки; у одного поля может быть несколько."""
     free_blocked_reason: ErrorDetailFreeBlockedReason | None = None
@@ -5970,28 +5025,6 @@ class FormOnecObject(BaseModel):
     """Ref_Key объекта в 1С — для перехода; показывать не нужно"""
 
 
-class GetWorkspacePlatformAuditResponse(BaseModel):
-    """GetWorkspacePlatformAuditResponse."""
-
-    data: list[AuditEntry] = MISSING
-    """Записи этой страницы, от новых к старым"""
-    next_cursor: str | None = MISSING
-    """Курсор следующей страницы. Чтобы получить её — тот же запрос (с теми же фильтрами) и `?cursor=<это значение>`. null — страниц больше нет (кнопку «Ещё» спрятать). Курсор непрозрачный: не разбирать и не собирать самому, хранить только до следующего запроса. Пустой data с не-null курсором не бывает."""
-    total: int = MISSING
-    """Сколько всего записей под этими фильтрами (курсор не учитывается). Считается не дальше 10 000: если записей больше — здесь 10 000 и total_more = true"""
-    total_more: bool = MISSING
-    """true — записей больше, чем total: писать «больше 10 000», а не точное число"""
-
-
-class GetWorkspacePlatformLedgerResponse(BaseModel):
-    """GetWorkspacePlatformLedgerResponse."""
-
-    data: list[PlatformLedgerEntry] = MISSING
-    """Элементы этой страницы, в порядке списка (обычно от новых к старым)"""
-    next_cursor: str | None = MISSING
-    """Курсор следующей страницы. Чтобы получить её — тот же запрос (с теми же фильтрами) и `?cursor=<это значение>`. null — страниц больше нет (кнопку «Ещё» спрятать). Курсор непрозрачный: не разбирать и не собирать самому, хранить только до следующего запроса. Пустой data с не-null курсором не бывает."""
-
-
 class IsnaFile(BaseModel):
     """Сам файл JSON для «Загрузить (JSON)» в КНП ИСНА — сохранить как есть (Content-Disposition: attachment с именем файла), не разбирать"""
 
@@ -6104,26 +5137,6 @@ class ListCompanyAutomationsScenariosResponse(BaseModel):
 
     data: list[AutomationScenario] = MISSING
     """Элементы списка — весь список одним ответом, без страниц"""
-
-
-class ListUsageRatesResponse(BaseModel):
-    """ListUsageRatesResponse."""
-
-    data: list[UsageRate] = MISSING
-    """Элементы списка — весь список одним ответом, без страниц"""
-
-
-class ListWorkspacePlatformRequestsResponse(BaseModel):
-    """ListWorkspacePlatformRequestsResponse."""
-
-    data: list[PlatformRequest] = MISSING
-    """Элементы этой страницы, в порядке списка (обычно от новых к старым)"""
-    next_cursor: str | None = MISSING
-    """Курсор следующей страницы. Чтобы получить её — тот же запрос (с теми же фильтрами) и `?cursor=<это значение>`. null — страниц больше нет (кнопку «Ещё» спрятать). Курсор непрозрачный: не разбирать и не собирать самому, хранить только до следующего запроса. Пустой data с не-null курсором не бывает."""
-    total: int = MISSING
-    """Сколько всего записей под этими фильтрами (курсор не учитывается). Считается не дальше 10 000: если записей больше — здесь 10 000 и total_more = true"""
-    total_more: bool = MISSING
-    """true — записей больше, чем total: писать «больше 10 000», а не точное число"""
 
 
 class ListWorkspaceWebhooksEndpointAttemptsResponse(BaseModel):
@@ -6243,319 +5256,13 @@ class OneCStatusLastCheck(BaseModel):
     """Итог: ok — всё в порядке; warn — работать можно, но не всё (смотрите checks); fail — работать нельзя"""
 
 
-class PlatformAccount(BaseModel):
-    """Счёт платформы для разработчиков: баланс, настройки и траты месяца; ключу на часть компаний — только баланс и потолок. С чатом не пересекается."""
+class PlatformBalance(BaseModel):
+    """Остаток баланса платформы организации. Пополняет владелец или админ в кабинете; история движений и расход — там же."""
 
-    auto_reload: PlatformAutoReload | None = None
-    auto_reload_spent_tiyn: int | None = None
-    """Сколько автопополнение списало за этот месяц. Нет у ключа на часть компаний в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
     balance_tiyn: int = MISSING
-    """Баланс платформы в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    blocked_reason: PlatformAccountBlockedReason | None = None
-    """Почему вызовы сейчас не пройдут: disabled — платформа выключена, cap — достигнут месячный потолок, balance — баланс закончился; null — всё в порядке. Нет у ключа на часть компаний"""
+    """Остаток баланса платформы в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
     enabled: bool = MISSING
-    """Выключатель платформы: false — вызовы по ключам и автоматизации останавливаются (402 platform_disabled)"""
-    month: str = MISSING
-    """Месяц по Алматы — его первое число, ГГГГ-ММ-ДД (календарная дата, без пояса — не переводить)"""
-    monthly_cap_tiyn: int | None = MISSING
-    """Месячный потолок трат в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸); null — без потолка"""
-    purchase_limits: PlatformAccountPurchaseLimits | None = None
-    """Границы суммы пополнения. Нет у ключа на часть компаний"""
-    spent_tiyn: int | None = None
-    """Траты платформы за этот месяц. Нет у ключа на часть компаний в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-
-
-class PlatformAccountPurchaseLimits(BaseModel):
-    """Границы суммы пополнения. Нет у ключа на часть компаний"""
-
-    daily_max_tiyn: int = MISSING
-    """Наибольшая сумма пополнений за сутки в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    max_tiyn: int = MISSING
-    """Наибольшее пополнение за раз в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    min_tiyn: int = MISSING
-    """Наименьшее пополнение в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    today_tiyn: int = MISSING
-    """Сколько уже пополнено сегодня (сутки по Алматы; платежи без итога тоже в счёте) — тот же счёт, что у предела daily_max_tiyn в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-
-
-class PlatformAutoReload(BaseModel):
-    """Автопополнение баланса платформы."""
-
-    amount_tiyn: int | None = MISSING
-    """На сколько пополнять, в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸); null — не задано"""
-    enabled: bool = MISSING
-    """Включено ли автопополнение с карты организации"""
-    monthly_count_max: int = MISSING
-    """Автопополнений за календарный месяц по Алматы не больше этого; месячный потолок трат исчерпан — автопополнения нет"""
-    monthly_limit_tiyn: int | None = MISSING
-    """Сколько автопополнение может списать за месяц, в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸); null — предел платформы"""
-    threshold_tiyn: int | None = MISSING
-    """Порог: баланс ниже — пополнить, в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸); null — не задан"""
-
-
-class PlatformLedgerEntry(BaseModel):
-    """Движение баланса платформы."""
-
-    amount_tiyn: int = MISSING
-    """Изменение баланса в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸): плюс — пришло, минус — ушло"""
-    api_key_id: str | None = MISSING
-    """Ключ вызова (key_…) у usage; null — сценарий, сохранённый по сессии, и остальные виды"""
-    at: str = MISSING
-    """Когда, ISO 8601 UTC"""
-    balance_after_tiyn: int = MISSING
-    """Баланс после движения в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    documents: PlatformLedgerEntryDocuments | None = MISSING
-    """Документы пополнения (kind = purchase) из его платежа. null — у остальных видов и у ключа не на все компании. Файл PDF ядро не формирует: чек выпускает касса, ссылка появляется в receipt_url"""
-    id: str = MISSING
-    """id движения (led_…); он же — курсор"""
-    kind: PlatformLedgerEntryKind = MISSING
-    """Вид: `purchase` — пополнение с карты; `usage` — списание за вызов модели; `refund` — возврат на карту (баланс уменьшается); `adjustment` — корректировка поддержкой или возврат удержанной суммы"""
-    model: str | None = MISSING
-    """Модель вызова у usage; null — у остальных видов"""
-    note: str | None = MISSING
-    """Пояснение для людей (у корректировок); null — нет"""
-    payment_id: str | None = MISSING
-    """Платёж картой (pay_…) у пополнения и возврата; null — без платежа"""
-    request_id: str | None = MISSING
-    """id вызова модели у usage (тот же, что в расходе хода); null — у остальных видов"""
-
-
-class PlatformLedgerEntryDocuments(BaseModel):
-    """Документы пополнения (kind = purchase) из его платежа. null — у остальных видов и у ключа не на все компании. Файл PDF ядро не формирует: чек выпускает касса, ссылка появляется в receipt_url"""
-
-    act_number: str | None = MISSING
-    """Устарело: номер акта (ACT-…) только у старых платежей; у новых — null, акт ежемесячный (GET /v1/workspaces/{ws}/documents)"""
-    invoice_number: str | None = MISSING
-    """Номер счёта на оплату по этому пополнению (TG-…); null — нет"""
-    receipt_status: PlatformLedgerEntryDocumentsReceiptStatus | None = MISSING
-    """Чек ККМ: not_required — не нужен; pending — выпускается; issued — выпущен (ссылка в receipt_url); failed — не выпустился, мы разбираемся; null — платёж ещё не прошёл"""
-    receipt_url: str | None = MISSING
-    """Ссылка на чек ККМ этого пополнения — «Чек» в истории; null — чек ещё не выпущен или не нужен (см. receipt_status)"""
-
-
-class PlatformLimits(BaseModel):
-    """Действующие пределы платформы и сколько от них осталось."""
-
-    concurrent_turns: PlatformLimitsConcurrentTurns = MISSING
-    """Одновременные ходы ИИ"""
-    files: PlatformLimitsFiles = MISSING
-    """Размеры файлов и тел запросов"""
-    rate: PlatformLimitsRate = MISSING
-    """Частота запросов; сверх предела — 429 rate_limited"""
-
-
-class PlatformLimitsConcurrentTurns(BaseModel):
-    """Одновременные ходы ИИ"""
-
-    in_use: int | None = MISSING
-    """Сколько мест занято у этого ключа; null — счётчик не запрашивали"""
-    limit: int = MISSING
-    """Сколько ходов ИИ по одному ключу могут идти одновременно; сверх — 429 concurrent_turns_limit"""
-
-
-class PlatformLimitsFiles(BaseModel):
-    """Размеры файлов и тел запросов"""
-
-    archive_bytes: int = MISSING
-    """Один архив, байт; в attachments_total_bytes не входит. Больше attachment_bytes — только загрузкой по частям (POST …/chat/uploads)"""
-    archive_files: int = MISSING
-    """Файлов в архиве вместе с вложенными архивами"""
-    archives_per_message: int = MISSING
-    """Архивов (.zip, .rar, .7z) в одном сообщении"""
-    attachment_bytes: int = MISSING
-    """Один файл, байт (до кодирования в base64)"""
-    attachments_per_message: int = MISSING
-    """Сколько файлов в одном сообщении чата"""
-    attachments_total_bytes: int = MISSING
-    """Все файлы сообщения вместе, байт (до кодирования в base64)"""
-    bank_statement_request_bytes: int = MISSING
-    """Тело запроса с выпиской банка, байт; больше — 413 payload_too_large"""
-    chat_request_bytes: int = MISSING
-    """Тело запроса хода чата целиком, байт (base64 больше файла на треть); больше — 413 payload_too_large"""
-    hook_event_bytes: int = MISSING
-    """Тело события входящего хука автоматизации, байт; больше — 413 payload_too_large"""
-    image_bytes: int = MISSING
-    """Одна картинка, байт"""
-    pdf_pages: int = MISSING
-    """Страниц в одном PDF"""
-    request_bytes: int = MISSING
-    """Тело остальных запросов, байт; больше — 413 payload_too_large"""
-    upload_part_bytes: int = MISSING
-    """Часть загрузки архива (PUT …/chat/uploads/{upload_id}/parts/{n}), байт; последняя — остаток"""
-
-
-class PlatformLimitsRate(BaseModel):
-    """Частота запросов; сверх предела — 429 rate_limited"""
-
-    key: PlatformLimitsRateKey = MISSING
-    """Частота на один ключ"""
-    workspace: PlatformLimitsRateWorkspace = MISSING
-    """Частота на все ключи организации вместе"""
-
-
-class PlatformLimitsRateKey(BaseModel):
-    """Частота на один ключ"""
-
-    limit_per_minute: int = MISSING
-    """Предел запросов в минуту на один ключ"""
-    remaining: int | None = MISSING
-    """Сколько осталось в текущей минуте; null — счётчик не запрашивали (по сессии без api_key_id)"""
-    reset_in_sec: int | None = MISSING
-    """Через сколько секунд счётчик начнётся заново; 0 — в этой минуте запросов не было; null — счётчик не запрашивали"""
-
-
-class PlatformLimitsRateWorkspace(BaseModel):
-    """Частота на все ключи организации вместе"""
-
-    limit_per_minute: int = MISSING
-    """Предел запросов в минуту на все ключи организации вместе"""
-    remaining: int | None = MISSING
-    """Сколько осталось в текущей минуте; null — счётчик не запрашивали (по сессии без api_key_id)"""
-    reset_in_sec: int | None = MISSING
-    """Через сколько секунд счётчик начнётся заново; 0 — в этой минуте запросов не было; null — счётчик не запрашивали"""
-
-
-class PlatformRequest(BaseModel):
-    """Запрос по ключу API в журнале. Тела запросов и ответов не хранятся."""
-
-    api_key_id: str = MISSING
-    """Ключ запроса (key_…); отказы при входе (выключен, адрес, частота) тоже записаны на него"""
-    at: str = MISSING
-    """Когда, ISO 8601 UTC"""
-    client_request_id: str | None = MISSING
-    """Номер, присланный вами в x-request-id; null — не присылали или он неверного вида"""
-    company_id: str | None = MISSING
-    """Компания из адреса (co_…); null — адрес не про компанию"""
-    cost_tiyn: int | None = MISSING
-    """Цена запроса в тиынах — сколько списано с баланса платформы за вызовы модели этого запроса (ход ИИ; у хода потоком — когда он закончится). null — запрос модель не вызывал; у запросов до появления этого поля тоже null"""
-    duration_ms: int = MISSING
-    """Сколько шёл ответ, мс. У хода ИИ — до начала потока событий"""
-    id: str = MISSING
-    """id строки журнала (rlg_…)"""
-    ip: str | None = MISSING
-    """С какого адреса пришёл запрос; null — не определён"""
-    method: str = MISSING
-    """Метод HTTP"""
-    path: str = MISSING
-    """Адрес без строки запроса"""
-    query: str | None = MISSING
-    """Параметры адреса: значения скрыты («…»), кроме безопасных (limit, from, to и подобных); null — параметров нет"""
-    request_id: str = MISSING
-    """Номер запроса (req_…): его же вернул заголовок x-request-id; сообщайте в поддержку"""
-    status: int = MISSING
-    """Статус ответа HTTP"""
-
-
-class PlatformUsage(BaseModel):
-    """Расход платформы за период с разбивкой и токенами всех видов."""
-
-    by_company: list[PlatformUsageByCompanyItem] | None = MISSING
-    """По компаниям, дорогие сверху; null — запрошено ключом не на все компании организации"""
-    by_day: list[PlatformUsageByDayItem] = MISSING
-    """По дням (только дни с вызовами), по возрастанию даты"""
-    by_key: list[PlatformUsageByKeyItem] = MISSING
-    """По ключам, дорогие сверху"""
-    by_model: list[PlatformUsageByModelItem] = MISSING
-    """По моделям, дорогие сверху"""
-    from_: str = Field(default=MISSING, alias="from")
-    """Начало периода, ISO 8601 UTC"""
-    to: str = MISSING
-    """Конец периода (не включительно), ISO 8601 UTC"""
-    totals: PlatformUsageTotals = MISSING
-    """Итоги за период"""
-
-
-class PlatformUsageByCompanyItem(BaseModel):
-    """PlatformUsageByCompanyItem."""
-
-    cache_read_tokens: int = MISSING
-    """Токены, прочитанные из кэша модели"""
-    cache_write_tokens: int = MISSING
-    """Токены, записанные в кэш модели"""
-    company_id: str | None = MISSING
-    """Компания (co_…); null — вызов вне компании"""
-    cost_tiyn: int = MISSING
-    """Стоимость вызовов в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    input_tokens: int = MISSING
-    """Токены, отправленные модели (вопрос и контекст)"""
-    output_tokens: int = MISSING
-    """Токены ответа модели"""
-    requests: int = MISSING
-    """Сколько вызовов модели"""
-
-
-class PlatformUsageByDayItem(BaseModel):
-    """PlatformUsageByDayItem."""
-
-    cache_read_tokens: int = MISSING
-    """Токены, прочитанные из кэша модели"""
-    cache_write_tokens: int = MISSING
-    """Токены, записанные в кэш модели"""
-    cost_tiyn: int = MISSING
-    """Стоимость вызовов в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    day: str = MISSING
-    """День по Алматы, ГГГГ-ММ-ДД (календарная дата, без пояса — не переводить)"""
-    input_tokens: int = MISSING
-    """Токены, отправленные модели (вопрос и контекст)"""
-    output_tokens: int = MISSING
-    """Токены ответа модели"""
-    requests: int = MISSING
-    """Сколько вызовов модели"""
-
-
-class PlatformUsageByKeyItem(BaseModel):
-    """PlatformUsageByKeyItem."""
-
-    api_key_id: str | None = MISSING
-    """Ключ (key_…); null — сценарии, сохранённые по сессии"""
-    cache_read_tokens: int = MISSING
-    """Токены, прочитанные из кэша модели"""
-    cache_write_tokens: int = MISSING
-    """Токены, записанные в кэш модели"""
-    cost_tiyn: int = MISSING
-    """Стоимость вызовов в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    input_tokens: int = MISSING
-    """Токены, отправленные модели (вопрос и контекст)"""
-    output_tokens: int = MISSING
-    """Токены ответа модели"""
-    requests: int = MISSING
-    """Сколько вызовов модели"""
-
-
-class PlatformUsageByModelItem(BaseModel):
-    """PlatformUsageByModelItem."""
-
-    cache_read_tokens: int = MISSING
-    """Токены, прочитанные из кэша модели"""
-    cache_write_tokens: int = MISSING
-    """Токены, записанные в кэш модели"""
-    cost_tiyn: int = MISSING
-    """Стоимость вызовов в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    input_tokens: int = MISSING
-    """Токены, отправленные модели (вопрос и контекст)"""
-    model: str = MISSING
-    """Модель"""
-    output_tokens: int = MISSING
-    """Токены ответа модели"""
-    requests: int = MISSING
-    """Сколько вызовов модели"""
-
-
-class PlatformUsageTotals(BaseModel):
-    """Итоги за период"""
-
-    cache_read_tokens: int = MISSING
-    """Токены, прочитанные из кэша модели"""
-    cache_write_tokens: int = MISSING
-    """Токены, записанные в кэш модели"""
-    cost_tiyn: int = MISSING
-    """Стоимость вызовов в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    input_tokens: int = MISSING
-    """Токены, отправленные модели (вопрос и контекст)"""
-    output_tokens: int = MISSING
-    """Токены ответа модели"""
-    requests: int = MISSING
-    """Сколько вызовов модели"""
+    """Включена ли платформа: false — вызовы по ключам и автоматизации стоят (402 platform_disabled), даже при остатке"""
 
 
 class ProposalAccount(BaseModel):
@@ -7339,48 +6046,6 @@ class TaxPeriodRef(BaseModel):
     """Период по-русски для показа"""
 
 
-class UsageRate(BaseModel):
-    """Цена модели ИИ, по которой считается расход."""
-
-    cache_read_per_mtok_tiyn: int = MISSING
-    """Цена 1 млн токенов чтения из кэша модели в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    cache_write_1h_per_mtok_tiyn: int = MISSING
-    """Цена 1 млн токенов записи в кэш модели на 1 час (дороже: так кэшируются правила и инструменты) в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    cache_write_per_mtok_tiyn: int = MISSING
-    """Цена 1 млн токенов записи в кэш модели на 5 минут в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    effective_from: str = MISSING
-    """С какого момента действует цена, ISO 8601 UTC"""
-    input_per_mtok_tiyn: int = MISSING
-    """Цена 1 млн входных токенов (вопрос и контекст; токен — кусочек текста) в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    long_context: UsageRateLongContext | None = MISSING
-    """Длинный контекст: если вход вызова вместе с кэшем длиннее above_tokens, весь вызов считается по этим ценам (как в прайсе провайдера); null — у модели одна цена"""
-    model: str = MISSING
-    """Модель ИИ: tungo-1-flash, tungo-1, tungo-1-deep (tungo-search — поиск по нормам, tungo-legacy — прежняя)"""
-    output_per_mtok_tiyn: int = MISSING
-    """Цена 1 млн токенов ответа в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    title: str = MISSING
-    """Название модели для людей"""
-    web_search_per_1k_tiyn: int = MISSING
-    """Цена 1000 запросов поиска на официальных сайтах РК (когда нормы нет в базе знаний); 0 — модель не ищет в интернете в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-
-
-class UsageRateLongContext(BaseModel):
-    """Цены вызова с длинным контекстом."""
-
-    above_tokens: int = MISSING
-    """Порог: вход вызова вместе с чтением и записью кэша, токенов"""
-    cache_read_per_mtok_tiyn: int = MISSING
-    """Цена 1 млн токенов чтения из кэша длинного вызова в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    cache_write_1h_per_mtok_tiyn: int = MISSING
-    """Цена 1 млн токенов записи в кэш на 1 час длинного вызова в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    cache_write_per_mtok_tiyn: int = MISSING
-    """Цена 1 млн токенов записи в кэш на 5 минут длинного вызова в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    input_per_mtok_tiyn: int = MISSING
-    """Цена 1 млн входных токенов длинного вызова в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-    output_per_mtok_tiyn: int = MISSING
-    """Цена 1 млн токенов ответа длинного вызова в тиынах (1 ₸ = 100 тиын; показывать значение / 100 ₸)"""
-
-
 class VerifyCheck(BaseModel):
     """Итог сверки файла"""
 
@@ -8074,74 +6739,6 @@ class WebhookEventOnecConnectionChangedData(BaseModel):
     """connected — на связи, disconnected — пропала"""
 
 
-class WebhookEventPaymentFailed(BaseModel):
-    """Оплата Tungo картой не прошла. Суммы — в тиынах."""
-
-    company_id: str | None = MISSING
-    """Компания; null — событие организации (например, оплата) (co_…)"""
-    created_at: str = MISSING
-    """Когда событие случилось"""
-    data: WebhookEventPaymentFailedData = MISSING
-    """Данные события — только id, суммы, токены, статусы и время, без персональных данных"""
-    id: str = MISSING
-    """id события — тот же при повторной доставке: по нему отбрасывайте повторы (evt_…)"""
-    type: Literal["payment.failed"] = MISSING
-    """Вид события"""
-    workspace_id: str = MISSING
-    """Организация (ws_…)"""
-
-
-class WebhookEventPaymentFailedData(BaseModel):
-    """Данные события — только id, суммы, токены, статусы и время, без персональных данных"""
-
-    amount_tiyn: int = MISSING
-    """Сумма, в тиынах (1 ₸ = 100 тиын)"""
-    currency: str = MISSING
-    """Валюта (KZT)"""
-    invoice_number: str | None = MISSING
-    """Номер счёта Tungo"""
-    payment_id: str = MISSING
-    """id платежа (pay_…)"""
-    purpose: str = MISSING
-    """За что: subscription — подписка, extra_usage — пополнение баланса чата, platform_topup — пополнение баланса платформы, onboarding — подключение компании"""
-    vat_tiyn: int | None = MISSING
-    """НДС в сумме, в тиынах (1 ₸ = 100 тиын)"""
-
-
-class WebhookEventPaymentSucceeded(BaseModel):
-    """Оплата Tungo картой прошла (подписка, пополнение, подключение компании). Суммы — в тиынах."""
-
-    company_id: str | None = MISSING
-    """Компания; null — событие организации (например, оплата) (co_…)"""
-    created_at: str = MISSING
-    """Когда событие случилось"""
-    data: WebhookEventPaymentSucceededData = MISSING
-    """Данные события — только id, суммы, токены, статусы и время, без персональных данных"""
-    id: str = MISSING
-    """id события — тот же при повторной доставке: по нему отбрасывайте повторы (evt_…)"""
-    type: Literal["payment.succeeded"] = MISSING
-    """Вид события"""
-    workspace_id: str = MISSING
-    """Организация (ws_…)"""
-
-
-class WebhookEventPaymentSucceededData(BaseModel):
-    """Данные события — только id, суммы, токены, статусы и время, без персональных данных"""
-
-    amount_tiyn: int = MISSING
-    """Сумма, в тиынах (1 ₸ = 100 тиын)"""
-    currency: str = MISSING
-    """Валюта (KZT)"""
-    invoice_number: str | None = MISSING
-    """Номер счёта Tungo"""
-    payment_id: str = MISSING
-    """id платежа (pay_…)"""
-    purpose: str = MISSING
-    """За что: subscription — подписка, extra_usage — пополнение баланса чата, platform_topup — пополнение баланса платформы, onboarding — подключение компании"""
-    vat_tiyn: int | None = MISSING
-    """НДС в сумме, в тиынах (1 ₸ = 100 тиын)"""
-
-
 class WebhookEventPing(BaseModel):
     """Пробное событие (POST …/endpoints/{id}/test): проверить, что адрес принимает вебхуки и подпись сходится. Приходит только на этот адрес, в счётчик месяца не идёт. data всегда пуст, company_id — null."""
 
@@ -8190,7 +6787,7 @@ class WebhookEventPlatformBalanceExhaustedData(BaseModel):
 
 
 class WebhookEventPlatformBalanceLow(BaseModel):
-    """Баланс платформы для разработчиков этим списанием опустился ниже порога (настройка платформы platform.billing). Пополнить — POST /v1/workspaces/{ws}/platform/purchases."""
+    """Баланс платформы для разработчиков этим списанием опустился ниже порога (настройка платформы platform.billing). Пополняет владелец или админ организации в кабинете (раздел «Платформа»); остаток — GET /v1/workspaces/{ws}/platform/balance."""
 
     company_id: str | None = MISSING
     """Компания; null — событие организации (например, оплата) (co_…)"""
@@ -8423,19 +7020,6 @@ class WebhookSecretRotated(BaseModel):
     """Только в повторе с тем же Idempotency-Key: где взять текущий секрет"""
 
 
-class WebhookUsage(BaseModel):
-    """Счётчик событий вебхуков за текущий месяц."""
-
-    month: str = MISSING
-    """Месяц (по Алматы), ГГГГ-ММ"""
-    monthly_free_messages: int | None = MISSING
-    """Бесплатных событий в месяц; null — без предела"""
-    over_limit: int = MISSING
-    """Сколько событий НЕ отправлено: сверх бесплатного числа тарифа. Больше 0 — часть событий потеряна, сверяйтесь через API"""
-    sent: int = MISSING
-    """Сколько событий отправлено за месяц"""
-
-
 class WorkspacePlan(BaseModel):
     """Тариф организации сейчас: оплаченная подписка, иначе тариф по умолчанию (бесплатный)"""
 
@@ -8613,8 +7197,6 @@ WebhookEvent: TypeAlias = Annotated[
     | Annotated[WebhookEventChatTurnCompleted, Tag("chat.turn.completed")]
     | Annotated[WebhookEventEsfIncomingReceived, Tag("esf.incoming.received")]
     | Annotated[WebhookEventOnecConnectionChanged, Tag("onec.connection.changed")]
-    | Annotated[WebhookEventPaymentFailed, Tag("payment.failed")]
-    | Annotated[WebhookEventPaymentSucceeded, Tag("payment.succeeded")]
     | Annotated[WebhookEventPing, Tag("ping")]
     | Annotated[WebhookEventPlatformBalanceExhausted, Tag("platform.balance_exhausted")]
     | Annotated[WebhookEventPlatformBalanceLow, Tag("platform.balance_low")]
@@ -8640,8 +7222,6 @@ WebhookEvent: TypeAlias = Annotated[
                 "chat.turn.completed",
                 "esf.incoming.received",
                 "onec.connection.changed",
-                "payment.failed",
-                "payment.succeeded",
                 "ping",
                 "platform.balance_exhausted",
                 "platform.balance_low",

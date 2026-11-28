@@ -10,9 +10,7 @@ from .esf import AsyncEsfResource, EsfResource
 from .feed import AsyncFeedResource, FeedResource
 from .forms import AsyncFormsResource, FormsResource
 from .onec import AsyncOnecResource, OnecResource
-from .platform import AsyncPlatformResource, PlatformResource
 from .proposals import AsyncProposalsResource, ProposalsResource
-from .releases import AsyncReleasesResource, ReleasesResource
 from .verification import AsyncVerificationResource, VerificationResource
 from .webhooks import AsyncWebhooksResource, WebhooksResource
 from .workspaces import AsyncWorkspacesResource, WorkspacesResource
@@ -28,9 +26,7 @@ __all__ = [
     "AsyncFeedResource",
     "AsyncFormsResource",
     "AsyncOnecResource",
-    "AsyncPlatformResource",
     "AsyncProposalsResource",
-    "AsyncReleasesResource",
     "AsyncVerificationResource",
     "AsyncWebhooksResource",
     "AsyncWorkspacesResource",
@@ -42,9 +38,7 @@ __all__ = [
     "FeedResource",
     "FormsResource",
     "OnecResource",
-    "PlatformResource",
     "ProposalsResource",
-    "ReleasesResource",
     "VerificationResource",
     "WebhooksResource",
     "WorkspacesResource",

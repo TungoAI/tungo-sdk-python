@@ -52,7 +52,7 @@ from ._exceptions import (
 from ._models import BaseModel, UnknownVariant
 from ._money import TungoMoney, is_valid_bin_iin
 from ._pagination import AsyncCursorPage, SyncCursorPage
-from ._response import APIResponse, RateLimit
+from ._response import APIResponse, DownloadedFile, RateLimit
 from ._sse import ServerSentEvent, SSEDecoder
 from ._streaming import AsyncChatStream, AsyncStream, ChatAccumulator, ChatStream, ChatStreamResult, Stream
 from ._types import Omit, RequestOptions, omit
@@ -91,6 +91,7 @@ __all__ = [
     "ConfigError",
     "ConflictError",
     "DecodeError",
+    "DownloadedFile",
     "GoneError",
     "InvalidRequestError",
     "LimitError",

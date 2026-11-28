@@ -64,13 +64,11 @@ class Tungo(SyncAPIClient):
     """
 
     workspaces: resources.WorkspacesResource
-    """Организации (workspace), доступные ключу API"""
+    """Организации (workspace), доступные ключу API, и остаток баланса платформы"""
     companies: resources.CompaniesResource
     """Компании организации и их карточки"""
-    platform: resources.PlatformResource
-    """Баланс платформы, книга движений, отчёты о расходе, лимиты, аудит и тарифы моделей"""
     api_keys: resources.ApiKeysResource
-    """Сведения о текущем ключе API и статистика его расхода"""
+    """Сведения о текущем ключе API: права, срок, траты месяца и почему вызовы не пройдут"""
     webhooks: resources.WebhooksResource
     """Исходящие вебхуки организации (Svix): адреса, каталог событий, доставки и проверка подписи"""
     chat: resources.ChatResource
@@ -91,8 +89,6 @@ class Tungo(SyncAPIClient):
     """Автоматизации компании: входящие хуки, сценарии, цепочки шагов, запуски и уровень автономности ИИ"""
     verification: resources.VerificationResource
     """Публичная проверка электронной подписи документов Tungo: по коду, по файлу, по блоку QR и ключи подписи (без ключа API)"""
-    releases: resources.ReleasesResource
-    """Публичный список загрузок: расширение 1С и Tungo Connector (без ключа API)"""
 
     def __init__(
         self,
@@ -120,7 +116,6 @@ class Tungo(SyncAPIClient):
         )
         self.workspaces = resources.WorkspacesResource(self)
         self.companies = resources.CompaniesResource(self)
-        self.platform = resources.PlatformResource(self)
         self.api_keys = resources.ApiKeysResource(self)
         self.webhooks = resources.WebhooksResource(self)
         self.chat = resources.ChatResource(self)
@@ -132,7 +127,6 @@ class Tungo(SyncAPIClient):
         self.onec = resources.OnecResource(self)
         self.automations = resources.AutomationsResource(self)
         self.verification = resources.VerificationResource(self)
-        self.releases = resources.ReleasesResource(self)
 
     def with_options(
         self,
@@ -407,13 +401,11 @@ class AsyncTungo(AsyncAPIClient):
     """
 
     workspaces: resources.AsyncWorkspacesResource
-    """Организации (workspace), доступные ключу API"""
+    """Организации (workspace), доступные ключу API, и остаток баланса платформы"""
     companies: resources.AsyncCompaniesResource
     """Компании организации и их карточки"""
-    platform: resources.AsyncPlatformResource
-    """Баланс платформы, книга движений, отчёты о расходе, лимиты, аудит и тарифы моделей"""
     api_keys: resources.AsyncApiKeysResource
-    """Сведения о текущем ключе API и статистика его расхода"""
+    """Сведения о текущем ключе API: права, срок, траты месяца и почему вызовы не пройдут"""
     webhooks: resources.AsyncWebhooksResource
     """Исходящие вебхуки организации (Svix): адреса, каталог событий, доставки и проверка подписи"""
     chat: resources.AsyncChatResource
@@ -434,8 +426,6 @@ class AsyncTungo(AsyncAPIClient):
     """Автоматизации компании: входящие хуки, сценарии, цепочки шагов, запуски и уровень автономности ИИ"""
     verification: resources.AsyncVerificationResource
     """Публичная проверка электронной подписи документов Tungo: по коду, по файлу, по блоку QR и ключи подписи (без ключа API)"""
-    releases: resources.AsyncReleasesResource
-    """Публичный список загрузок: расширение 1С и Tungo Connector (без ключа API)"""
 
     def __init__(
         self,
@@ -463,7 +453,6 @@ class AsyncTungo(AsyncAPIClient):
         )
         self.workspaces = resources.AsyncWorkspacesResource(self)
         self.companies = resources.AsyncCompaniesResource(self)
-        self.platform = resources.AsyncPlatformResource(self)
         self.api_keys = resources.AsyncApiKeysResource(self)
         self.webhooks = resources.AsyncWebhooksResource(self)
         self.chat = resources.AsyncChatResource(self)
@@ -475,7 +464,6 @@ class AsyncTungo(AsyncAPIClient):
         self.onec = resources.AsyncOnecResource(self)
         self.automations = resources.AsyncAutomationsResource(self)
         self.verification = resources.AsyncVerificationResource(self)
-        self.releases = resources.AsyncReleasesResource(self)
 
     def with_options(
         self,

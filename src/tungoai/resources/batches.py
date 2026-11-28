@@ -17,6 +17,7 @@ from .._base_client import (
     to_raw_response,
 )
 from .._pagination import AsyncCursorPage, SyncCursorPage
+from .._response import DownloadedFile
 from .._streaming import AsyncChatStream, ChatStream
 from .._types import Omit, RequestOptions, omit
 from ..types import (
@@ -27,6 +28,7 @@ from ..types import (
     DirectBankPollResult,
     StatementDay,
     StatementDayList,
+    params,
 )
 
 if TYPE_CHECKING:
@@ -229,6 +231,43 @@ class BatchesResource:
             RequestSpec(
                 method="GET",
                 path=f"/v1/companies/{path_segment('co', co)}/batch/{path_segment('id', id)}/events",
+            ),
+            options=request_options,
+        )
+
+    def export(
+        self,
+        co: str,
+        id: str,
+        *,
+        format: params.GetCompanyBatchExportFormat | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> DownloadedFile:
+        """Скачать результат задания файлом
+
+        Разбор выписки или пачки ЭСФ таблицей: лист «Документы» — строка, предложение, статус, сумма, предупреждения, что мешает записи (и строки, которые решает человек); лист «Выписка» — счёт, банк, период и остатки (только у задания по файлу выписки). Данные те же, что в сводке задания, на момент скачивания; номер счёта — только со скрытой серединой. Скачать может любой участник компании с правом company.read, не только автор задания; по ключу API — только задание, начатое этим ключом (чужое — 404). Ответ — сам файл (Content-Disposition: attachment, имя — латиницей из номера: tungo-….xlsx, .csv или .pdf). Ячейки формулами не становятся: в Excel пишутся только текст и числа, в CSV значение, начинающееся с = + - @, получает апостроф, в PDF всё — текст. Суммы — тенге числом, даты — ГГГГ-ММ-ДД, во всех форматах одинаково.
+
+        Доступ: company.read.
+
+        Доступно по ключу API.
+
+        Returns the downloaded file: its bytes, its name from Content-Disposition and its content type.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: id задания пачки (bat_…) — поле id из ответа запуска задания, из GET …/batch или batch_id из ленты
+            format: Формат файла: xlsx — Excel (все листы); csv — первый лист (UTF-8 с BOM, разделитель — точка с запятой); pdf — все листы разделами на A4 (application/pdf, шрифт вложен: кириллица и казахские буквы). По умолчанию xlsx
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request_download(
+            RequestSpec(
+                method="GET",
+                path=f"/v1/companies/{path_segment('co', co)}/batch/{path_segment('id', id)}/export",
+                query=query_params(
+                    {
+                        "format": format,
+                    }
+                ),
             ),
             options=request_options,
         )
@@ -550,6 +589,43 @@ class AsyncBatchesResource:
             options=request_options,
         )
 
+    async def export(
+        self,
+        co: str,
+        id: str,
+        *,
+        format: params.GetCompanyBatchExportFormat | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> DownloadedFile:
+        """Скачать результат задания файлом
+
+        Разбор выписки или пачки ЭСФ таблицей: лист «Документы» — строка, предложение, статус, сумма, предупреждения, что мешает записи (и строки, которые решает человек); лист «Выписка» — счёт, банк, период и остатки (только у задания по файлу выписки). Данные те же, что в сводке задания, на момент скачивания; номер счёта — только со скрытой серединой. Скачать может любой участник компании с правом company.read, не только автор задания; по ключу API — только задание, начатое этим ключом (чужое — 404). Ответ — сам файл (Content-Disposition: attachment, имя — латиницей из номера: tungo-….xlsx, .csv или .pdf). Ячейки формулами не становятся: в Excel пишутся только текст и числа, в CSV значение, начинающееся с = + - @, получает апостроф, в PDF всё — текст. Суммы — тенге числом, даты — ГГГГ-ММ-ДД, во всех форматах одинаково.
+
+        Доступ: company.read.
+
+        Доступно по ключу API.
+
+        Returns the downloaded file: its bytes, its name from Content-Disposition and its content type.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: id задания пачки (bat_…) — поле id из ответа запуска задания, из GET …/batch или batch_id из ленты
+            format: Формат файла: xlsx — Excel (все листы); csv — первый лист (UTF-8 с BOM, разделитель — точка с запятой); pdf — все листы разделами на A4 (application/pdf, шрифт вложен: кириллица и казахские буквы). По умолчанию xlsx
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request_download(
+            RequestSpec(
+                method="GET",
+                path=f"/v1/companies/{path_segment('co', co)}/batch/{path_segment('id', id)}/export",
+                query=query_params(
+                    {
+                        "format": format,
+                    }
+                ),
+            ),
+            options=request_options,
+        )
+
     async def stop(
         self,
         co: str,
@@ -682,6 +758,7 @@ class BatchesResourceWithRawResponse:
         self.create_bank_statement = to_raw_response(resource.create_bank_statement)
         self.create_esf_purchases = to_raw_response(resource.create_esf_purchases)
         self.get = to_raw_response(resource.get)
+        self.export = to_raw_response(resource.export)
         self.stop = to_raw_response(resource.stop)
         self.get_summary = to_raw_response(resource.get_summary)
         self.list_statements = to_raw_response(resource.list_statements)
@@ -696,6 +773,7 @@ class AsyncBatchesResourceWithRawResponse:
         self.create_bank_statement = async_to_raw_response(resource.create_bank_statement)
         self.create_esf_purchases = async_to_raw_response(resource.create_esf_purchases)
         self.get = async_to_raw_response(resource.get)
+        self.export = async_to_raw_response(resource.export)
         self.stop = async_to_raw_response(resource.stop)
         self.get_summary = async_to_raw_response(resource.get_summary)
         self.list_statements = async_to_raw_response(resource.list_statements)

@@ -868,46 +868,6 @@ class AutomationsResource:
             options=request_options,
         )
 
-    def put_autonomy(
-        self,
-        co: str,
-        *,
-        levels: params.CompanyAutonomyInputLevels,
-        max_amount_per_day_tiyn: int | None,
-        max_amount_per_document_tiyn: int | None,
-        request_options: RequestOptions | None = None,
-    ) -> CompanyAutonomy:
-        """Изменить доверие ИИ в компании
-
-        Замена целиком: не переданный вид — L1, null потолка — умолчание платформы. ПОДНЯТЬ (уровень выше, потолок больше) может только владелец или админ организации из кабинета (сессия); ключ API — никогда (permission_error, code autonomy_raise_requires_session). СНИЗИТЬ может и владелец/админ, и тот, кто управляет автоматизациями, и ключ с automations.manage — это рубильник разработчика. Отмена документа, подпись ЭСФ и закрытие месяца не поднимаются никогда (revert в levels — 400). Каждое изменение — запись в журнале аудита и событие company.autonomy.changed. Предложение пишется само, только если доверие поднято и при его сборке, и сейчас.
-
-        Доступ: workspace owner/admin (поднять) | automations.manage (снизить).
-
-        Доступно по ключу API.
-
-        Args:
-            co: id компании, co_… — из GET /v1/companies
-            levels: Уровень доверия по видам документов (ключ — вид, как в kinds правила автоодобрения). Не указанный вид — L1. Отмены документа (revert) в списке нет: её всегда решает человек, подпись ЭСФ и закрытие месяца не поднимаются никогда.
-            max_amount_per_day_tiyn: Потолок суммы всех записей компании без человека за день по Алматы (все сценарии и выписка DirectBank вместе), в тиынах. null — по умолчанию платформы
-            max_amount_per_document_tiyn: Потолок одного документа, записанного без человека, в тиынах (1 ₸ = 100 тиын). null — по умолчанию платформы (настройка automations.money)
-            request_options: Per-request timeout, retries, headers and idempotency key.
-        """
-        return self._client.request(
-            RequestSpec(
-                method="PUT",
-                path=f"/v1/companies/{path_segment('co', co)}/autonomy",
-                body=json_body(
-                    {
-                        "levels": levels,
-                        "max_amount_per_day_tiyn": max_amount_per_day_tiyn,
-                        "max_amount_per_document_tiyn": max_amount_per_document_tiyn,
-                    }
-                ),
-            ),
-            cast_to=CompanyAutonomy,
-            options=request_options,
-        )
-
 
 class AsyncAutomationsResource:
     """Автоматизации компании: входящие хуки, сценарии, цепочки шагов, запуски и уровень автономности ИИ"""
@@ -1728,46 +1688,6 @@ class AsyncAutomationsResource:
             options=request_options,
         )
 
-    async def put_autonomy(
-        self,
-        co: str,
-        *,
-        levels: params.CompanyAutonomyInputLevels,
-        max_amount_per_day_tiyn: int | None,
-        max_amount_per_document_tiyn: int | None,
-        request_options: RequestOptions | None = None,
-    ) -> CompanyAutonomy:
-        """Изменить доверие ИИ в компании
-
-        Замена целиком: не переданный вид — L1, null потолка — умолчание платформы. ПОДНЯТЬ (уровень выше, потолок больше) может только владелец или админ организации из кабинета (сессия); ключ API — никогда (permission_error, code autonomy_raise_requires_session). СНИЗИТЬ может и владелец/админ, и тот, кто управляет автоматизациями, и ключ с automations.manage — это рубильник разработчика. Отмена документа, подпись ЭСФ и закрытие месяца не поднимаются никогда (revert в levels — 400). Каждое изменение — запись в журнале аудита и событие company.autonomy.changed. Предложение пишется само, только если доверие поднято и при его сборке, и сейчас.
-
-        Доступ: workspace owner/admin (поднять) | automations.manage (снизить).
-
-        Доступно по ключу API.
-
-        Args:
-            co: id компании, co_… — из GET /v1/companies
-            levels: Уровень доверия по видам документов (ключ — вид, как в kinds правила автоодобрения). Не указанный вид — L1. Отмены документа (revert) в списке нет: её всегда решает человек, подпись ЭСФ и закрытие месяца не поднимаются никогда.
-            max_amount_per_day_tiyn: Потолок суммы всех записей компании без человека за день по Алматы (все сценарии и выписка DirectBank вместе), в тиынах. null — по умолчанию платформы
-            max_amount_per_document_tiyn: Потолок одного документа, записанного без человека, в тиынах (1 ₸ = 100 тиын). null — по умолчанию платформы (настройка automations.money)
-            request_options: Per-request timeout, retries, headers and idempotency key.
-        """
-        return await self._client.request(
-            RequestSpec(
-                method="PUT",
-                path=f"/v1/companies/{path_segment('co', co)}/autonomy",
-                body=json_body(
-                    {
-                        "levels": levels,
-                        "max_amount_per_day_tiyn": max_amount_per_day_tiyn,
-                        "max_amount_per_document_tiyn": max_amount_per_document_tiyn,
-                    }
-                ),
-            ),
-            cast_to=CompanyAutonomy,
-            options=request_options,
-        )
-
 
 class AutomationsResourceWithRawResponse:
     """Methods of AutomationsResource that return the raw response next to the decoded body."""
@@ -1795,7 +1715,6 @@ class AutomationsResourceWithRawResponse:
         self.get_state = to_raw_response(resource.get_state)
         self.put_state = to_raw_response(resource.put_state)
         self.get_autonomy = to_raw_response(resource.get_autonomy)
-        self.put_autonomy = to_raw_response(resource.put_autonomy)
 
 
 class AsyncAutomationsResourceWithRawResponse:
@@ -1824,4 +1743,3 @@ class AsyncAutomationsResourceWithRawResponse:
         self.get_state = async_to_raw_response(resource.get_state)
         self.put_state = async_to_raw_response(resource.put_state)
         self.get_autonomy = async_to_raw_response(resource.get_autonomy)
-        self.put_autonomy = async_to_raw_response(resource.put_autonomy)

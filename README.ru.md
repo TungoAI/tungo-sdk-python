@@ -3,9 +3,9 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/TungoAI/.github/main/assets/logo02.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/TungoAI/.github/main/assets/logo03.svg" />
-  <img alt="Tungo AI" src="https://raw.githubusercontent.com/TungoAI/.github/main/assets/logo03.svg" width="240" />
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/TungoAI/tungo-sdk-python/main/.github/logo-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/TungoAI/tungo-sdk-python/main/.github/logo.svg" />
+  <img alt="Tungo AI" src="https://raw.githubusercontent.com/TungoAI/tungo-sdk-python/main/.github/logo.svg" width="240" />
 </picture>
 
 # Tungo SDK для Python
@@ -18,7 +18,7 @@
 
 [English](https://github.com/TungoAI/tungo-sdk-python/blob/main/README.md) · **Русский** · [Қазақша](https://github.com/TungoAI/tungo-sdk-python/blob/main/README.kk.md)
 
-[tungo.kz](https://tungo.kz) · [Быстрый старт](#быстрый-старт) · [Справочник API](#справочник-api) · [История изменений](https://github.com/TungoAI/tungo-sdk-python/blob/main/CHANGELOG.md) · [Обращения](https://github.com/TungoAI/tungo-sdk-python/issues)
+[tungo.kz](https://tungo.kz) · [Быстрый старт](#быстрый-старт) · [Справочник API](#справочник-api) · [История изменений](https://github.com/TungoAI/tungo-sdk-python/blob/main/CHANGELOG.md) · [Поддержка](https://app.tungo.kz)
 
 </div>
 
@@ -28,17 +28,17 @@
 
 Библиотека создаётся из OpenAPI-контракта API, поэтому её методы и модели всегда соответствуют контракту, из которого она собрана.
 
-> Полная версия с примечаниями, относящимися только к этому языку, — в [английском README](https://github.com/TungoAI/tungo-sdk-python/blob/main/README.md).
-
 ## Требования
 
-Поддерживаемые версии и зависимости перечислены в [английском README](https://github.com/TungoAI/tungo-sdk-python/blob/main/README.md#requirements).
+Python 3.10 или новее. Библиотека зависит от [httpx](https://www.python-httpx.org/) и [pydantic](https://docs.pydantic.dev/) 2 (а также `anyio` и `typing-extensions`, которые эти две и так подтягивают). Она поставляется с информацией о типах (`py.typed`) и проверяется `mypy --strict` и pyright в строгом режиме.
 
 ## Установка
 
 ```sh
 pip install tungoai
 ```
+
+Импортируемый пакет называется так же: `import tungoai`.
 
 ## Быстрый старт
 
@@ -110,6 +110,10 @@ client.close()
 http_client.close()  # the SDK never closes a client it did not create
 ```
 
+`Tungo` — синхронный клиент, `AsyncTungo` — асинхронный. Оба принимают одни и те же параметры (`http_client` — это `httpx.Client` или `httpx.AsyncClient`), неизменяемы после создания и освобождают пул соединений через `close()` / `aclose()` или блок `with`. В асинхронном коде вызов отменяется обычным способом — отменой его задачи; тайм-аут при этом остаётся в силе.
+
+`timeout` охватывает обычные вызовы, а `long_running_timeout` — не потоковые ходы чата (`chat.create`, `chat.answer`, `ask`): `timeout=30` не обрезает ход чата до 30 s. `timeout` в `request_options` важнее обоих. Некорректный ключ API (с переводом строки, пробелом, управляющим или не-ASCII символом внутри) отклоняется при создании клиента с `ConfigError`, которая не показывает ключ.
+
 ## Ошибки
 
 Любой сбой — подтип базовой ошибки SDK. Ответ с HTTP-ошибкой превращается в ошибку API, тип которой выбирается по полю `error.type` тела ответа, а если тело не является стандартной ошибкой API — по HTTP-статусу:
@@ -157,6 +161,10 @@ finally:
     client.close()
 ```
 
+Каждая ошибка наследуется от `tungoai.TungoError`. `APITimeoutError` и `WaitTimeoutError` также наследуются от встроенного `TimeoutError`, а `RequestValidationError` и `MoneyError` — от `ValueError`. Исходное исключение, если оно есть, доступно как `__cause__`.
+
+Ошибка, о которой ход чата сообщает внутри успешного ответа (событие `error` потока или `errors` в `ask`), выбрасывается помощниками, собирающими ход, как `ChatStreamError`. Это не `APIError`, и у неё нет HTTP-статуса; её `type` — тот же `error.type` (`limit_error`, `api_error`, ...), рядом с `code`, `message`, `request_id`, `extra`, а также `result` или `turn` с тем, что было получено. TypeScript SDK в той же ситуации выбрасывает подкласс `APIError` для этого `error.type` (например, `LimitError`) с неопределённым `status`.
+
 ## Повторы и тайм-ауты
 
 Запрос повторяется до 2 раз (всего 3 попытки) при ошибках соединения, тайм-аутах и статусах 408, 429, 500, 502, 503 и 504, но только когда повтор безопасен: запросы `GET`, `HEAD`, `PUT` и `DELETE`, а также `POST` и `PATCH` тех операций, у которых контракт объявляет заголовок `Idempotency-Key`. Для них SDK сам создаёт случайный ключ и использует его во всех попытках; можно передать свой. Другие операции ключ не отправляют, даже переданный: API его там не учитывает.
@@ -190,6 +198,10 @@ client.proposals.reject(
 client.close()
 ```
 
+Запрос повторяется, только когда его повтор безопасен: GET, HEAD, PUT и DELETE или запрос операции, объявляющей `Idempotency-Key` (созданный автоматически, переданный как `idempotency_key` или добавленный вами в заголовки). Другие операции ключ не отправляют, даже переданный вами, потому что API его проигнорировал бы. `Retry-After`, равный нулю, или уже прошедшая дата не вызывают немедленного повтора: применяется вычисленная пауза.
+
+Тайм-аут — единый срок на весь запрос. Асинхронный клиент соблюдает его точно. Синхронный клиент даёт каждой фазе (соединение, отправка, ожидание заголовков, чтение тела) только оставшееся время и проверяет срок после каждого фрагмента тела; сервер, замолчавший посреди тела, отключается, когда истекает время, остававшееся к началу тела.
+
 ## Постраничная выдача
 
 Списки выдаются по курсору (`{ data, next_cursor }`). Обычный метод возвращает одну типизированную страницу, которая знает, есть ли следующая, и умеет её запросить. Вариант с автоматическим перелистыванием — ленивый итератор: он запрашивает следующую страницу только когда она нужна, сохраняет ваши фильтры и прекращает запросы, как только вы прекращаете обход.
@@ -214,6 +226,8 @@ for proposal in client.proposals.list(company_id, status="awaiting_approval", li
 
 client.close()
 ```
+
+Курсор, который сервер уже возвращал в том же обходе (предыдущий или любой более ранний), вызывает `PaginationError` вместо бесконечного цикла.
 
 ## Потоковая передача
 
@@ -246,6 +260,34 @@ except ChatStreamError as error:
     print(error.type, error.code, error.message, error.request_id)
 except DecodeError as error:
     print("the stream was cut:", error.result.text if error.result else "")
+
+client.close()
+```
+
+Доступны все потоковые операции API: `chat.create_stream`, `chat.answer_stream`, `chat.list_events`, `feed.list_events` и `batches.list_events`. События — типизированные модели; тип события, неизвестный этой версии, приходит как `UnknownVariant`, а heart-beat-события пропускаются. `stream.iter_sse()` отдаёт исходные server-sent events. `request_options={"stream_idle_timeout": 300}` меняет тайм-аут простоя для одного вызова.
+
+Досрочный выход из цикла `for` по потоку (`break`, `return`, исключение) закрывает соединение: сразу на CPython с синхронным клиентом и на следующем шаге цикла событий с асинхронным. Блок `with` или `close()` / `aclose()` делают этот момент явным на любом интерпретаторе. Если вы получаете события через `next(stream)`, а не в цикле, закрывайте поток сами.
+
+`get_final_result()` никогда не возвращает половину ответа: поток, закончившийся без события `done`, выбрасывает `DecodeError` (`error.result` содержит то, что пришло). Успешный ответ на потоковый вызов не в формате `text/event-stream` тоже выбрасывает `DecodeError`, а не выглядит как пустой поток. Исключение — завершённый ход чата, который API воспроизводит повторно для повторного `Idempotency-Key` (`application/json` с `Idempotent-Replayed: true`): его сохранённый результат приходит в виде событий этого хода, заканчиваясь `next` (уточняющие вопросы и следующее действие, если они есть) и `done`. Обычный перебор просто завершается, когда заканчивается поток.
+
+## Скачивание файлов
+
+Операции, которые отвечают файлом (`chat.download_file` — файлы Excel, Word, PDF и CSV, собранные ИИ; `proposals.export` и `batches.export` — xlsx, csv или pdf), возвращают скачанный файл: его байты, имя файла из заголовка `Content-Disposition` (UTF-8 `filename*`, если он есть, иначе `filename`; имени нет, если сервер его не прислал) и `Content-Type`. Файл целиком читается в память. Ошибки, повторы и таймауты — такие же, как у остальных запросов. Имя файла — предложение сервера, а не безопасный путь: не стройте из него путь без проверки.
+
+```python
+from pathlib import Path
+
+from tungoai import Tungo
+
+client = Tungo()
+company_id = client.companies.list().data[0].id
+proposal_id = client.proposals.list(company_id).data[0].id
+
+file = client.proposals.export(company_id, proposal_id, format="pdf")
+# The name comes from the server: only its last part is used as a path.
+path = Path(Path(file.filename or "").name or "proposal.pdf")
+path.write_bytes(file.content)
+print(f"saved {path}: {len(file.content)} bytes, {file.content_type}, request id {file.request_id}")
 
 client.close()
 ```
@@ -295,6 +337,8 @@ body = b'{"id":"order_1532"}'
 assert tungoai.verify_hook_signature(body, tungoai.hook_signature_header(body, "hksec_example"), "hksec_example")
 ```
 
+`tungoai.verify_webhook(body, headers, secret)` — та же проверка без клиента. Причина сбоя — в `WebhookVerificationError.reason`. `client.automations.post_hook` и `client.send_hook` — один и тот же вызов.
+
 ## Деньги
 
 API передаёт суммы в тиынах (1/100 тенге) 64-битными целыми числами. Денежные функции переводят десятичные строки и точные десятичные значения в тиыны без погрешности дробных чисел, округляя половину от нуля (`"1.005"` → `101`), и форматируют тиыны для показа (`4500000` → `45 000,00 ₸`). Некорректный ввод вызывает типизированную ошибку.
@@ -318,27 +362,74 @@ except MoneyError as error:
 print(is_valid_bin_iin("990140000017"))  # True
 ```
 
+`TungoMoney.to_tiyn` принимает `str`, `decimal.Decimal`, `int` (целые тенге) и `float`. В API тиыны — 64-битные целые числа: `format_tiyn` выбрасывает `MoneyError` для значения вне этого диапазона, как и все SDK Tungo.
+
+## Асинхронная работа
+
+```python
+import asyncio
+
+from tungoai import AsyncTungo
+from tungoai.types import ChatEventText
+
+
+async def main() -> None:
+    async with AsyncTungo() as client:
+        companies = await client.companies.list()
+        company_id = companies.data[0].id
+
+        proposals = await client.proposals.list(company_id, limit=50)
+        async for proposal in proposals:  # requests the following pages as needed
+            print(proposal.id, proposal.title)
+
+        async with await client.chat.create_stream(company_id, message="What is new today?") as stream:
+            async for event in stream:
+                if isinstance(event, ChatEventText):
+                    print(event.delta, end="")
+
+
+asyncio.run(main())
+```
+
+## Типы
+
+Ответы — модели [pydantic](https://docs.pydantic.dev/) из `tungoai.types`: поля читаются как атрибуты, `model.to_dict()` возвращает объект JSON в том виде, в каком его прислал API. Модели совместимы с будущими версиями: неизвестные поля сохраняются в `model.model_extra`, перечисления принимают значения, добавленные позже, а размеченное объединение (например, `ChatEvent` или `WebhookEvent`) даёт `UnknownVariant` для тега, неизвестного этой версии, поэтому сужайте тип через `isinstance`. Поле, отсутствующее в ответе, и поле со значением `null` оба равны `None`; различить их позволяет `model.model_fields_set`.
+
+Ответы разбираются терпимо, запросы — строго. Если ответ не соответствует контракту (поле, которое не может быть `null`, равно `null`, поле сменило тип), SDK не завершает вызов ошибкой: модель создаётся без проверки, каждая соответствующая часть остаётся типизированной моделью, несоответствующая остаётся в том виде, в каком её прислал API, а `to_dict()` возвращает исходный JSON. Поэтому после такого расхождения значение может не совпадать со своей аннотацией; логгер `tungoai` сообщает об этом на уровне DEBUG. То же относится к событиям потока: одно странное событие не завершает ход. Тело, которое не является JSON или является JSON совсем не того вида (массив там, где ожидается объект), по-прежнему вызывает `DecodeError`.
+
+Параметры запроса — именованные аргументы. Опустите параметр, чтобы не отправлять его; передайте `None`, чтобы отправить JSON `null` там, где API это допускает. Вложенные объекты — обычные словари, типизированные с помощью `tungoai.types.params`.
+
+Чтобы вызвать операцию, которую эта версия не покрывает, соберите `tungoai.RequestSpec` и передайте его в `client.request`.
+
+## Вспомогательные методы
+
+`client.ask` отправляет одно сообщение в чат и ждёт весь ход. `client.upload_bank_statement(company_id, file_name, content)` принимает байты файла или строку: по умолчанию base64 файла, а с `text=True` — сам текст выписки (то же правило, что и в TypeScript SDK). `client.wait_for_run`, `client.run_scenario_and_wait` и `client.wait_for_batch` опрашивают с паузой, растущей от 1 s до 5 s, пока запуск или задание не придут в конечное состояние; через `timeout` секунд (по умолчанию 10 минут) они выбрасывают `WaitTimeoutError`.
+
+## Журналирование и секреты
+
+SDK пишет в журнал `tungoai` на уровне DEBUG: метод, путь, статус и идентификатор запроса, но никогда не значения заголовков и не ключ API, а путь входящего хука записывается как `/hooks/***`.
+
+httpx, HTTP-библиотека, лежащая в основе, сама пишет строку о каждом запросе в журнал `httpx` на уровне INFO с полным URL. URL входящего хука содержит его токен, а это секрет. Для запросов, которые отправляет SDK, этот URL в строке httpx заменяется на `/hooks/***` (фильтром на журнале `httpx`, который больше ничего не трогает). Всё остальное, что само записывает URL (собственный транспорт, прокси, агент APM), SDK неподвластно: там считайте URL хуков секретами.
+
 ## Справочник API
 
-Создано из контракта API платформы Tungo: **ресурсов — 15, методов — 100, типов событий вебхуков — 22**.
+Создано из контракта API платформы Tungo: **ресурсов — 13, методов — 83, типов событий вебхуков — 20**.
 
 | Ресурс | Описание | Методы |
 | --- | --- | --- |
-| `client.workspaces` | Организации (workspace), доступные ключу API | `list` |
+| `client.workspaces` | Организации (workspace), доступные ключу API, и остаток баланса платформы | `list` · `get_balance` |
 | `client.companies` | Компании организации и их карточки | `list` · `get` |
-| `client.platform` | Баланс платформы, книга движений, отчёты о расходе, лимиты, аудит и тарифы моделей | `list_usage_rates` · `get_account` · `get_audit` · `get_ledger` · `list_limits` · `list_requests` · `get_usage` |
-| `client.api_keys` | Сведения о текущем ключе API и статистика его расхода | `get_current` · `get_current_usage` · `get_usage` |
-| `client.webhooks` | Исходящие вебхуки организации (Svix): адреса, каталог событий, доставки и проверка подписи | `list_endpoints` · `create_endpoint` · `get_endpoint` · `update_endpoint` · `delete_endpoint` · `list_endpoint_attempts` · `rotate_endpoint_secret` · `test_endpoint` · `list_event_types` · `list_messages` · `list_message_attempts` · `resend_message` · `get_usage` |
-| `client.chat` | Диалоги с ИИ-бухгалтером: вопросы, потоковый чат (SSE), подсчёт токенов и история | `list` · `create` · `create_stream` · `count_tokens` · `list_files` · `list_mentions` · `get_rating_options` · `list_suggestions` · `create_upload` · `delete_upload` · `put_upload_part` · `get` · `update` · `delete` · `answer` · `answer_stream` · `list_events` · `rate_message` · `delete_message_rating` · `rate` · `dismiss_rating` · `stop` · `translate_thinking` |
-| `client.proposals` | Предложения документов ИИ-бухгалтера: просмотр, одобрение записи в 1С и отклонение | `list` · `approve_batch` · `get` · `approve` · `reject` · `request_approval` |
+| `client.api_keys` | Сведения о текущем ключе API: права, срок, траты месяца и почему вызовы не пройдут | `get_current` |
+| `client.webhooks` | Исходящие вебхуки организации (Svix): адреса, каталог событий, доставки и проверка подписи | `list_endpoints` · `create_endpoint` · `get_endpoint` · `update_endpoint` · `delete_endpoint` · `list_endpoint_attempts` · `rotate_endpoint_secret` · `test_endpoint` · `list_event_types` · `list_messages` · `list_message_attempts` · `resend_message` |
+| `client.chat` | Диалоги с ИИ-бухгалтером: вопросы, потоковый чат (SSE), подсчёт токенов и история | `list` · `create` · `create_stream` · `count_tokens` · `list_files` · `create_upload` · `delete_upload` · `put_upload_part` · `get` · `delete` · `answer` · `answer_stream` · `list_events` · `download_file` · `stop` |
+| `client.proposals` | Предложения документов ИИ-бухгалтера: просмотр, одобрение записи в 1С и отклонение | `list` · `approve_batch` · `get` · `approve` · `export` · `reject` · `request_approval` |
 | `client.feed` | Лента событий и предложений компании (страницы и живой поток SSE) | `get` · `list_events` |
-| `client.batches` | Пачки обработки банковских выписок, входящих ЭСФ и DirectBank | `list` · `create_bank_statement` · `create_esf_purchases` · `get` · `list_events` · `stop` · `get_summary` · `list_statements` · `poll_directbank` |
+| `client.batches` | Пачки обработки банковских выписок, входящих ЭСФ и DirectBank | `list` · `create_bank_statement` · `create_esf_purchases` · `get` · `list_events` · `export` · `stop` · `get_summary` · `list_statements` · `poll_directbank` |
 | `client.esf` | Входящие и исходящие электронные счета-фактуры (ИС ЭСФ) | `get_incoming` · `get_outgoing` |
 | `client.forms` | Налоговые формы (ФНО 100.00 и др.): сборка, проверка ИСНА и разрывы данных | `list` · `build` · `list_data_gaps` · `get_isna` · `list_notes` |
 | `client.onec` | Состояние подключения компании к базе 1С | `get_status` |
-| `client.automations` | Автоматизации компании: входящие хуки, сценарии, цепочки шагов, запуски и уровень автономности ИИ | `post_hook` · `list_hooks` · `create_hook` · `get_hook` · `update_hook` · `delete_hook` · `rotate_hook` · `test_hook` · `list_runs` · `get_run` · `cancel_run` · `retry_run` · `list_scenarios` · `create_scenario` · `get_scenario` · `put_scenario` · `update_scenario` · `delete_scenario` · `run_scenario` · `get_state` · `put_state` · `get_autonomy` · `put_autonomy` |
+| `client.automations` | Автоматизации компании: входящие хуки, сценарии, цепочки шагов, запуски и уровень автономности ИИ | `post_hook` · `list_hooks` · `create_hook` · `get_hook` · `update_hook` · `delete_hook` · `rotate_hook` · `test_hook` · `list_runs` · `get_run` · `cancel_run` · `retry_run` · `list_scenarios` · `create_scenario` · `get_scenario` · `put_scenario` · `update_scenario` · `delete_scenario` · `run_scenario` · `get_state` · `put_state` · `get_autonomy` |
 | `client.verification` | Публичная проверка электронной подписи документов Tungo: по коду, по файлу, по блоку QR и ключи подписи (без ключа API) | `list_keys` · `verify_qr` · `get` · `check` |
-| `client.releases` | Публичный список загрузок: расширение 1С и Tungo Connector (без ключа API) | `list` |
 
 ## Другие SDK
 
@@ -348,7 +439,7 @@ print(is_valid_bin_iin("990140000017"))  # True
 | --- | --- | --- |
 | TypeScript | [tungo-sdk-typescript](https://github.com/TungoAI/tungo-sdk-typescript) | `@tungoai/sdk` |
 | **Python** | [tungo-sdk-python](https://github.com/TungoAI/tungo-sdk-python) | `tungoai` |
-| Go | [tungo-sdk-go](https://github.com/TungoAI/tungo-sdk-go) | `github.com/TungoAI/tungo-sdk-go` |
+| Go | [tungo-sdk-go](https://github.com/TungoAI/tungo-sdk-go) | `github.com/TungoAI/tungo-sdk-go/v2` |
 | Rust | [tungo-sdk-rust](https://github.com/TungoAI/tungo-sdk-rust) | `tungo-sdk` |
 | PHP | [tungo-sdk-php](https://github.com/TungoAI/tungo-sdk-php) | `tungo/sdk` |
 | Java | [tungo-sdk-java](https://github.com/TungoAI/tungo-sdk-java) | `kz.tungo:tungo-sdk` |
@@ -359,9 +450,9 @@ print(is_valid_bin_iin("990140000017"))  # True
 
 ## Версии и поддержка
 
-Библиотека следует [семантическому версионированию](https://semver.org/lang/ru/). Промежуточные и исправляющие выпуски совместимы: API растёт добавлениями, а поле или метод, которые уйдут, сначала помечаются устаревшими и живут не меньше шести месяцев. Несовместимые изменения бывают только в новой старшей версии и перечислены, с указаниями по переходу, в [истории изменений](https://github.com/TungoAI/tungo-sdk-python/blob/main/CHANGELOG.md). Этот README описывает версию 1.0.0.
+Библиотека следует [семантическому версионированию](https://semver.org/lang/ru/). Промежуточные и исправляющие выпуски совместимы: API растёт добавлениями, а поле или метод, которые уйдут, сначала помечаются устаревшими и живут не меньше шести месяцев. Несовместимые изменения бывают только в новой старшей версии и перечислены, с указаниями по переходу, в [истории изменений](https://github.com/TungoAI/tungo-sdk-python/blob/main/CHANGELOG.md). Этот README описывает версию 2.0.0.
 
-Код создаётся генератором: пишите о проблемах и идеях в [обращения](https://github.com/TungoAI/tungo-sdk-python/issues), а не присылайте правки к созданным файлам. Об уязвимости сообщайте по [политике безопасности](https://github.com/TungoAI/tungo-sdk-python/blob/main/SECURITY.md).
+С вопросами и проблемами обращайтесь в поддержку в [личном кабинете Tungo](https://app.tungo.kz). Код создаётся генератором из контракта API, и правка созданного файла затирается при следующей генерации, поэтому опишите нужное изменение в обращении, а не присылайте pull request. Об уязвимости сообщайте по [политике безопасности](https://github.com/TungoAI/tungo-sdk-python/blob/main/SECURITY.md).
 
 ## Лицензия
 

@@ -10,12 +10,20 @@ from __future__ import annotations
 
 from typing_extensions import assert_type
 
-from tungoai import AsyncChatStream, AsyncCursorPage, AsyncStream, AsyncTungo, ChatStream, Stream, SyncCursorPage, Tungo
+from tungoai import (
+    AsyncChatStream,
+    AsyncCursorPage,
+    AsyncStream,
+    AsyncTungo,
+    ChatStream,
+    DownloadedFile,
+    Stream,
+    SyncCursorPage,
+    Tungo,
+)
 from tungoai.types import (
     ApiKeySelf,
-    ApiKeyUsage,
     ApproveBatchCompanyProposalsResponse,
-    AuditEntry,
     AutomationDeleted,
     AutomationHook,
     AutomationHookAccepted,
@@ -34,18 +42,10 @@ from tungoai.types import (
     ChatDialog,
     ChatDialogDeleted,
     ChatDialogList,
-    ChatDialogRated,
-    ChatDialogRenamed,
     ChatDialogSummary,
     ChatFileItem,
     ChatFileList,
-    ChatMentionSearch,
-    ChatMessageRated,
-    ChatRatingDismissed,
-    ChatRatingOptions,
     ChatStopResult,
-    ChatSuggestions,
-    ChatThinkingTranslation,
     ChatTokenCount,
     ChatTurnResult,
     ChatUpload,
@@ -54,7 +54,6 @@ from tungoai.types import (
     CompanyAutonomy,
     DataGaps,
     DirectBankPollResult,
-    Downloads,
     EsfIncomingItem,
     EsfIncomingReport,
     EsfOutgoingItem,
@@ -62,15 +61,11 @@ from tungoai.types import (
     FeedItem,
     FeedPage,
     FinancialNotes,
-    GetWorkspacePlatformAuditResponse,
-    GetWorkspacePlatformLedgerResponse,
     IsnaResponse,
     ListCompaniesResponse,
     ListCompanyAutomationsHooksResponse,
     ListCompanyAutomationsRunsResponse,
     ListCompanyAutomationsScenariosResponse,
-    ListUsageRatesResponse,
-    ListWorkspacePlatformRequestsResponse,
     ListWorkspacesResponse,
     ListWorkspaceWebhooksEndpointAttemptsResponse,
     ListWorkspaceWebhooksEndpointsResponse,
@@ -78,11 +73,7 @@ from tungoai.types import (
     ListWorkspaceWebhooksMessageAttemptsResponse,
     ListWorkspaceWebhooksMessagesResponse,
     OneCStatus,
-    PlatformAccount,
-    PlatformLedgerEntry,
-    PlatformLimits,
-    PlatformRequest,
-    PlatformUsage,
+    PlatformBalance,
     ProposalApprovalRequestResult,
     ProposalCard,
     ProposalDecision,
@@ -101,11 +92,10 @@ from tungoai.types import (
     WebhookEndpointCreated,
     WebhookMessage,
     WebhookSecretRotated,
-    WebhookUsage,
 )
 
 from .mock_server import MockServer
-from .support import expect_events, expect_hook_request, expect_page, expect_request, expect_result, reply
+from .support import expect_events, expect_file, expect_hook_request, expect_page, expect_request, expect_result, reply
 
 
 def test_sync_workspaces_list(sync_client: Tungo, server: MockServer) -> None:
@@ -122,6 +112,22 @@ async def test_async_workspaces_list(async_client: AsyncTungo, server: MockServe
     assert_type(result, ListWorkspacesResponse)
     expect_request(server, "GET", "/v1/workspaces")
     expect_result(result, "listWorkspaces")
+
+
+def test_sync_workspaces_get_balance(sync_client: Tungo, server: MockServer) -> None:
+    server.add("GET", "/v1/workspaces/ws%2F1/platform/balance", reply("getWorkspacePlatformBalance"))
+    result = sync_client.workspaces.get_balance("ws/1")
+    assert_type(result, PlatformBalance)
+    expect_request(server, "GET", "/v1/workspaces/ws%2F1/platform/balance")
+    expect_result(result, "getWorkspacePlatformBalance")
+
+
+async def test_async_workspaces_get_balance(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("GET", "/v1/workspaces/ws%2F1/platform/balance", reply("getWorkspacePlatformBalance"))
+    result = await async_client.workspaces.get_balance("ws/1")
+    assert_type(result, PlatformBalance)
+    expect_request(server, "GET", "/v1/workspaces/ws%2F1/platform/balance")
+    expect_result(result, "getWorkspacePlatformBalance")
 
 
 def test_sync_companies_list(sync_client: Tungo, server: MockServer) -> None:
@@ -156,264 +162,6 @@ async def test_async_companies_get(async_client: AsyncTungo, server: MockServer)
     expect_result(result, "getCompany")
 
 
-def test_sync_platform_list_usage_rates(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/usage-rates", reply("listUsageRates"))
-    result = sync_client.platform.list_usage_rates()
-    assert_type(result, ListUsageRatesResponse)
-    expect_request(server, "GET", "/v1/usage-rates", auth="public")
-    expect_result(result, "listUsageRates")
-
-
-async def test_async_platform_list_usage_rates(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/usage-rates", reply("listUsageRates"))
-    result = await async_client.platform.list_usage_rates()
-    assert_type(result, ListUsageRatesResponse)
-    expect_request(server, "GET", "/v1/usage-rates", auth="public")
-    expect_result(result, "listUsageRates")
-
-
-def test_sync_platform_get_account(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/platform/account", reply("getWorkspacePlatformAccount"))
-    result = sync_client.platform.get_account("ws/1")
-    assert_type(result, PlatformAccount)
-    expect_request(server, "GET", "/v1/workspaces/ws%2F1/platform/account")
-    expect_result(result, "getWorkspacePlatformAccount")
-
-
-async def test_async_platform_get_account(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/platform/account", reply("getWorkspacePlatformAccount"))
-    result = await async_client.platform.get_account("ws/1")
-    assert_type(result, PlatformAccount)
-    expect_request(server, "GET", "/v1/workspaces/ws%2F1/platform/account")
-    expect_result(result, "getWorkspacePlatformAccount")
-
-
-def test_sync_platform_get_audit(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/platform/audit", reply("getWorkspacePlatformAudit"))
-    page = sync_client.platform.get_audit(
-        "ws/1",
-        action="text",
-        api_key_id="text",
-        cursor="text",
-        from_="2026-01-02T03:04:05Z",
-        limit=7,
-        to="2026-01-02T03:04:05Z",
-    )
-    assert_type(page, SyncCursorPage[AuditEntry, GetWorkspacePlatformAuditResponse])
-    expect_request(
-        server,
-        "GET",
-        "/v1/workspaces/ws%2F1/platform/audit",
-        query=[
-            ("action", "text"),
-            ("api_key_id", "text"),
-            ("cursor", "text"),
-            ("from", "2026-01-02T03:04:05Z"),
-            ("limit", "7"),
-            ("to", "2026-01-02T03:04:05Z"),
-        ],
-    )
-    expect_page(page.body, page.data, page.next_cursor, "getWorkspacePlatformAudit")
-
-
-async def test_async_platform_get_audit(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/platform/audit", reply("getWorkspacePlatformAudit"))
-    page = await async_client.platform.get_audit(
-        "ws/1",
-        action="text",
-        api_key_id="text",
-        cursor="text",
-        from_="2026-01-02T03:04:05Z",
-        limit=7,
-        to="2026-01-02T03:04:05Z",
-    )
-    assert_type(page, AsyncCursorPage[AuditEntry, GetWorkspacePlatformAuditResponse])
-    expect_request(
-        server,
-        "GET",
-        "/v1/workspaces/ws%2F1/platform/audit",
-        query=[
-            ("action", "text"),
-            ("api_key_id", "text"),
-            ("cursor", "text"),
-            ("from", "2026-01-02T03:04:05Z"),
-            ("limit", "7"),
-            ("to", "2026-01-02T03:04:05Z"),
-        ],
-    )
-    expect_page(page.body, page.data, page.next_cursor, "getWorkspacePlatformAudit")
-
-
-def test_sync_platform_get_ledger(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/platform/ledger", reply("getWorkspacePlatformLedger"))
-    page = sync_client.platform.get_ledger("ws/1", cursor="text", limit=7)
-    assert_type(page, SyncCursorPage[PlatformLedgerEntry, GetWorkspacePlatformLedgerResponse])
-    expect_request(
-        server,
-        "GET",
-        "/v1/workspaces/ws%2F1/platform/ledger",
-        query=[
-            ("cursor", "text"),
-            ("limit", "7"),
-        ],
-    )
-    expect_page(page.body, page.data, page.next_cursor, "getWorkspacePlatformLedger")
-
-
-async def test_async_platform_get_ledger(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/platform/ledger", reply("getWorkspacePlatformLedger"))
-    page = await async_client.platform.get_ledger("ws/1", cursor="text", limit=7)
-    assert_type(page, AsyncCursorPage[PlatformLedgerEntry, GetWorkspacePlatformLedgerResponse])
-    expect_request(
-        server,
-        "GET",
-        "/v1/workspaces/ws%2F1/platform/ledger",
-        query=[
-            ("cursor", "text"),
-            ("limit", "7"),
-        ],
-    )
-    expect_page(page.body, page.data, page.next_cursor, "getWorkspacePlatformLedger")
-
-
-def test_sync_platform_list_limits(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/platform/limits", reply("listWorkspacePlatformLimits"))
-    result = sync_client.platform.list_limits("ws/1", api_key_id="text")
-    assert_type(result, PlatformLimits)
-    expect_request(
-        server,
-        "GET",
-        "/v1/workspaces/ws%2F1/platform/limits",
-        query=[
-            ("api_key_id", "text"),
-        ],
-    )
-    expect_result(result, "listWorkspacePlatformLimits")
-
-
-async def test_async_platform_list_limits(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/platform/limits", reply("listWorkspacePlatformLimits"))
-    result = await async_client.platform.list_limits("ws/1", api_key_id="text")
-    assert_type(result, PlatformLimits)
-    expect_request(
-        server,
-        "GET",
-        "/v1/workspaces/ws%2F1/platform/limits",
-        query=[
-            ("api_key_id", "text"),
-        ],
-    )
-    expect_result(result, "listWorkspacePlatformLimits")
-
-
-def test_sync_platform_list_requests(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/platform/requests", reply("listWorkspacePlatformRequests"))
-    page = sync_client.platform.list_requests(
-        "ws/1",
-        api_key_id="text",
-        client_request_id="text",
-        cursor="text",
-        from_="2026-01-02T03:04:05Z",
-        limit=7,
-        path="text",
-        request_id="text",
-        status=7,
-        status_max=7,
-        status_min=7,
-        to="2026-01-02T03:04:05Z",
-    )
-    assert_type(page, SyncCursorPage[PlatformRequest, ListWorkspacePlatformRequestsResponse])
-    expect_request(
-        server,
-        "GET",
-        "/v1/workspaces/ws%2F1/platform/requests",
-        query=[
-            ("api_key_id", "text"),
-            ("client_request_id", "text"),
-            ("cursor", "text"),
-            ("from", "2026-01-02T03:04:05Z"),
-            ("limit", "7"),
-            ("path", "text"),
-            ("request_id", "text"),
-            ("status", "7"),
-            ("status_max", "7"),
-            ("status_min", "7"),
-            ("to", "2026-01-02T03:04:05Z"),
-        ],
-    )
-    expect_page(page.body, page.data, page.next_cursor, "listWorkspacePlatformRequests")
-
-
-async def test_async_platform_list_requests(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/platform/requests", reply("listWorkspacePlatformRequests"))
-    page = await async_client.platform.list_requests(
-        "ws/1",
-        api_key_id="text",
-        client_request_id="text",
-        cursor="text",
-        from_="2026-01-02T03:04:05Z",
-        limit=7,
-        path="text",
-        request_id="text",
-        status=7,
-        status_max=7,
-        status_min=7,
-        to="2026-01-02T03:04:05Z",
-    )
-    assert_type(page, AsyncCursorPage[PlatformRequest, ListWorkspacePlatformRequestsResponse])
-    expect_request(
-        server,
-        "GET",
-        "/v1/workspaces/ws%2F1/platform/requests",
-        query=[
-            ("api_key_id", "text"),
-            ("client_request_id", "text"),
-            ("cursor", "text"),
-            ("from", "2026-01-02T03:04:05Z"),
-            ("limit", "7"),
-            ("path", "text"),
-            ("request_id", "text"),
-            ("status", "7"),
-            ("status_max", "7"),
-            ("status_min", "7"),
-            ("to", "2026-01-02T03:04:05Z"),
-        ],
-    )
-    expect_page(page.body, page.data, page.next_cursor, "listWorkspacePlatformRequests")
-
-
-def test_sync_platform_get_usage(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/platform/usage", reply("getWorkspacePlatformUsage"))
-    result = sync_client.platform.get_usage("ws/1", from_="2026-01-02T03:04:05Z", to="2026-01-02T03:04:05Z")
-    assert_type(result, PlatformUsage)
-    expect_request(
-        server,
-        "GET",
-        "/v1/workspaces/ws%2F1/platform/usage",
-        query=[
-            ("from", "2026-01-02T03:04:05Z"),
-            ("to", "2026-01-02T03:04:05Z"),
-        ],
-    )
-    expect_result(result, "getWorkspacePlatformUsage")
-
-
-async def test_async_platform_get_usage(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/platform/usage", reply("getWorkspacePlatformUsage"))
-    result = await async_client.platform.get_usage("ws/1", from_="2026-01-02T03:04:05Z", to="2026-01-02T03:04:05Z")
-    assert_type(result, PlatformUsage)
-    expect_request(
-        server,
-        "GET",
-        "/v1/workspaces/ws%2F1/platform/usage",
-        query=[
-            ("from", "2026-01-02T03:04:05Z"),
-            ("to", "2026-01-02T03:04:05Z"),
-        ],
-    )
-    expect_result(result, "getWorkspacePlatformUsage")
-
-
 def test_sync_api_keys_get_current(sync_client: Tungo, server: MockServer) -> None:
     server.add("GET", "/v1/api-key", reply("getApiKey"))
     result = sync_client.api_keys.get_current()
@@ -428,75 +176,6 @@ async def test_async_api_keys_get_current(async_client: AsyncTungo, server: Mock
     assert_type(result, ApiKeySelf)
     expect_request(server, "GET", "/v1/api-key")
     expect_result(result, "getApiKey")
-
-
-def test_sync_api_keys_get_current_usage(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/api-key/usage", reply("getApiKeyUsage"))
-    result = sync_client.api_keys.get_current_usage(from_="2026-01-02T03:04:05Z", to="2026-01-02T03:04:05Z")
-    assert_type(result, ApiKeyUsage)
-    expect_request(
-        server,
-        "GET",
-        "/v1/api-key/usage",
-        query=[
-            ("from", "2026-01-02T03:04:05Z"),
-            ("to", "2026-01-02T03:04:05Z"),
-        ],
-    )
-    expect_result(result, "getApiKeyUsage")
-
-
-async def test_async_api_keys_get_current_usage(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/api-key/usage", reply("getApiKeyUsage"))
-    result = await async_client.api_keys.get_current_usage(from_="2026-01-02T03:04:05Z", to="2026-01-02T03:04:05Z")
-    assert_type(result, ApiKeyUsage)
-    expect_request(
-        server,
-        "GET",
-        "/v1/api-key/usage",
-        query=[
-            ("from", "2026-01-02T03:04:05Z"),
-            ("to", "2026-01-02T03:04:05Z"),
-        ],
-    )
-    expect_result(result, "getApiKeyUsage")
-
-
-def test_sync_api_keys_get_usage(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/api-keys/id%2F1/usage", reply("getWorkspaceApiKeyUsage"))
-    result = sync_client.api_keys.get_usage("ws/1", "id/1", from_="2026-01-02T03:04:05Z", to="2026-01-02T03:04:05Z")
-    assert_type(result, ApiKeyUsage)
-    expect_request(
-        server,
-        "GET",
-        "/v1/workspaces/ws%2F1/api-keys/id%2F1/usage",
-        query=[
-            ("from", "2026-01-02T03:04:05Z"),
-            ("to", "2026-01-02T03:04:05Z"),
-        ],
-    )
-    expect_result(result, "getWorkspaceApiKeyUsage")
-
-
-async def test_async_api_keys_get_usage(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/api-keys/id%2F1/usage", reply("getWorkspaceApiKeyUsage"))
-    result = await async_client.api_keys.get_usage(
-        "ws/1",
-        "id/1",
-        from_="2026-01-02T03:04:05Z",
-        to="2026-01-02T03:04:05Z",
-    )
-    assert_type(result, ApiKeyUsage)
-    expect_request(
-        server,
-        "GET",
-        "/v1/workspaces/ws%2F1/api-keys/id%2F1/usage",
-        query=[
-            ("from", "2026-01-02T03:04:05Z"),
-            ("to", "2026-01-02T03:04:05Z"),
-        ],
-    )
-    expect_result(result, "getWorkspaceApiKeyUsage")
 
 
 def test_sync_webhooks_list_endpoints(sync_client: Tungo, server: MockServer) -> None:
@@ -927,22 +606,6 @@ async def test_async_webhooks_resend_message(async_client: AsyncTungo, server: M
     )
 
 
-def test_sync_webhooks_get_usage(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/webhooks/usage", reply("getWorkspaceWebhooksUsage"))
-    result = sync_client.webhooks.get_usage("ws/1")
-    assert_type(result, WebhookUsage)
-    expect_request(server, "GET", "/v1/workspaces/ws%2F1/webhooks/usage")
-    expect_result(result, "getWorkspaceWebhooksUsage")
-
-
-async def test_async_webhooks_get_usage(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/workspaces/ws%2F1/webhooks/usage", reply("getWorkspaceWebhooksUsage"))
-    result = await async_client.webhooks.get_usage("ws/1")
-    assert_type(result, WebhookUsage)
-    expect_request(server, "GET", "/v1/workspaces/ws%2F1/webhooks/usage")
-    expect_result(result, "getWorkspaceWebhooksUsage")
-
-
 def test_sync_chat_list(sync_client: Tungo, server: MockServer) -> None:
     server.add("GET", "/v1/companies/co%2F1/chat", reply("listCompanyChat"))
     page = sync_client.chat.list("co/1", cursor="text", limit=7)
@@ -1345,100 +1008,6 @@ async def test_async_chat_list_files(async_client: AsyncTungo, server: MockServe
     expect_page(page.body, page.data, page.next_cursor, "listCompanyChatFiles")
 
 
-def test_sync_chat_list_mentions(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/companies/co%2F1/chat/mentions", reply("listCompanyChatMentions"))
-    result = sync_client.chat.list_mentions("co/1", limit=7, q="text", types="text")
-    assert_type(result, ChatMentionSearch)
-    expect_request(
-        server,
-        "GET",
-        "/v1/companies/co%2F1/chat/mentions",
-        query=[
-            ("limit", "7"),
-            ("q", "text"),
-            ("types", "text"),
-        ],
-    )
-    expect_result(result, "listCompanyChatMentions")
-
-
-async def test_async_chat_list_mentions(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/companies/co%2F1/chat/mentions", reply("listCompanyChatMentions"))
-    result = await async_client.chat.list_mentions("co/1", limit=7, q="text", types="text")
-    assert_type(result, ChatMentionSearch)
-    expect_request(
-        server,
-        "GET",
-        "/v1/companies/co%2F1/chat/mentions",
-        query=[
-            ("limit", "7"),
-            ("q", "text"),
-            ("types", "text"),
-        ],
-    )
-    expect_result(result, "listCompanyChatMentions")
-
-
-def test_sync_chat_get_rating_options(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/companies/co%2F1/chat/rating-options", reply("listCompanyChatRatingOptions"))
-    result = sync_client.chat.get_rating_options("co/1", lang="ru")
-    assert_type(result, ChatRatingOptions)
-    expect_request(
-        server,
-        "GET",
-        "/v1/companies/co%2F1/chat/rating-options",
-        query=[
-            ("lang", "ru"),
-        ],
-    )
-    expect_result(result, "listCompanyChatRatingOptions")
-
-
-async def test_async_chat_get_rating_options(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/companies/co%2F1/chat/rating-options", reply("listCompanyChatRatingOptions"))
-    result = await async_client.chat.get_rating_options("co/1", lang="ru")
-    assert_type(result, ChatRatingOptions)
-    expect_request(
-        server,
-        "GET",
-        "/v1/companies/co%2F1/chat/rating-options",
-        query=[
-            ("lang", "ru"),
-        ],
-    )
-    expect_result(result, "listCompanyChatRatingOptions")
-
-
-def test_sync_chat_list_suggestions(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/companies/co%2F1/chat/suggestions", reply("listCompanyChatSuggestions"))
-    result = sync_client.chat.list_suggestions("co/1", lang="ru")
-    assert_type(result, ChatSuggestions)
-    expect_request(
-        server,
-        "GET",
-        "/v1/companies/co%2F1/chat/suggestions",
-        query=[
-            ("lang", "ru"),
-        ],
-    )
-    expect_result(result, "listCompanyChatSuggestions")
-
-
-async def test_async_chat_list_suggestions(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/companies/co%2F1/chat/suggestions", reply("listCompanyChatSuggestions"))
-    result = await async_client.chat.list_suggestions("co/1", lang="ru")
-    assert_type(result, ChatSuggestions)
-    expect_request(
-        server,
-        "GET",
-        "/v1/companies/co%2F1/chat/suggestions",
-        query=[
-            ("lang", "ru"),
-        ],
-    )
-    expect_result(result, "listCompanyChatSuggestions")
-
-
 def test_sync_chat_create_upload(sync_client: Tungo, server: MockServer) -> None:
     server.add("POST", "/v1/companies/co%2F1/chat/uploads", reply("createCompanyChatUpload"))
     result = sync_client.chat.create_upload("co/1", name="text", size=7)
@@ -1513,36 +1082,6 @@ async def test_async_chat_get(async_client: AsyncTungo, server: MockServer) -> N
     assert_type(result, ChatDialog)
     expect_request(server, "GET", "/v1/companies/co%2F1/chat/id%2F1")
     expect_result(result, "getCompanyChat")
-
-
-def test_sync_chat_update(sync_client: Tungo, server: MockServer) -> None:
-    server.add("PATCH", "/v1/companies/co%2F1/chat/id%2F1", reply("updateCompanyChat"))
-    result = sync_client.chat.update("co/1", "id/1", title="text")
-    assert_type(result, ChatDialogRenamed)
-    expect_request(
-        server,
-        "PATCH",
-        "/v1/companies/co%2F1/chat/id%2F1",
-        body={
-            "title": "text",
-        },
-    )
-    expect_result(result, "updateCompanyChat")
-
-
-async def test_async_chat_update(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("PATCH", "/v1/companies/co%2F1/chat/id%2F1", reply("updateCompanyChat"))
-    result = await async_client.chat.update("co/1", "id/1", title="text")
-    assert_type(result, ChatDialogRenamed)
-    expect_request(
-        server,
-        "PATCH",
-        "/v1/companies/co%2F1/chat/id%2F1",
-        body={
-            "title": "text",
-        },
-    )
-    expect_result(result, "updateCompanyChat")
 
 
 def test_sync_chat_delete(sync_client: Tungo, server: MockServer) -> None:
@@ -1711,110 +1250,20 @@ async def test_async_chat_list_events(async_client: AsyncTungo, server: MockServ
     expect_events(events, "listCompanyChatEvents")
 
 
-def test_sync_chat_rate_message(sync_client: Tungo, server: MockServer) -> None:
-    server.add("PUT", "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating", reply("putCompanyChatMessageRating"))
-    result = sync_client.chat.rate_message("co/1", "id/1", "turn/1", comment="text", reason="text", vote="up")
-    assert_type(result, ChatMessageRated)
-    expect_request(
-        server,
-        "PUT",
-        "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating",
-        body={
-            "comment": "text",
-            "reason": "text",
-            "vote": "up",
-        },
-    )
-    expect_result(result, "putCompanyChatMessageRating")
+def test_sync_chat_download_file(sync_client: Tungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/chat/id%2F1/files/file%2F1", reply("getCompanyChatFile"))
+    file = sync_client.chat.download_file("co/1", "id/1", "file/1")
+    assert_type(file, DownloadedFile)
+    expect_request(server, "GET", "/v1/companies/co%2F1/chat/id%2F1/files/file%2F1", accept="*/*")
+    expect_file(file, "getCompanyChatFile")
 
 
-async def test_async_chat_rate_message(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("PUT", "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating", reply("putCompanyChatMessageRating"))
-    result = await async_client.chat.rate_message("co/1", "id/1", "turn/1", comment="text", reason="text", vote="up")
-    assert_type(result, ChatMessageRated)
-    expect_request(
-        server,
-        "PUT",
-        "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating",
-        body={
-            "comment": "text",
-            "reason": "text",
-            "vote": "up",
-        },
-    )
-    expect_result(result, "putCompanyChatMessageRating")
-
-
-def test_sync_chat_delete_message_rating(sync_client: Tungo, server: MockServer) -> None:
-    server.add(
-        "DELETE",
-        "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating",
-        reply("deleteCompanyChatMessageRating"),
-    )
-    result = sync_client.chat.delete_message_rating("co/1", "id/1", "turn/1")
-    assert_type(result, ChatMessageRated)
-    expect_request(server, "DELETE", "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating")
-    expect_result(result, "deleteCompanyChatMessageRating")
-
-
-async def test_async_chat_delete_message_rating(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add(
-        "DELETE",
-        "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating",
-        reply("deleteCompanyChatMessageRating"),
-    )
-    result = await async_client.chat.delete_message_rating("co/1", "id/1", "turn/1")
-    assert_type(result, ChatMessageRated)
-    expect_request(server, "DELETE", "/v1/companies/co%2F1/chat/id%2F1/messages/turn%2F1/rating")
-    expect_result(result, "deleteCompanyChatMessageRating")
-
-
-def test_sync_chat_rate(sync_client: Tungo, server: MockServer) -> None:
-    server.add("PUT", "/v1/companies/co%2F1/chat/id%2F1/rating", reply("putCompanyChatRating"))
-    result = sync_client.chat.rate("co/1", "id/1", comment="text", score=7)
-    assert_type(result, ChatDialogRated)
-    expect_request(
-        server,
-        "PUT",
-        "/v1/companies/co%2F1/chat/id%2F1/rating",
-        body={
-            "comment": "text",
-            "score": 7,
-        },
-    )
-    expect_result(result, "putCompanyChatRating")
-
-
-async def test_async_chat_rate(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("PUT", "/v1/companies/co%2F1/chat/id%2F1/rating", reply("putCompanyChatRating"))
-    result = await async_client.chat.rate("co/1", "id/1", comment="text", score=7)
-    assert_type(result, ChatDialogRated)
-    expect_request(
-        server,
-        "PUT",
-        "/v1/companies/co%2F1/chat/id%2F1/rating",
-        body={
-            "comment": "text",
-            "score": 7,
-        },
-    )
-    expect_result(result, "putCompanyChatRating")
-
-
-def test_sync_chat_dismiss_rating(sync_client: Tungo, server: MockServer) -> None:
-    server.add("POST", "/v1/companies/co%2F1/chat/id%2F1/rating/dismiss", reply("dismissCompanyChatRating"))
-    result = sync_client.chat.dismiss_rating("co/1", "id/1")
-    assert_type(result, ChatRatingDismissed)
-    expect_request(server, "POST", "/v1/companies/co%2F1/chat/id%2F1/rating/dismiss")
-    expect_result(result, "dismissCompanyChatRating")
-
-
-async def test_async_chat_dismiss_rating(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("POST", "/v1/companies/co%2F1/chat/id%2F1/rating/dismiss", reply("dismissCompanyChatRating"))
-    result = await async_client.chat.dismiss_rating("co/1", "id/1")
-    assert_type(result, ChatRatingDismissed)
-    expect_request(server, "POST", "/v1/companies/co%2F1/chat/id%2F1/rating/dismiss")
-    expect_result(result, "dismissCompanyChatRating")
+async def test_async_chat_download_file(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/chat/id%2F1/files/file%2F1", reply("getCompanyChatFile"))
+    file = await async_client.chat.download_file("co/1", "id/1", "file/1")
+    assert_type(file, DownloadedFile)
+    expect_request(server, "GET", "/v1/companies/co%2F1/chat/id%2F1/files/file%2F1", accept="*/*")
+    expect_file(file, "getCompanyChatFile")
 
 
 def test_sync_chat_stop(sync_client: Tungo, server: MockServer) -> None:
@@ -1831,30 +1280,6 @@ async def test_async_chat_stop(async_client: AsyncTungo, server: MockServer) -> 
     assert_type(result, ChatStopResult)
     expect_request(server, "POST", "/v1/companies/co%2F1/chat/id%2F1/stop")
     expect_result(result, "stopCompanyChat")
-
-
-def test_sync_chat_translate_thinking(sync_client: Tungo, server: MockServer) -> None:
-    server.add(
-        "POST",
-        "/v1/companies/co%2F1/chat/id%2F1/thinking/tid%2F1/translate",
-        reply("translateCompanyChatThinking"),
-    )
-    result = sync_client.chat.translate_thinking("co/1", "id/1", "tid/1")
-    assert_type(result, ChatThinkingTranslation)
-    expect_request(server, "POST", "/v1/companies/co%2F1/chat/id%2F1/thinking/tid%2F1/translate")
-    expect_result(result, "translateCompanyChatThinking")
-
-
-async def test_async_chat_translate_thinking(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add(
-        "POST",
-        "/v1/companies/co%2F1/chat/id%2F1/thinking/tid%2F1/translate",
-        reply("translateCompanyChatThinking"),
-    )
-    result = await async_client.chat.translate_thinking("co/1", "id/1", "tid/1")
-    assert_type(result, ChatThinkingTranslation)
-    expect_request(server, "POST", "/v1/companies/co%2F1/chat/id%2F1/thinking/tid%2F1/translate")
-    expect_result(result, "translateCompanyChatThinking")
 
 
 def test_sync_proposals_list(sync_client: Tungo, server: MockServer) -> None:
@@ -2057,6 +1482,38 @@ async def test_async_proposals_approve(async_client: AsyncTungo, server: MockSer
         idempotency_header="Idempotency-Key",
     )
     expect_result(result, "approveCompanyProposal")
+
+
+def test_sync_proposals_export(sync_client: Tungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/proposals/id%2F1/export", reply("getCompanyProposalExport"))
+    file = sync_client.proposals.export("co/1", "id/1", format="xlsx")
+    assert_type(file, DownloadedFile)
+    expect_request(
+        server,
+        "GET",
+        "/v1/companies/co%2F1/proposals/id%2F1/export",
+        query=[
+            ("format", "xlsx"),
+        ],
+        accept="*/*",
+    )
+    expect_file(file, "getCompanyProposalExport")
+
+
+async def test_async_proposals_export(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/proposals/id%2F1/export", reply("getCompanyProposalExport"))
+    file = await async_client.proposals.export("co/1", "id/1", format="xlsx")
+    assert_type(file, DownloadedFile)
+    expect_request(
+        server,
+        "GET",
+        "/v1/companies/co%2F1/proposals/id%2F1/export",
+        query=[
+            ("format", "xlsx"),
+        ],
+        accept="*/*",
+    )
+    expect_file(file, "getCompanyProposalExport")
 
 
 def test_sync_proposals_reject(sync_client: Tungo, server: MockServer) -> None:
@@ -2351,6 +1808,38 @@ async def test_async_batches_list_events(async_client: AsyncTungo, server: MockS
     assert stream.is_closed
     expect_request(server, "GET", "/v1/companies/co%2F1/batch/id%2F1/events", accept="text/event-stream")
     expect_events(events, "listCompanyBatchEvents")
+
+
+def test_sync_batches_export(sync_client: Tungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/batch/id%2F1/export", reply("getCompanyBatchExport"))
+    file = sync_client.batches.export("co/1", "id/1", format="xlsx")
+    assert_type(file, DownloadedFile)
+    expect_request(
+        server,
+        "GET",
+        "/v1/companies/co%2F1/batch/id%2F1/export",
+        query=[
+            ("format", "xlsx"),
+        ],
+        accept="*/*",
+    )
+    expect_file(file, "getCompanyBatchExport")
+
+
+async def test_async_batches_export(async_client: AsyncTungo, server: MockServer) -> None:
+    server.add("GET", "/v1/companies/co%2F1/batch/id%2F1/export", reply("getCompanyBatchExport"))
+    file = await async_client.batches.export("co/1", "id/1", format="xlsx")
+    assert_type(file, DownloadedFile)
+    expect_request(
+        server,
+        "GET",
+        "/v1/companies/co%2F1/batch/id%2F1/export",
+        query=[
+            ("format", "xlsx"),
+        ],
+        accept="*/*",
+    )
+    expect_file(file, "getCompanyBatchExport")
 
 
 def test_sync_batches_stop(sync_client: Tungo, server: MockServer) -> None:
@@ -3621,94 +3110,6 @@ async def test_async_automations_get_autonomy(async_client: AsyncTungo, server: 
     expect_result(result, "getCompanyAutonomy")
 
 
-def test_sync_automations_put_autonomy(sync_client: Tungo, server: MockServer) -> None:
-    server.add("PUT", "/v1/companies/co%2F1/autonomy", reply("putCompanyAutonomy"))
-    result = sync_client.automations.put_autonomy(
-        "co/1",
-        levels={
-            "advance_report": "L1",
-            "bank_payment": "L1",
-            "bank_receipt": "L1",
-            "cash_order_in": "L1",
-            "cash_order_out": "L1",
-            "contract": "L1",
-            "counterparty": "L1",
-            "inventory_writeoff": "L1",
-            "purchase": "L1",
-            "sale": "L1",
-        },
-        max_amount_per_day_tiyn=7,
-        max_amount_per_document_tiyn=7,
-    )
-    assert_type(result, CompanyAutonomy)
-    expect_request(
-        server,
-        "PUT",
-        "/v1/companies/co%2F1/autonomy",
-        body={
-            "levels": {
-                "advance_report": "L1",
-                "bank_payment": "L1",
-                "bank_receipt": "L1",
-                "cash_order_in": "L1",
-                "cash_order_out": "L1",
-                "contract": "L1",
-                "counterparty": "L1",
-                "inventory_writeoff": "L1",
-                "purchase": "L1",
-                "sale": "L1",
-            },
-            "max_amount_per_day_tiyn": 7,
-            "max_amount_per_document_tiyn": 7,
-        },
-    )
-    expect_result(result, "putCompanyAutonomy")
-
-
-async def test_async_automations_put_autonomy(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("PUT", "/v1/companies/co%2F1/autonomy", reply("putCompanyAutonomy"))
-    result = await async_client.automations.put_autonomy(
-        "co/1",
-        levels={
-            "advance_report": "L1",
-            "bank_payment": "L1",
-            "bank_receipt": "L1",
-            "cash_order_in": "L1",
-            "cash_order_out": "L1",
-            "contract": "L1",
-            "counterparty": "L1",
-            "inventory_writeoff": "L1",
-            "purchase": "L1",
-            "sale": "L1",
-        },
-        max_amount_per_day_tiyn=7,
-        max_amount_per_document_tiyn=7,
-    )
-    assert_type(result, CompanyAutonomy)
-    expect_request(
-        server,
-        "PUT",
-        "/v1/companies/co%2F1/autonomy",
-        body={
-            "levels": {
-                "advance_report": "L1",
-                "bank_payment": "L1",
-                "bank_receipt": "L1",
-                "cash_order_in": "L1",
-                "cash_order_out": "L1",
-                "contract": "L1",
-                "counterparty": "L1",
-                "inventory_writeoff": "L1",
-                "purchase": "L1",
-                "sale": "L1",
-            },
-            "max_amount_per_day_tiyn": 7,
-            "max_amount_per_document_tiyn": 7,
-        },
-    )
-    expect_result(result, "putCompanyAutonomy")
-
-
 def test_sync_verification_list_keys(sync_client: Tungo, server: MockServer) -> None:
     server.add("GET", "/v1/public/verify-keys", reply("listPublicVerifyKeys"))
     result = sync_client.verification.list_keys()
@@ -3803,19 +3204,3 @@ async def test_async_verification_check(async_client: AsyncTungo, server: MockSe
         auth="public",
     )
     expect_result(result, "checkPublicVerify")
-
-
-def test_sync_releases_list(sync_client: Tungo, server: MockServer) -> None:
-    server.add("GET", "/v1/public/downloads", reply("listPublicDownloads"))
-    result = sync_client.releases.list()
-    assert_type(result, Downloads)
-    expect_request(server, "GET", "/v1/public/downloads", auth="public")
-    expect_result(result, "listPublicDownloads")
-
-
-async def test_async_releases_list(async_client: AsyncTungo, server: MockServer) -> None:
-    server.add("GET", "/v1/public/downloads", reply("listPublicDownloads"))
-    result = await async_client.releases.list()
-    assert_type(result, Downloads)
-    expect_request(server, "GET", "/v1/public/downloads", auth="public")
-    expect_result(result, "listPublicDownloads")

@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tungoai"
-version = "1.0.0" # x-release-version
+version = "2.0.0" # x-release-version
 description = "Official Python library for the Tungo Platform API"
 readme = "README.md"
 license = "MIT"
@@ -49,7 +49,7 @@ dev = [
 [project.urls]
 Homepage = "https://github.com/TungoAI/tungo-sdk-python"
 Repository = "https://github.com/TungoAI/tungo-sdk-python"
-Issues = "https://github.com/TungoAI/tungo-sdk-python/issues"
+Support = "https://app.tungo.kz"
 Changelog = "https://github.com/TungoAI/tungo-sdk-python/blob/main/CHANGELOG.md"
 
 [tool.hatch.build.targets.wheel]

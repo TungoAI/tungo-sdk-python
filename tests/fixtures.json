@@ -2011,20 +2011,6 @@
     },
     "status": 200
   },
-  "deleteCompanyChatMessageRating": {
-    "body": {
-      "dialog_id": "text",
-      "message_id": "text",
-      "rating": {
-        "at": "2026-01-02T03:04:05Z",
-        "comment": "text",
-        "reason": "text",
-        "vote": "up"
-      },
-      "turn_no": 7
-    },
-    "status": 200
-  },
   "deleteCompanyChatUpload": {
     "body": null,
     "status": 204
@@ -2038,13 +2024,6 @@
       "created": 1.5,
       "documents": 1.5,
       "job_id": "text"
-    },
-    "status": 200
-  },
-  "dismissCompanyChatRating": {
-    "body": {
-      "id": "text",
-      "rating_prompt": false
     },
     "status": 200
   },
@@ -2096,48 +2075,6 @@
       ],
       "write_max_amount_per_day_tiyn": 7,
       "write_max_amount_per_document_tiyn": 7
-    },
-    "status": 200
-  },
-  "getApiKeyUsage": {
-    "body": {
-      "by_company": [
-        {
-          "company_id": "text",
-          "cost_tiyn": 7,
-          "requests": 7
-        }
-      ],
-      "by_day": [
-        {
-          "cost_tiyn": 7,
-          "day": "text",
-          "requests": 7
-        }
-      ],
-      "by_model": [
-        {
-          "cost_tiyn": 7,
-          "model": "text",
-          "requests": 7
-        }
-      ],
-      "from": "2026-01-02T03:04:05Z",
-      "key_id": "text",
-      "month": {
-        "cap_tiyn": 7,
-        "month": "text",
-        "spent_tiyn": 7
-      },
-      "to": "2026-01-02T03:04:05Z",
-      "totals": {
-        "cache_read_tokens": 7,
-        "cache_write_tokens": 7,
-        "cost_tiyn": 7,
-        "input_tokens": 7,
-        "output_tokens": 7,
-        "requests": 7
-      }
     },
     "status": 200
   },
@@ -2396,6 +2333,12 @@
     },
     "status": 200
   },
+  "getCompanyBatchExport": {
+    "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "file_base64": "AP/+gCBnZXRDb21wYW55QmF0Y2hFeHBvcnQNCg==",
+    "filename": "getCompanyBatchExport.bin",
+    "status": 200
+  },
   "getCompanyBatchSummary": {
     "body": {
       "approve": {
@@ -2548,6 +2491,12 @@
       "turn": 1.5,
       "updated_at": "2026-01-02T03:04:05Z"
     },
+    "status": 200
+  },
+  "getCompanyChatFile": {
+    "content_type": "application/octet-stream",
+    "file_base64": "AP/+gCBnZXRDb21wYW55Q2hhdEZpbGUNCg==",
+    "filename": "getCompanyChatFile.bin",
     "status": 200
   },
   "getCompanyEsfIncoming": {
@@ -3048,6 +2997,12 @@
     },
     "status": 200
   },
+  "getCompanyProposalExport": {
+    "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "file_base64": "AP/+gCBnZXRDb21wYW55UHJvcG9zYWxFeHBvcnQNCg==",
+    "filename": "getCompanyProposalExport.bin",
+    "status": 200
+  },
   "getPublicVerify": {
     "body": {
       "code": "text",
@@ -3092,190 +3047,10 @@
     },
     "status": 200
   },
-  "getWorkspaceApiKeyUsage": {
+  "getWorkspacePlatformBalance": {
     "body": {
-      "by_company": [
-        {
-          "company_id": "text",
-          "cost_tiyn": 7,
-          "requests": 7
-        }
-      ],
-      "by_day": [
-        {
-          "cost_tiyn": 7,
-          "day": "text",
-          "requests": 7
-        }
-      ],
-      "by_model": [
-        {
-          "cost_tiyn": 7,
-          "model": "text",
-          "requests": 7
-        }
-      ],
-      "from": "2026-01-02T03:04:05Z",
-      "key_id": "text",
-      "month": {
-        "cap_tiyn": 7,
-        "month": "text",
-        "spent_tiyn": 7
-      },
-      "to": "2026-01-02T03:04:05Z",
-      "totals": {
-        "cache_read_tokens": 7,
-        "cache_write_tokens": 7,
-        "cost_tiyn": 7,
-        "input_tokens": 7,
-        "output_tokens": 7,
-        "requests": 7
-      }
-    },
-    "status": 200
-  },
-  "getWorkspacePlatformAccount": {
-    "body": {
-      "auto_reload": {
-        "amount_tiyn": 7,
-        "enabled": true,
-        "monthly_count_max": 7,
-        "monthly_limit_tiyn": 7,
-        "threshold_tiyn": 7
-      },
-      "auto_reload_spent_tiyn": 7,
       "balance_tiyn": 7,
-      "blocked_reason": "disabled",
-      "enabled": true,
-      "month": "text",
-      "monthly_cap_tiyn": 7,
-      "purchase_limits": {
-        "daily_max_tiyn": 7,
-        "max_tiyn": 7,
-        "min_tiyn": 7,
-        "today_tiyn": 7
-      },
-      "spent_tiyn": 7
-    },
-    "status": 200
-  },
-  "getWorkspacePlatformAudit": {
-    "body": {
-      "data": [
-        {
-          "action": "company.created",
-          "action_title": "text",
-          "actor": {
-            "id": "text",
-            "name": "text",
-            "type": "user"
-          },
-          "at": "2026-01-02T03:04:05Z",
-          "company_id": "text",
-          "id": "text",
-          "ip": "text",
-          "object": {
-            "amount_tiyn": 7,
-            "id": "text",
-            "name": "text",
-            "purpose": "subscription",
-            "type": "text"
-          },
-          "request_id": "text",
-          "target": {
-            "id": "text",
-            "type": "text"
-          }
-        }
-      ],
-      "next_cursor": "text",
-      "total": 7,
-      "total_more": true
-    },
-    "status": 200
-  },
-  "getWorkspacePlatformLedger": {
-    "body": {
-      "data": [
-        {
-          "amount_tiyn": 7,
-          "api_key_id": "text",
-          "at": "2026-01-02T03:04:05Z",
-          "balance_after_tiyn": 7,
-          "documents": {
-            "act_number": "text",
-            "invoice_number": "text",
-            "receipt_status": "not_required",
-            "receipt_url": "text"
-          },
-          "id": "text",
-          "kind": "purchase",
-          "model": "text",
-          "note": "text",
-          "payment_id": "text",
-          "request_id": "text"
-        }
-      ],
-      "next_cursor": "text"
-    },
-    "status": 200
-  },
-  "getWorkspacePlatformUsage": {
-    "body": {
-      "by_company": [
-        {
-          "cache_read_tokens": 7,
-          "cache_write_tokens": 7,
-          "company_id": "text",
-          "cost_tiyn": 7,
-          "input_tokens": 7,
-          "output_tokens": 7,
-          "requests": 7
-        }
-      ],
-      "by_day": [
-        {
-          "cache_read_tokens": 7,
-          "cache_write_tokens": 7,
-          "cost_tiyn": 7,
-          "day": "text",
-          "input_tokens": 7,
-          "output_tokens": 7,
-          "requests": 7
-        }
-      ],
-      "by_key": [
-        {
-          "api_key_id": "text",
-          "cache_read_tokens": 7,
-          "cache_write_tokens": 7,
-          "cost_tiyn": 7,
-          "input_tokens": 7,
-          "output_tokens": 7,
-          "requests": 7
-        }
-      ],
-      "by_model": [
-        {
-          "cache_read_tokens": 7,
-          "cache_write_tokens": 7,
-          "cost_tiyn": 7,
-          "input_tokens": 7,
-          "model": "text",
-          "output_tokens": 7,
-          "requests": 7
-        }
-      ],
-      "from": "2026-01-02T03:04:05Z",
-      "to": "2026-01-02T03:04:05Z",
-      "totals": {
-        "cache_read_tokens": 7,
-        "cache_write_tokens": 7,
-        "cost_tiyn": 7,
-        "input_tokens": 7,
-        "output_tokens": 7,
-        "requests": 7
-      }
+      "enabled": true
     },
     "status": 200
   },
@@ -3293,15 +3068,6 @@
       "id": "text",
       "updated_at": "2026-01-02T03:04:05Z",
       "url": "text"
-    },
-    "status": 200
-  },
-  "getWorkspaceWebhooksUsage": {
-    "body": {
-      "month": "text",
-      "monthly_free_messages": 7,
-      "over_limit": 7,
-      "sent": 7
     },
     "status": 200
   },
@@ -4428,64 +4194,6 @@
     },
     "status": 200
   },
-  "listCompanyChatMentions": {
-    "body": {
-      "data": [
-        {
-          "hint": "text",
-          "id": "text",
-          "title": "text",
-          "type": "proposal"
-        }
-      ],
-      "unavailable": [
-        {
-          "reason": "no_access",
-          "type": "proposal"
-        }
-      ]
-    },
-    "status": 200
-  },
-  "listCompanyChatRatingOptions": {
-    "body": {
-      "comment_chars": 7,
-      "dialog_scores": {
-        "max": 7,
-        "min": 7
-      },
-      "reasons": [
-        {
-          "key": "text",
-          "title": "text"
-        }
-      ]
-    },
-    "status": 200
-  },
-  "listCompanyChatSuggestions": {
-    "body": {
-      "data": [
-        {
-          "code": "text",
-          "suggestions": [
-            {
-              "action": "ask",
-              "code": "text",
-              "hint": "text",
-              "prompt": "text",
-              "seasonal": true,
-              "title": "text"
-            }
-          ],
-          "title": "text"
-        }
-      ],
-      "locale": "ru",
-      "onec_linked": true
-    },
-    "status": 200
-  },
   "listCompanyFeedEvents": {
     "events": [
       {
@@ -4794,37 +4502,6 @@
     },
     "status": 200
   },
-  "listPublicDownloads": {
-    "body": {
-      "connector": {
-        "files": [
-          {
-            "arch": "amd64",
-            "name": "text",
-            "os": "windows",
-            "sha256": "text",
-            "size": 7,
-            "url": "text"
-          }
-        ],
-        "notes": "text",
-        "published_at": "2026-01-02T03:04:05Z",
-        "version": "text"
-      },
-      "onec_extension": {
-        "file": {
-          "name": "text",
-          "sha256": "text",
-          "size": 7,
-          "url": "text"
-        },
-        "notes": "text",
-        "published_at": "2026-01-02T03:04:05Z",
-        "version": "text"
-      }
-    },
-    "status": 200
-  },
   "listPublicVerifyKeys": {
     "body": {
       "keys": [
@@ -4838,93 +4515,6 @@
           "y": "text"
         }
       ]
-    },
-    "status": 200
-  },
-  "listUsageRates": {
-    "body": {
-      "data": [
-        {
-          "cache_read_per_mtok_tiyn": 7,
-          "cache_write_1h_per_mtok_tiyn": 7,
-          "cache_write_per_mtok_tiyn": 7,
-          "effective_from": "2026-01-02T03:04:05Z",
-          "input_per_mtok_tiyn": 7,
-          "long_context": {
-            "above_tokens": 7,
-            "cache_read_per_mtok_tiyn": 7,
-            "cache_write_1h_per_mtok_tiyn": 7,
-            "cache_write_per_mtok_tiyn": 7,
-            "input_per_mtok_tiyn": 7,
-            "output_per_mtok_tiyn": 7
-          },
-          "model": "text",
-          "output_per_mtok_tiyn": 7,
-          "title": "text",
-          "web_search_per_1k_tiyn": 7
-        }
-      ]
-    },
-    "status": 200
-  },
-  "listWorkspacePlatformLimits": {
-    "body": {
-      "concurrent_turns": {
-        "in_use": 7,
-        "limit": 7
-      },
-      "files": {
-        "archive_bytes": 7,
-        "archive_files": 7,
-        "archives_per_message": 7,
-        "attachment_bytes": 7,
-        "attachments_per_message": 7,
-        "attachments_total_bytes": 7,
-        "bank_statement_request_bytes": 7,
-        "chat_request_bytes": 7,
-        "hook_event_bytes": 7,
-        "image_bytes": 7,
-        "pdf_pages": 7,
-        "request_bytes": 7,
-        "upload_part_bytes": 7
-      },
-      "rate": {
-        "key": {
-          "limit_per_minute": 7,
-          "remaining": 7,
-          "reset_in_sec": 7
-        },
-        "workspace": {
-          "limit_per_minute": 7,
-          "remaining": 7,
-          "reset_in_sec": 7
-        }
-      }
-    },
-    "status": 200
-  },
-  "listWorkspacePlatformRequests": {
-    "body": {
-      "data": [
-        {
-          "api_key_id": "text",
-          "at": "2026-01-02T03:04:05Z",
-          "client_request_id": "text",
-          "company_id": "text",
-          "cost_tiyn": 7,
-          "duration_ms": 7,
-          "id": "text",
-          "ip": "text",
-          "method": "text",
-          "path": "text",
-          "query": "text",
-          "request_id": "text",
-          "status": 7
-        }
-      ],
-      "next_cursor": "text",
-      "total": 7,
-      "total_more": true
     },
     "status": 200
   },
@@ -5130,60 +4720,6 @@
       "queued": 7,
       "reason": "text",
       "running": 7
-    },
-    "status": 200
-  },
-  "putCompanyAutonomy": {
-    "body": {
-      "custom": {
-        "max_amount_per_day_tiyn": true,
-        "max_amount_per_document_tiyn": true
-      },
-      "defaults": {
-        "max_amount_per_day_tiyn": 7,
-        "max_amount_per_document_tiyn": 7
-      },
-      "levels": {
-        "advance_report": "L1",
-        "bank_payment": "L1",
-        "bank_receipt": "L1",
-        "cash_order_in": "L1",
-        "cash_order_out": "L1",
-        "contract": "L1",
-        "counterparty": "L1",
-        "inventory_writeoff": "L1",
-        "purchase": "L1",
-        "sale": "L1"
-      },
-      "max_amount_per_day_tiyn": 7,
-      "max_amount_per_document_tiyn": 7,
-      "updated_at": "2026-01-02T03:04:05Z"
-    },
-    "status": 200
-  },
-  "putCompanyChatMessageRating": {
-    "body": {
-      "dialog_id": "text",
-      "message_id": "text",
-      "rating": {
-        "at": "2026-01-02T03:04:05Z",
-        "comment": "text",
-        "reason": "text",
-        "vote": "up"
-      },
-      "turn_no": 7
-    },
-    "status": 200
-  },
-  "putCompanyChatRating": {
-    "body": {
-      "id": "text",
-      "rating": {
-        "at": "2026-01-02T03:04:05Z",
-        "comment": "text",
-        "score": 7
-      },
-      "rating_prompt": false
     },
     "status": 200
   },
@@ -5899,14 +5435,6 @@
     },
     "status": 202
   },
-  "translateCompanyChatThinking": {
-    "body": {
-      "cached": true,
-      "id": "text",
-      "text": "text"
-    },
-    "status": 200
-  },
   "updateCompanyAutomationsHook": {
     "body": {
       "created_at": "2026-01-02T03:04:05Z",
@@ -5972,14 +5500,6 @@
         "kind": "hook"
       },
       "updated_at": "2026-01-02T03:04:05Z"
-    },
-    "status": 200
-  },
-  "updateCompanyChat": {
-    "body": {
-      "id": "text",
-      "title": "text",
-      "title_source": "first_message"
     },
     "status": 200
   },

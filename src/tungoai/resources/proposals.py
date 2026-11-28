@@ -18,6 +18,7 @@ from .._base_client import (
     to_raw_response,
 )
 from .._pagination import AsyncCursorPage, SyncCursorPage
+from .._response import DownloadedFile
 from .._types import Omit, RequestOptions, omit
 from ..types import (
     ApproveBatchCompanyProposalsResponse,
@@ -245,6 +246,43 @@ class ProposalsResource:
                 idempotency_header="Idempotency-Key",
             ),
             cast_to=ProposalDecision,
+            options=request_options,
+        )
+
+    def export(
+        self,
+        co: str,
+        id: str,
+        *,
+        format: params.GetCompanyProposalExportFormat | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> DownloadedFile:
+        """Скачать документ файлом
+
+        Карточка предложения таблицей: лист «Документ» — реквизиты, лист «Строки» — товары и услуги, лист «Проводки» — ожидаемые и (у записанного) фактические. Ответ — сам файл (Content-Disposition: attachment, имя — латиницей из номера: tungo-….xlsx, .csv или .pdf). Ячейки формулами не становятся: в Excel пишутся только текст и числа, в CSV значение, начинающееся с = + - @, получает апостроф, в PDF всё — текст. Суммы — тенге числом, даты — ГГГГ-ММ-ДД, во всех форматах одинаково.
+
+        Доступ: company.read.
+
+        Доступно по ключу API.
+
+        Returns the downloaded file: its bytes, its name from Content-Disposition and its content type.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: Номер предложения внутри компании: P- и шесть цифр (P-000123). У двух компаний номера могут совпадать
+            format: Формат файла: xlsx — Excel (все листы); csv — первый лист (UTF-8 с BOM, разделитель — точка с запятой); pdf — все листы разделами на A4 (application/pdf, шрифт вложен: кириллица и казахские буквы). По умолчанию xlsx
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return self._client.request_download(
+            RequestSpec(
+                method="GET",
+                path=f"/v1/companies/{path_segment('co', co)}/proposals/{path_segment('id', id)}/export",
+                query=query_params(
+                    {
+                        "format": format,
+                    }
+                ),
+            ),
             options=request_options,
         )
 
@@ -530,6 +568,43 @@ class AsyncProposalsResource:
             options=request_options,
         )
 
+    async def export(
+        self,
+        co: str,
+        id: str,
+        *,
+        format: params.GetCompanyProposalExportFormat | Omit = omit,
+        request_options: RequestOptions | None = None,
+    ) -> DownloadedFile:
+        """Скачать документ файлом
+
+        Карточка предложения таблицей: лист «Документ» — реквизиты, лист «Строки» — товары и услуги, лист «Проводки» — ожидаемые и (у записанного) фактические. Ответ — сам файл (Content-Disposition: attachment, имя — латиницей из номера: tungo-….xlsx, .csv или .pdf). Ячейки формулами не становятся: в Excel пишутся только текст и числа, в CSV значение, начинающееся с = + - @, получает апостроф, в PDF всё — текст. Суммы — тенге числом, даты — ГГГГ-ММ-ДД, во всех форматах одинаково.
+
+        Доступ: company.read.
+
+        Доступно по ключу API.
+
+        Returns the downloaded file: its bytes, its name from Content-Disposition and its content type.
+
+        Args:
+            co: id компании, co_… — из GET /v1/companies
+            id: Номер предложения внутри компании: P- и шесть цифр (P-000123). У двух компаний номера могут совпадать
+            format: Формат файла: xlsx — Excel (все листы); csv — первый лист (UTF-8 с BOM, разделитель — точка с запятой); pdf — все листы разделами на A4 (application/pdf, шрифт вложен: кириллица и казахские буквы). По умолчанию xlsx
+            request_options: Per-request timeout, retries, headers and idempotency key.
+        """
+        return await self._client.request_download(
+            RequestSpec(
+                method="GET",
+                path=f"/v1/companies/{path_segment('co', co)}/proposals/{path_segment('id', id)}/export",
+                query=query_params(
+                    {
+                        "format": format,
+                    }
+                ),
+            ),
+            options=request_options,
+        )
+
     async def reject(
         self,
         co: str,
@@ -614,6 +689,7 @@ class ProposalsResourceWithRawResponse:
         self.approve_batch = to_raw_response(resource.approve_batch)
         self.get = to_raw_response(resource.get)
         self.approve = to_raw_response(resource.approve)
+        self.export = to_raw_response(resource.export)
         self.reject = to_raw_response(resource.reject)
         self.request_approval = to_raw_response(resource.request_approval)
 
@@ -626,5 +702,6 @@ class AsyncProposalsResourceWithRawResponse:
         self.approve_batch = async_to_raw_response(resource.approve_batch)
         self.get = async_to_raw_response(resource.get)
         self.approve = async_to_raw_response(resource.approve)
+        self.export = async_to_raw_response(resource.export)
         self.reject = async_to_raw_response(resource.reject)
         self.request_approval = async_to_raw_response(resource.request_approval)

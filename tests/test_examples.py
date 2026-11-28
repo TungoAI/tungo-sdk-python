@@ -61,6 +61,12 @@ def script(server: MockServer) -> None:
     server.add("POST", base + "/proposals/p_1/reject", Reply(json=fixture("rejectCompanyProposal")))
     server.respond("POST", base + "/chat", chat)
     server.add("POST", "/hooks/th_example", Reply(status=202, json=fixture("postHook")))
+    pdf = Reply(
+        body=b"%PDF-1.7\n\x00\xff\xfe\x80",
+        content_type="application/pdf",
+        headers={"Content-Disposition": 'attachment; filename="tungo-P-000001.pdf"'},
+    )
+    server.add("GET", base + "/proposals/p_1/export", pdf)
 
 
 def test_every_example_is_covered() -> None:
@@ -69,9 +75,10 @@ def test_every_example_is_covered() -> None:
 
 @pytest.mark.parametrize("name", EXAMPLES)
 def test_example_runs(
-    name: str, server: MockServer, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    name: str, server: MockServer, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str], tmp_path: Path
 ) -> None:
     script(server)
+    monkeypatch.chdir(tmp_path)  # an example may save a file
     monkeypatch.setenv("TUNGO_API_KEY", API_KEY)
     monkeypatch.setenv("TUNGO_BASE_URL", server.url)
     monkeypatch.delenv("TUNGO_WEBHOOK_SECRET", raising=False)
@@ -82,6 +89,8 @@ def test_example_runs(
         assert request.headers["user-agent"].startswith("tungo-sdk-python/")
     if name != "money.py":
         assert server.requests, "the example made no request"
+    if name == "downloads.py":
+        assert (tmp_path / "tungo-P-000001.pdf").read_bytes() == b"%PDF-1.7\n\x00\xff\xfe\x80"
 
 
 def test_the_readme_shows_every_example() -> None:
@@ -105,6 +114,7 @@ def test_readme_block_runs_when_pasted(
     monkeypatch.delenv("TUNGO_WEBHOOK_SECRET", raising=False)
     pasted = tmp_path / f"readme_block_{index}.py"
     pasted.write_text(block, encoding="utf-8")
+    monkeypatch.chdir(tmp_path)  # a block may save a file
     namespace = runpy.run_path(str(pasted), run_name="__main__")
     for value in namespace.values():
         if isinstance(value, Tungo):

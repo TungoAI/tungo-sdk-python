@@ -22,7 +22,7 @@ import httpx
 import pytest
 
 import tungoai
-from tungoai import APIResponse, SyncCursorPage, Tungo, RequestSpec
+from tungoai import APIResponse, SyncCursorPage, Tungo, DownloadedFile, RequestSpec
 from tungoai.types import (
     AutomationHookAccepted,
     BatchApproveJob,
@@ -251,16 +251,16 @@ def test_request_headers_override_default_headers(server: MockServer) -> None:
 
 
 def test_a_public_operation_never_sends_the_key(server: MockServer) -> None:
-    server.add("GET", "/v1/usage-rates", Reply(json=fixture("listUsageRates")))
+    server.add("GET", "/v1/public/verify-keys", Reply(json=fixture("listPublicVerifyKeys")))
     defaults = {
         "Authorization": "Bearer tg_leak",
         "X-Api-Key": "tg_leak",
         "X-Other": "kept",
     }
     with Tungo(api_key=API_KEY, base_url=server.url, default_headers=defaults) as client:
-        client.platform.list_usage_rates()
+        client.verification.list_keys()
     with Tungo(base_url=server.url) as anonymous:
-        anonymous.platform.list_usage_rates()  # works without any key
+        anonymous.verification.list_keys()  # works without any key
     for request in server.requests:
         assert "x-api-key" not in request.headers
         assert "authorization" not in request.headers
@@ -495,6 +495,74 @@ def test_an_endpoint_the_sdk_does_not_cover(sync_client: Tungo, server: MockServ
         {"x": 1},
         API_KEY,
     )
+
+
+# ---- downloads ---------------------------------------------------------------------------------
+
+XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+FILE_BYTES = b"PK\x03\x04\x00\xff\xfe\x80 not text \r\n\x00"
+DISPOSITION = "attachment; filename=\"Otchet.xlsx\"; filename*=UTF-8''%D0%9E%D1%82%D1%87%D1%91%D1%82.xlsx"
+
+
+def test_a_file_is_downloaded_as_its_exact_bytes(sync_client: Tungo, server: MockServer) -> None:
+    headers = {"Content-Disposition": DISPOSITION, "x-request-id": "req_file"}
+    server.add(
+        "GET", COMPANY + "/proposals/P-000123/export", Reply(body=FILE_BYTES, content_type=XLSX, headers=headers)
+    )
+    file = sync_client.proposals.export("co_1", "P-000123", format="pdf")
+    assert isinstance(file, DownloadedFile)
+    assert file.content == FILE_BYTES
+    assert type(file.content) is bytes
+    assert (file.filename, file.content_type, file.request_id) == ("Отчёт.xlsx", XLSX, "req_file")
+    assert (file.status_code, file.retries_taken, file.headers["content-disposition"]) == (200, 0, DISPOSITION)
+    request = server.requests[0]
+    assert (request.method, request.path, request.query) == (
+        "GET",
+        "/v1/companies/co_1/proposals/P-000123/export",
+        [("format", "pdf")],
+    )
+    assert request.headers["accept"] == "*/*"
+    assert request.headers["x-api-key"] == API_KEY
+    assert request.body == b""
+    shown = repr(file)
+    assert "size=" + str(len(FILE_BYTES)) in shown
+    assert "not text" not in shown, "the bytes are not printed"
+
+
+def test_a_download_without_content_disposition_has_no_name(sync_client: Tungo, server: MockServer) -> None:
+    server.add("GET", COMPANY + "/chat/d_1/files/f_1", Reply(body=b"\x00\x01", content_type="application/octet-stream"))
+    file = sync_client.chat.download_file("co_1", "d_1", "f_1")
+    assert (file.content, file.filename, file.content_type) == (b"\x00\x01", None, "application/octet-stream")
+
+
+def test_a_download_error_is_the_typed_error(sync_client: Tungo, server: MockServer) -> None:
+    body = {
+        "type": "error",
+        "error": {"type": "not_found_error", "message": "Предложение не найдено."},
+        "request_id": "req_missing",
+    }
+    server.add("GET", COMPANY + "/proposals/P-000404/export", Reply(status=404, json=body))
+    with pytest.raises(tungoai.NotFoundError) as caught:
+        sync_client.proposals.export("co_1", "P-000404")
+    assert (caught.value.status, caught.value.request_id) == (404, "req_missing")
+    assert caught.value.message == "Предложение не найдено."
+    assert server.requests[0].query == []
+
+
+def test_a_download_is_retried(server: MockServer) -> None:
+    failure = Reply(status=503, json=error_body("unavailable_error", "Позже."))
+    done = Reply(
+        body=FILE_BYTES, content_type="text/csv", headers={"Content-Disposition": "attachment; filename=b.csv"}
+    )
+    server.add("GET", COMPANY + "/batch/b_1/export", failure, done)
+    with Tungo(api_key=API_KEY, base_url=server.url) as client:
+        raw = client.batches.with_raw_response.export("co_1", "b_1", format="csv")
+    assert len(server.requests) == 2
+    assert isinstance(raw, APIResponse)
+    assert (raw.status_code, raw.retries_taken, raw.content) == (200, 1, FILE_BYTES)
+    file = raw.parse()
+    assert isinstance(file, DownloadedFile)
+    assert (file.content, file.filename, file.retries_taken) == (FILE_BYTES, "b.csv", 1)
 
 
 # ---- errors ------------------------------------------------------------------------------------

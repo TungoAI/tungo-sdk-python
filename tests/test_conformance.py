@@ -32,6 +32,7 @@ from tungoai._base_client import (
     should_retry,
 )
 from tungoai._models import validate
+from tungoai._response import DownloadedFile, download_filename
 from tungoai.types import ChatEvent
 
 from .support import ROOT
@@ -63,6 +64,7 @@ def test_vectors_version_and_sections() -> None:
         "sse",
         "chat_stream",
         "chat_stream_replay",  # test_streaming_async.py
+        "content_disposition",
     }
     assert set(VECTORS) - {"version", "description"} == covered, "a new section of the vectors has no test"
 
@@ -257,6 +259,14 @@ def test_backoff(case: dict[str, Any]) -> None:
 @pytest.mark.parametrize("case", cases("retry_policy"))
 def test_retry_policy(case: dict[str, Any]) -> None:
     assert should_retry(case["method"], case["idempotency_key"], case["cause"]) is case["expect"]["retry"]
+
+
+@pytest.mark.parametrize("case", cases("content_disposition"))
+def test_content_disposition(case: dict[str, Any]) -> None:
+    assert download_filename(case["header"]) == case["expect"]["filename"]
+    headers = httpx.Headers() if case["header"] is None else httpx.Headers({"Content-Disposition": case["header"]})
+    file = DownloadedFile(content=b"", status_code=200, headers=headers)
+    assert file.filename == case["expect"]["filename"]
 
 
 @pytest.mark.parametrize("case", cases("path_segment"))

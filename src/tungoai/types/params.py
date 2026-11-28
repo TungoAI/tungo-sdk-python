@@ -48,25 +48,13 @@ __all__ = [
     "ChatChoiceAnswer",
     "ChatMention",
     "ChatMentionType",
-    "ChatMessageRatingBodyVote",
     "ChatMessageRequestEffort",
     "ChatMessageRequestMode",
     "ChatTokenCountRequestMode",
-    "CompanyAutonomyInputLevels",
-    "CompanyAutonomyInputLevelsAdvanceReport",
-    "CompanyAutonomyInputLevelsBankPayment",
-    "CompanyAutonomyInputLevelsBankReceipt",
-    "CompanyAutonomyInputLevelsCashOrderIn",
-    "CompanyAutonomyInputLevelsCashOrderOut",
-    "CompanyAutonomyInputLevelsContract",
-    "CompanyAutonomyInputLevelsCounterparty",
-    "CompanyAutonomyInputLevelsInventoryWriteoff",
-    "CompanyAutonomyInputLevelsPurchase",
-    "CompanyAutonomyInputLevelsSale",
     "FeedSection",
+    "GetCompanyBatchExportFormat",
+    "GetCompanyProposalExportFormat",
     "ListCompanyChatFilesFormat",
-    "ListCompanyChatRatingOptionsLang",
-    "ListCompanyChatSuggestionsLang",
     "ListCompanyProposalsApprovalRequested",
     "ListWorkspaceWebhooksEndpointAttemptsStatus",
 ]
@@ -140,12 +128,6 @@ ChatMentionType: TypeAlias = Literal[
     "batch",
 ]
 
-# up — ответ хороший, down — плохой. Повторная оценка того же ответа заменяет прежнюю
-ChatMessageRatingBodyVote: TypeAlias = Literal[
-    "up",
-    "down",
-]
-
 # Усилие ИИ на этот вопрос: low < medium < high < xhigh < max — глубже думает, дольше и дороже (больше расход лимита). Не прислано или null — усилие выбирает Tungo. Только на тарифе с выбором усилия (max_effort тарифа в GET /v1/plans не null): иначе 402 effort_not_in_plan. Выше max_effort тарифа — опускается до него. Ответ на уточняющий вопрос продолжает ход с прежним усилием. Ключу API тариф не нужен: усилие — как прислано
 ChatMessageRequestEffort: TypeAlias = Literal[
     "low",
@@ -169,81 +151,25 @@ ChatTokenCountRequestMode: TypeAlias = Literal[
     "document",
 ]
 
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsAdvanceReport: TypeAlias = Literal[
-    "L1",
-    "L2",
-    "L3",
-]
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsBankPayment: TypeAlias = Literal[
-    "L1",
-    "L2",
-    "L3",
-]
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsBankReceipt: TypeAlias = Literal[
-    "L1",
-    "L2",
-    "L3",
-]
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsCashOrderIn: TypeAlias = Literal[
-    "L1",
-    "L2",
-    "L3",
-]
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsCashOrderOut: TypeAlias = Literal[
-    "L1",
-    "L2",
-    "L3",
-]
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsContract: TypeAlias = Literal[
-    "L1",
-    "L2",
-    "L3",
-]
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsCounterparty: TypeAlias = Literal[
-    "L1",
-    "L2",
-    "L3",
-]
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsInventoryWriteoff: TypeAlias = Literal[
-    "L1",
-    "L2",
-    "L3",
-]
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsPurchase: TypeAlias = Literal[
-    "L1",
-    "L2",
-    "L3",
-]
-
-# `L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит
-CompanyAutonomyInputLevelsSale: TypeAlias = Literal[
-    "L1",
-    "L2",
-    "L3",
-]
-
 # Раздел ленты: auto — «Сделано автоматически» (записано в 1С, проверки учёта без серьёзных находок); decision — «Требует решения» (ждёт одобрения, выписка дня); question — «Вопросы от ИИ» (блокеры, вопросы, сбои автоматизаций)
 FeedSection: TypeAlias = Literal[
     "auto",
     "decision",
     "question",
+]
+
+# Формат файла: xlsx — Excel (все листы); csv — первый лист (UTF-8 с BOM, разделитель — точка с запятой); pdf — все листы разделами на A4 (application/pdf, шрифт вложен: кириллица и казахские буквы). По умолчанию xlsx
+GetCompanyBatchExportFormat: TypeAlias = Literal[
+    "xlsx",
+    "csv",
+    "pdf",
+]
+
+# Формат файла: xlsx — Excel (все листы); csv — первый лист (UTF-8 с BOM, разделитель — точка с запятой); pdf — все листы разделами на A4 (application/pdf, шрифт вложен: кириллица и казахские буквы). По умолчанию xlsx
+GetCompanyProposalExportFormat: TypeAlias = Literal[
+    "xlsx",
+    "csv",
+    "pdf",
 ]
 
 # Только этого формата: xlsx, docx, pdf или csv
@@ -252,18 +178,6 @@ ListCompanyChatFilesFormat: TypeAlias = Literal[
     "docx",
     "pdf",
     "csv",
-]
-
-# Язык названий причин; по умолчанию ru
-ListCompanyChatRatingOptionsLang: TypeAlias = Literal[
-    "ru",
-    "kk",
-]
-
-# Язык текстов — язык интерфейса кабинета. Не передан — язык ответов ИИ из профиля (`kk` — по-казахски, иначе по-русски)
-ListCompanyChatSuggestionsLang: TypeAlias = Literal[
-    "ru",
-    "kk",
 ]
 
 # true — только отправленные на одобрение и ещё не решённые; false — только остальные
@@ -490,31 +404,6 @@ class ChatMention(TypedDict, total=False):
     """id упомянутого — как его отдал GET …/chat/mentions"""
     type: Required[ChatMentionType]
     """Что упомянуто: `proposal` — предложение (документ для 1С), id — его номер P-000123; `counterparty` — контрагент из 1С компании, id — его ссылка из поиска; `batch` — задание пачки (разбор выписки, входящие ЭСФ), id — bat_…"""
-
-
-class CompanyAutonomyInputLevels(TypedDict, total=False):
-    """Уровень доверия по видам документов (ключ — вид, как в kinds правила автоодобрения). Не указанный вид — L1. Отмены документа (revert) в списке нет: её всегда решает человек, подпись ЭСФ и закрытие месяца не поднимаются никогда."""
-
-    advance_report: CompanyAutonomyInputLevelsAdvanceReport
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    bank_payment: CompanyAutonomyInputLevelsBankPayment
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    bank_receipt: CompanyAutonomyInputLevelsBankReceipt
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    cash_order_in: CompanyAutonomyInputLevelsCashOrderIn
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    cash_order_out: CompanyAutonomyInputLevelsCashOrderOut
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    contract: CompanyAutonomyInputLevelsContract
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    counterparty: CompanyAutonomyInputLevelsCounterparty
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    inventory_writeoff: CompanyAutonomyInputLevelsInventoryWriteoff
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    purchase: CompanyAutonomyInputLevelsPurchase
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
-    sale: CompanyAutonomyInputLevelsSale
-    """`L1` — ИИ только готовит, записывает человек (по умолчанию); `L2` — автоодобрение пишет черновиком, без проведения; `L3` — пишет и проводит"""
 
 
 AutomationFilterConditionValueOption4Item: TypeAlias = str | float | bool

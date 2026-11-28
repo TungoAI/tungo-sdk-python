@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import base64
 import json
 import time
 from collections.abc import Callable, Sequence
@@ -12,7 +13,7 @@ from typing import Any, Final
 import anyio
 import pydantic
 
-from tungoai import hook_signature_header
+from tungoai import DownloadedFile, hook_signature_header
 
 from .mock_server import MockServer, Recorded, Reply, sse
 
@@ -34,8 +35,15 @@ def fixture(key: str) -> Any:
 
 
 def reply(key: str) -> Reply:
-    """The scripted response of an operation: JSON, an empty body or a stream of events."""
+    """The scripted response of an operation: JSON, an empty body, a file or a stream of events."""
     entry = FIXTURES[key]
+    if "file_base64" in entry:
+        return Reply(
+            status=entry["status"],
+            body=base64.b64decode(entry["file_base64"]),
+            content_type=entry["content_type"],
+            headers={"Content-Disposition": f'attachment; filename="{entry["filename"]}"'},
+        )
     if "events" in entry:
         frames = [
             sse(item["event"], item["data"], event_id=str(index + 1)) for index, item in enumerate(entry["events"])
@@ -111,6 +119,13 @@ def to_wire(value: object) -> object:
 def expect_result(result: object, key: str) -> None:
     """The decoded result carries exactly what the mock sent: nothing lost, renamed or coerced."""
     assert to_wire(result) == fixture(key)
+
+
+def expect_file(file: DownloadedFile, key: str) -> None:
+    """The downloaded file holds exactly the bytes the mock sent, with their name and content type."""
+    entry = FIXTURES[key]
+    assert file.content == base64.b64decode(entry["file_base64"])
+    assert (file.filename, file.content_type, file.request_id) == (entry["filename"], entry["content_type"], "req_mock")
 
 
 def expect_events(events: Sequence[object], key: str) -> None:

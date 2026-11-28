@@ -47,7 +47,7 @@ from ._exceptions import (
 )
 from ._models import build
 from ._pagination import AsyncCursorPage, SyncCursorPage
-from ._response import APIResponse, with_parsed
+from ._response import APIResponse, DownloadedFile, with_parsed
 from ._streaming import AsyncChatStream, AsyncStream, ChatStream, Stream
 from ._types import Omit, RequestOptions
 from ._version import __version__
@@ -1078,9 +1078,12 @@ class SyncAPIClient(BaseClient):
         self.close()
 
     def _send(
-        self, spec: RequestSpec, options: RequestOptions | None, *, stream: bool
+        self, spec: RequestSpec, options: RequestOptions | None, *, stream: bool, download: bool = False
     ) -> tuple[httpx.Response, bytes, int]:
-        """Runs the retry loop. Returns the response, its body (empty for a stream) and the number of retries."""
+        """Runs the retry loop. Returns the response, its body (empty for a stream) and the number of retries.
+
+        ``download`` asks for a file (``Accept: */*``) instead of JSON; the body is read whole either way.
+        """
         opts: RequestOptions = options or {}
         max_retries = self._retries(opts)
         idempotency_key = self._idempotency_key(spec, opts)
@@ -1091,7 +1094,7 @@ class SyncAPIClient(BaseClient):
             timeout = httpx.Timeout(connect, read=idle)
         else:
             timeout = httpx.Timeout(total)
-        accept = "text/event-stream" if stream else "application/json"
+        accept = "text/event-stream" if stream else "*/*" if download else "application/json"
         url, headers, content = self._prepare(spec, opts, idempotency_key=idempotency_key, accept=accept)
         # A key the caller put into the headers makes the request as safe to repeat as a generated one
         # (only an operation that declares the header keeps it: see _prepare).
@@ -1220,6 +1223,34 @@ class SyncAPIClient(BaseClient):
             return response
         return response.parse()
 
+    def request_download(
+        self,
+        spec: RequestSpec,
+        *,
+        options: RequestOptions | None = None,
+    ) -> DownloadedFile:
+        """Sends a request whose successful response is a file, and returns its bytes undecoded.
+
+        Errors, retries and timeouts are those of ``request``: an error status is the typed API error.
+        """
+        response, body, retries = self._send(spec, options, stream=False, download=True)
+        file = DownloadedFile(
+            content=body,
+            status_code=response.status_code,
+            headers=response.headers,
+            retries_taken=retries,
+        )
+        if RAW_RESPONSE.get():
+            raw = APIResponse(
+                status_code=response.status_code,
+                headers=response.headers,
+                content=body,
+                parsed=file,
+                retries_taken=retries,
+            )
+            return cast(DownloadedFile, raw)
+        return file
+
     def request_page(
         self,
         spec: RequestSpec,
@@ -1323,9 +1354,12 @@ class AsyncAPIClient(BaseClient):
         await self.aclose()
 
     async def _send(
-        self, spec: RequestSpec, options: RequestOptions | None, *, stream: bool
+        self, spec: RequestSpec, options: RequestOptions | None, *, stream: bool, download: bool = False
     ) -> tuple[httpx.Response, bytes, int]:
-        """Runs the retry loop. Returns the response, its body (empty for a stream) and the number of retries."""
+        """Runs the retry loop. Returns the response, its body (empty for a stream) and the number of retries.
+
+        ``download`` asks for a file (``Accept: */*``) instead of JSON; the body is read whole either way.
+        """
         opts: RequestOptions = options or {}
         max_retries = self._retries(opts)
         idempotency_key = self._idempotency_key(spec, opts)
@@ -1336,7 +1370,7 @@ class AsyncAPIClient(BaseClient):
             timeout = httpx.Timeout(connect, read=idle)
         else:
             timeout = httpx.Timeout(total)
-        accept = "text/event-stream" if stream else "application/json"
+        accept = "text/event-stream" if stream else "*/*" if download else "application/json"
         url, headers, content = self._prepare(spec, opts, idempotency_key=idempotency_key, accept=accept)
         # A key the caller put into the headers makes the request as safe to repeat as a generated one
         # (only an operation that declares the header keeps it: see _prepare).
@@ -1464,6 +1498,34 @@ class AsyncAPIClient(BaseClient):
         if RAW_RESPONSE.get():
             return response
         return response.parse()
+
+    async def request_download(
+        self,
+        spec: RequestSpec,
+        *,
+        options: RequestOptions | None = None,
+    ) -> DownloadedFile:
+        """Sends a request whose successful response is a file, and returns its bytes undecoded.
+
+        Errors, retries and timeouts are those of ``request``: an error status is the typed API error.
+        """
+        response, body, retries = await self._send(spec, options, stream=False, download=True)
+        file = DownloadedFile(
+            content=body,
+            status_code=response.status_code,
+            headers=response.headers,
+            retries_taken=retries,
+        )
+        if RAW_RESPONSE.get():
+            raw = APIResponse(
+                status_code=response.status_code,
+                headers=response.headers,
+                content=body,
+                parsed=file,
+                retries_taken=retries,
+            )
+            return cast(DownloadedFile, raw)
+        return file
 
     async def request_page(
         self,
